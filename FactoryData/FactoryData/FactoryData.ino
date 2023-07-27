@@ -2,17 +2,17 @@
 #include <WiFiClient.h>
 #include <HTTPClient.h>
 #include <WebServer.h>
-#include <time.h> 
 #include <ArduinoJson.h>
 #include <stdio.h>
+#include <ctime>
 
 //WIFI setting
 const char* ssid = "KEB_INHA"; 
 const char* password = "inha123*";
 
 //URL Setting 
-String addDataUrl = "http://165.246.80.115:8080/session-login/addData";
-
+String addDataUrl = "http://165.246.80.51:8080/session-login/addData";
+String getTimeUrl = "http://165.246.80.51:8080/session-login/getTime";
 //sensor setting
 int sensor = A2;    
 int Vo;
@@ -21,12 +21,10 @@ float logR2, R2, T, Tc, Tf;
 float c1 = 1.009249522e-03, c2 = 2.378405444e-04, c3 = 2.019202697e-07;
 
 //Time setting
-int timezone = 9; 
-int dst = 0; 
 
 //JSON
 char buffer[96];
-
+StaticJsonDocument<200> timeJson;
 //led
 const int led = D2;
 
@@ -35,7 +33,7 @@ int photoresistor = A1;
 
 // 지연 효과 변수 
 unsigned long previousMillis = 0;
-const long interval = 3000; 
+const long interval = 10000; 
 
 // 초음파 센서 
 int echo_pin = D8;
@@ -84,6 +82,30 @@ String ipAddressConverter(String IpAddress){
   sscanf(IpAddress.c_str(),"%d.%d.%d.%d", &a1, &a2, &a3, &a4);
   return String(a1)+".XXX.XXX."+String(a4);
 } 
+
+void getServerTime(){
+  WiFiClient WiFiClient;
+  HTTPClient httpClient;
+  httpClient.begin(WiFiClient,getTimeUrl);
+  httpClient.addHeader("Content-Type", "application/json");
+  int httpResponseCode = httpClient.GET();
+  String response;
+  if(httpResponseCode>0){
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      response = httpClient.getString();
+    }else{
+      Serial.print("Error Code: ");
+      Serial.println(httpResponseCode);
+    }
+    DeserializationError error = deserializeJson(timeJson,response);
+    if(error){
+      Serial.print(F("deserializeJson() failed: "));
+      Serial.println(error.f_str());
+      return;
+    }
+    httpClient.end();
+}
 
 
 /// Web 핸들러 
@@ -161,13 +183,6 @@ void setup() {
   Serial.println("HTTP server started");
 
   //time setting
-  configTime(3 * 3600, 0, "pool.ntp.org", "time.nist.gov"); 
-  Serial.println("\nWaiting for time"); 
-  while (!time(nullptr)) { 
-    Serial.print("."); 
-    delay(1000); 
-  }
-  Serial.println("");
 
   //led Setting
   pinMode(led,OUTPUT);
@@ -195,9 +210,9 @@ void loop() {
 
   duration = pulseIn (echo_pin, HIGH);
   distance = ((34 * duration) / 1000) / 2;
-  Serial.print("distance : ");
-  Serial.print(distance);
-  Serial.println("cm");
+ // Serial.print("distance : ");
+  //Serial.print(distance);
+  //Serial.println("cm");
 
   if(distance > 2 && distance < 8)
   {
@@ -206,14 +221,14 @@ void loop() {
     {
       count +=1;
       pre_time = now_time;
-      Serial.println(count);
+      //Serial.println(count);
     }
   }
   delay(500);
   if(currentMillis - previousMillis >= interval){
     previousMillis = currentMillis;
   if((WiFi.status()) == WL_CONNECTED){
-
+    getServerTime();
     // 연결 설정 
     WiFiClient WiFiClient;
     HTTPClient httpClient; 
@@ -227,11 +242,17 @@ void loop() {
     float temp = getTemp();
     int photoresistor_result = getPhotoresistor();
     int count = getCount();
-
+    String year = timeJson["year"];
+    String month = timeJson["month"];
+    String day = timeJson["day"];
+    String hour = timeJson["hour"];
+    String minute = timeJson["minute"];
+    String time = year+month+day+hour+minute;
+  
     json["temperature"] = temp;
     json["illuminance"] = photoresistor_result;
     json["product"] = count;
-
+    json["time"] = time;
     // Json 형태로 데이터 저장  
     String parsedJsonToString;
     serializeJson(json,parsedJsonToString);
