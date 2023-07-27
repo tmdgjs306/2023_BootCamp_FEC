@@ -1,4 +1,5 @@
 package com.example.temp_spring.Controller;
+import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
 import com.example.temp_spring.DTO.ProductDataRequest;
 import com.example.temp_spring.DTO.illuminanceDataRequest;
@@ -10,7 +11,10 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 @RestController
@@ -27,6 +31,7 @@ public class DataController {
         Double tempValue = (Double) jsonObject.get("temperature");
         Long photoValue = (Long) jsonObject.get("illuminance");
         Long countValue = (Long) jsonObject.get("product");
+        String timeValue = (String) jsonObject.get("time");
         temperatureDataRepository.save(new TemperatureDataRequest().toEntity(tempValue));
         photoDataRepository.save(new illuminanceDataRequest().toEntity(photoValue));
         countDataRepository.save(new ProductDataRequest().toEntity(countValue));
@@ -54,5 +59,18 @@ public class DataController {
         getWeather a1 = new getWeather();
         String result = a1.get();
         return result;
+    }
+    @GetMapping("/getTime")
+    public void getTimeData(HttpServletRequest req, HttpServletResponse res) throws IOException{
+        LocalDateTime t = LocalDateTime.now();
+        getTimeFormatString s = new getTimeFormatString();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("year",s.YearFormat(t));
+        jsonObject.put("month",s.MonthFormat(t));
+        jsonObject.put("day",s.DayFormat(t));
+        jsonObject.put("hour",s.HourFormat(t));
+        jsonObject.put("minute",s.MinuteFormat(t));
+        res.setContentType("application/json");
+        res.getWriter().write(jsonObject.toJSONString());
     }
 }
