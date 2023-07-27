@@ -30,6 +30,7 @@
         </div>
     </div>
 </div>
+
 <script th:inline="javascript">
     function fetchLatestTemperatureData(){
         fetch("/session-login/getWeather")
@@ -41,6 +42,7 @@
     }
     fetchLatestTemperatureData();
 </script>
+
 <script th:inline="javascript">
     function fetchLatestTemperatureData() {
         fetch("/session-login/latestTemperatureData")

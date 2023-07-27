@@ -12,11 +12,11 @@ public class illuminanceDataRequest {
     private String sensor;
     private Long value;
     private String time;
-    public illuminanceData toEntity(Long val){
+    public illuminanceData toEntity(Long val, String time){
         return illuminanceData.builder()
                 .sensor("Photoresistor Sensor")
                 .value(val)
-                .time(this.time)
+                .time(time)
                 .build();
     }
 }

@@ -30,14 +30,18 @@ public class getWeather
         {
             LocalDateTime t = LocalDateTime.now();
             getTimeFormatString timeFormat = new getTimeFormatString();
+            String Date = timeFormat.DateFormat(t);
+            String Hour = timeFormat.HourFormat(t);
+            if(t.equals("0"))Hour = "24";
+            else Hour = Integer.toString(Integer.parseInt(Hour)-1);
             URL url = new URL(
                     "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
                             + "?ServiceKey=n2NMYt0rWusbUZp9FjIEqrnTPs5zY22beubl2pGnkilwf5SHv84PmYVeLeFwtSpsHxlEsYem1kj%2BnYftRClKAQ%3D%3D" // 서비스키
                             //	+ "&pageNo=1" // 페이지번호 Default: 1
                             + "&numOfRows=60" // 한 페이지 결과 수 (10개 카테고리값 * 6시간)
                             //	+ "&dataType=XML" // 요청자료형식(XML/JSON) Default: XML
-                            + "&base_date=" + t.format(DateTimeFormatter.ofPattern(timeFormat.DateFormat(t)))  // 발표 날짜
-                            + "&base_time=" + t.format(DateTimeFormatter.ofPattern(timeFormat.HourFormat(t)+"0"+"0")) // 발표 시각
+                            + "&base_date=" + t.format(DateTimeFormatter.ofPattern(Date))  // 발표 날짜
+                            + "&base_time=" + t.format(DateTimeFormatter.ofPattern(Hour+"0"+"0")) // 발표 시각
                             + "&nx=" + x // 예보지점의 X 좌표값
                             + "&ny=" + y // 예보지점의 Y 좌표값
             );

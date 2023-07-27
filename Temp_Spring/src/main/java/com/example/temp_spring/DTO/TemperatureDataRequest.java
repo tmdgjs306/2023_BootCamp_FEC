@@ -12,11 +12,11 @@ public class TemperatureDataRequest {
     private String sensor;
     private Double value;
     private String time;
-    public TemperatureData toEntity(Double val){
+    public TemperatureData toEntity(Double val, String time){
         return TemperatureData.builder()
                 .sensor("Temperature Sensor")
                 .value(val)
-                .time(this.time)
+                .time(time)
                 .build();
     }
 }

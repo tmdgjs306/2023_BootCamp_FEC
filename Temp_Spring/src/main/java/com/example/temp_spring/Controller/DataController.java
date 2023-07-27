@@ -32,9 +32,9 @@ public class DataController {
         Long photoValue = (Long) jsonObject.get("illuminance");
         Long countValue = (Long) jsonObject.get("product");
         String timeValue = (String) jsonObject.get("time");
-        temperatureDataRepository.save(new TemperatureDataRequest().toEntity(tempValue));
-        photoDataRepository.save(new illuminanceDataRequest().toEntity(photoValue));
-        countDataRepository.save(new ProductDataRequest().toEntity(countValue));
+        temperatureDataRepository.save(new TemperatureDataRequest().toEntity(tempValue,timeValue));
+        photoDataRepository.save(new illuminanceDataRequest().toEntity(photoValue,timeValue));
+        countDataRepository.save(new ProductDataRequest().toEntity(countValue,timeValue));
     }
 
     @GetMapping("/latestTemperatureData")

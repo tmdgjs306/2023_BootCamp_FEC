@@ -12,11 +12,11 @@ public class ProductDataRequest {
     private String sensor;
     private Long value;
     private String time;
-    public ProductData toEntity(Long val){
+    public ProductData toEntity(Long val, String time){
         return ProductData.builder()
                 .sensor("Ultrasonic sensor")
                 .value(val)
-                .time(this.time)
+                .time(time)
                 .build();
     }
 }
