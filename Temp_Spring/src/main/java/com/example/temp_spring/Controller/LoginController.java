@@ -3,6 +3,7 @@ package com.example.temp_spring.Controller;
 import com.example.temp_spring.DTO.JoinRequest;
 import com.example.temp_spring.DTO.LoginRequest;
 import com.example.temp_spring.DTO.UserService;
+import com.example.temp_spring.Security.SHA256;
 import com.example.temp_spring.User.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class LoginController {
     }
 
     @PostMapping("/join")
-    public String join(@Valid @ModelAttribute JoinRequest joinRequest, BindingResult bindingResult, Model model) {
+    public String join(@Valid @ModelAttribute JoinRequest joinRequest, BindingResult bindingResult, Model model) throws NoSuchAlgorithmException {
         model.addAttribute("loginType", "session-login");
         model.addAttribute("pageName", "세션 로그인");
 
@@ -70,7 +72,6 @@ public class LoginController {
         userService.join(joinRequest);
         return "redirect:/session-login";
     }
-
     @GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("loginType", "session-login");
@@ -82,7 +83,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(@ModelAttribute LoginRequest loginRequest, BindingResult bindingResult,
-                        HttpServletRequest httpServletRequest, Model model) {
+                        HttpServletRequest httpServletRequest, Model model) throws NoSuchAlgorithmException {
         model.addAttribute("loginType", "session-login");
         model.addAttribute("pageName", "세션 로그인");
 

@@ -1,11 +1,13 @@
 package com.example.temp_spring.DTO;
 
+import com.example.temp_spring.Security.SHA256;
 import com.example.temp_spring.User.User;
 import com.example.temp_spring.User.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 
@@ -14,17 +16,18 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
+    SHA256 sha256 = new SHA256();
     private final UserRepository userRepository;
 
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
 
-    public void join(JoinRequest req) {
+    public void join(JoinRequest req) throws NoSuchAlgorithmException {
         userRepository.save(req.toEntity());
     }
 
-    public User login(LoginRequest req) {
+    public User login(LoginRequest req) throws NoSuchAlgorithmException {
         Optional<User> optionalUser = userRepository.findByLoginId(req.getLoginId());
 
         // loginId와 일치하는 User가 없으면 null return
@@ -33,9 +36,10 @@ public class UserService {
         }
 
         User user = optionalUser.get();
+        String cryptogram = sha256.encrypt(req.getPassword());
 
         // 찾아온 User의 password와 입력된 password가 다르면 null return
-        if(!user.getPasswd().equals(req.getPassword())) {
+        if(!user.getPasswd().equals(cryptogram)) {
             return null;
         }
 
