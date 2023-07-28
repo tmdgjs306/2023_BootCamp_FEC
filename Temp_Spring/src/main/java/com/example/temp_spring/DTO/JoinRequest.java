@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.security.NoSuchAlgorithmException;
 
 @Getter
@@ -20,6 +22,8 @@ public class JoinRequest {
     private String loginId;
 
     @NotBlank(message = "비밀번호가 비어있습니다.")
+    @Size(min=8,message = "비밀번호는 적어도 8 자리 이상이어야 합니다")
+    @Size(max=20, message = "비밀번호가 너무 깁니다.")
     private String password;
     private String passwordCheck;
 
@@ -27,13 +31,14 @@ public class JoinRequest {
     private String nickname;
 
 
-    // 비밀번호 암호화 X 추후 해시나, Spring security 적용
-    public User toEntity() throws NoSuchAlgorithmException {
+    // 비밀번호 SHA256 해시 함수 이용하여 암호화 하여 보관
+    public User toEntity(String salt) throws NoSuchAlgorithmException {
         return User.builder()
                 .loginId(this.loginId)
-                .passwd(sha256.encrypt(this.password))
+                .passwd(sha256.encrypt(this.password+salt,3))
                 .name(this.nickname)
                 .role(UserRole.ADMIN)
+                .salt(salt)
                 .build();
     }
 }

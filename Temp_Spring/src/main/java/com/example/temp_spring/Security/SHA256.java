@@ -1,14 +1,25 @@
 package com.example.temp_spring.Security;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 
 public class SHA256 {
 
-    public String encrypt(String text) throws NoSuchAlgorithmException {
+    public String getSalt(){
+        SecureRandom rnd = new SecureRandom();
+        byte[] salt = new byte[32];
+        rnd.nextBytes(salt);
+
+        return bytesToHex(salt);
+    }
+    // Password 암호화 키 스트레칭 적용, 32bit Salt 적용
+    public String encrypt(String text,int count) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes());
-
-        return bytesToHex(md.digest());
+        if(count==0)
+            return bytesToHex(md.digest());
+        else
+            return encrypt(bytesToHex(md.digest()),--count);
     }
 
     private String bytesToHex(byte[] bytes) {

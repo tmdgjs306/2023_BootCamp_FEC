@@ -21,5 +21,6 @@ public class User {
     private String loginId;
     private String passwd;
     private String name;
+    private String salt;
     private UserRole role;
 }

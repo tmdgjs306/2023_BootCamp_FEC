@@ -24,7 +24,8 @@ public class UserService {
     }
 
     public void join(JoinRequest req) throws NoSuchAlgorithmException {
-        userRepository.save(req.toEntity());
+        String salt = sha256.getSalt();
+        userRepository.save(req.toEntity(sha256.getSalt()));
     }
 
     public User login(LoginRequest req) throws NoSuchAlgorithmException {
@@ -36,7 +37,8 @@ public class UserService {
         }
 
         User user = optionalUser.get();
-        String cryptogram = sha256.encrypt(req.getPassword());
+        String salt = user.getSalt();
+        String cryptogram = sha256.encrypt(req.getPassword()+salt,3);
 
         // 찾아온 User의 password와 입력된 password가 다르면 null return
         if(!user.getPasswd().equals(cryptogram)) {
@@ -44,7 +46,9 @@ public class UserService {
         }
 
         return user;
+
     }
+
     public User getLoginUserById(Long userId) {
         if(userId == null) return null;
 

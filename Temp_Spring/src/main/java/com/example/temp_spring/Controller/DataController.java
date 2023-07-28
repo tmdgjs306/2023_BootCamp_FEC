@@ -22,8 +22,8 @@ import java.time.LocalDateTime;
 @RequestMapping("/session-login")
 public class DataController {
     private final TemperatureDataRepository temperatureDataRepository;
-    private final illuminanceDataRepository photoDataRepository;
-    private final ProductDataRepository countDataRepository;
+    private final illuminanceDataRepository illuminanceDataRepository;
+    private final ProductDataRepository productDataRepository;
     JSONParser parser = new JSONParser();
     @PostMapping("/addData")
     public void addData(@RequestBody String req) throws ParseException {
@@ -33,8 +33,8 @@ public class DataController {
         Long countValue = (Long) jsonObject.get("product");
         String timeValue = (String) jsonObject.get("time");
         temperatureDataRepository.save(new TemperatureDataRequest().toEntity(tempValue,timeValue));
-        photoDataRepository.save(new illuminanceDataRequest().toEntity(photoValue,timeValue));
-        countDataRepository.save(new ProductDataRequest().toEntity(countValue,timeValue));
+        illuminanceDataRepository.save(new illuminanceDataRequest().toEntity(photoValue,timeValue));
+        productDataRepository.save(new ProductDataRequest().toEntity(countValue,timeValue));
     }
 
     @GetMapping("/latestTemperatureData")
@@ -45,12 +45,12 @@ public class DataController {
 
     @GetMapping("/latestPhotoData")
     public illuminanceData getLatestPhotoData(){
-        illuminanceData photoData = photoDataRepository.findLatestPhotoData();
+        illuminanceData photoData = illuminanceDataRepository.findLatestPhotoData();
         return photoData;
     }
     @GetMapping("/latestCountData")
     public ProductData getLatestCountData(){
-        ProductData countData = countDataRepository.findLatestCountData();
+        ProductData countData = productDataRepository.findLatestCountData();
         return countData;
     }
 
