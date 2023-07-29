@@ -1,5 +1,12 @@
-package com.example.temp_spring.Data;
+package com.example.temp_spring.repository;
 
+/**
+ * Project Name: F.E.C
+ * Team: Newbies
+ * author: 한승헌
+ * Description: 조도센서 데이터베이스 관련 로직
+ */
+import com.example.temp_spring.domain.data.illuminanceData;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

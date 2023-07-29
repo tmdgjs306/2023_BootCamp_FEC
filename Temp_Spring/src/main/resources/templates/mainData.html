@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>스마트 팩토리 관제 시스템</title>
+    <title>스마트 팜 모니터링 시스템</title>
 </head>
 <body>
 <div style="text-align: center; padding-top: 20px;">
-    <h1><a href="/session-login">스마트 팩토리 관제 시스템</a></h1>
+    <h1><a href="/">스마트 팜 모니터링 시스템</a></h1>
     <hr style="width: 80%; height: 2px; background-color: #007bff; border: none; margin: 15px auto;">
 </div>
 
@@ -33,7 +33,7 @@
 
 <script th:inline="javascript">
     function fetchLatestTemperatureData(){
-        fetch("/session-login/getWeather")
+        fetch("/getWeather")
             .then(response => response.text())
             .then(data => {
                 document.getElementById("value01").textContent = data;
@@ -45,7 +45,7 @@
 
 <script th:inline="javascript">
     function fetchLatestTemperatureData() {
-        fetch("/session-login/latestTemperatureData")
+        fetch("/latestTemperatureData")
             .then(response => response.json())
             .then(data => {
                 document.getElementById("sensor1").textContent = data.sensor;
@@ -60,7 +60,7 @@
 
 <script th:inline="javascript">
     function fetchLatestTemperatureData() {
-        fetch("/session-login/latestPhotoData")
+        fetch("/latestPhotoData")
             .then(response => response.json())
             .then(data => {
                 document.getElementById("sensor2").textContent = data.sensor;
@@ -75,7 +75,7 @@
 
 <script th:inline="javascript">
     function fetchLatestTemperatureData() {
-        fetch("/session-login/latestCountData")
+        fetch("/latestCountData")
             .then(response => response.json())
             .then(data => {
                 document.getElementById("sensor3").textContent = data.sensor;

@@ -3,6 +3,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
+/**
+ * Project Name: F.E.C
+ * Team: Newbies
+ * author: 한승헌
+ * Description: SHA256 인코딩 하는 함수 SALT, 키스트레칭 적용, 추후에 데이터 보안 강화시 사용할 예정
+ */
 public class SHA256 {
 
     public String getSalt(){

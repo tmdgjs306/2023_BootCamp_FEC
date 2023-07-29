@@ -1,9 +1,11 @@
-package com.example.temp_spring.DTO;
+package com.example.temp_spring.Service;
 
-import com.example.temp_spring.Security.SHA256;
-import com.example.temp_spring.User.User;
-import com.example.temp_spring.User.UserRepository;
+import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.repository.UserRepository;
+import com.example.temp_spring.domain.dto.JoinRequest;
+import com.example.temp_spring.domain.dto.LoginRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -16,16 +18,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
 
-    SHA256 sha256 = new SHA256();
+
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
 
     public void join(JoinRequest req) throws NoSuchAlgorithmException {
-        String salt = sha256.getSalt();
-        userRepository.save(req.toEntity(sha256.getSalt()));
+        userRepository.save(req.toEntity(encoder.encode(req.getPassword())));
     }
 
     public User login(LoginRequest req) throws NoSuchAlgorithmException {
@@ -37,13 +39,7 @@ public class UserService {
         }
 
         User user = optionalUser.get();
-        String salt = user.getSalt();
-        String cryptogram = sha256.encrypt(req.getPassword()+salt,3);
-
         // 찾아온 User의 password와 입력된 password가 다르면 null return
-        if(!user.getPasswd().equals(cryptogram)) {
-            return null;
-        }
 
         return user;
 

@@ -12,7 +12,12 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-
+/**
+ * Project Name: F.E.C
+ * Team: Newbies
+ * author: 한승헌
+ * Description: 기상청 API에서 날씨 정보를 받아와 String 형태로 반환하는 클래스
+ */
 public class getWeather
 {
     // [in] x, y : 예보지점 X, Y 좌표
@@ -124,7 +129,7 @@ public class getWeather
         }
         else
         { // error
-            System.out.println("Error : " + s);
+            sb.append("Error : " + s);
         }
         return sb.toString();
     }

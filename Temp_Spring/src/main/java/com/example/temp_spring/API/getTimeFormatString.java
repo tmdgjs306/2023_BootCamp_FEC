@@ -1,7 +1,12 @@
 package com.example.temp_spring.API;
 
 import java.time.LocalDateTime;
-
+/**
+ * Project Name: F.E.C
+ * Team: Newbies
+ * author: 한승헌
+ * Description: 현재 시간을 객체를 받아 String 형식으로 반환하는 클래스
+ */
 public class getTimeFormatString {
     private String Month = "";
     private String Date = "";
