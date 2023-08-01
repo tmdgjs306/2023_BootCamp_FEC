@@ -29,13 +29,15 @@ import java.net.URL;
  * [/mainData]: "mainData,html" 반환 -> 데이터 실시간 모니터링 페이지 (로그인 여부 확인 로직 존재)
  * [/ledOn] : Device 웹서버를 통해  Red led On 명령을 내림
  * [/ledOff] : Device 웹서버를 통해 Red led Off 명령을 내림
+ *
+ * Notion : 이 컨트롤러는 더 사용하지 않을 예졍임 추후 필요한 /ledOn, ledOff 기능 추출을 위해 남겨둠
  * */
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/")
 public class MainPageController {
-    private final UserService userService;
+    /*private final UserService userService;
     private final String DeviceIP ="165.246.116.221:80";
     @GetMapping("/info")
     public String userInfo(Model model, Authentication auth) {
@@ -55,7 +57,7 @@ public class MainPageController {
     @GetMapping("/admin")
     public String adminPage(Model model) {
         model.addAttribute("pageName", "스마트 팜 모니터링 시스템");
-        /* SpringSecurity 를 적용하기 이전에 활용했던 코드
+        *//* SpringSecurity 를 적용하기 이전에 활용했던 코드
            현재는 SpringSecurity 에서 인증을 처리 하기 떄문에 사용 되지 않는 부분이다.
         User loginUser = userService.getLoginUserById(userId);
 
@@ -65,7 +67,7 @@ public class MainPageController {
 
         if(!loginUser.getRole().equals(UserRole.ADMIN)) {
             return "redirect:/session-login";
-        }*/
+        }*//*
         return "admin";
     }
     @GetMapping("/mainData")
@@ -112,5 +114,5 @@ public class MainPageController {
         conn.disconnect();
         //endregion
         return "admin";
-    }
+    }*/
 }

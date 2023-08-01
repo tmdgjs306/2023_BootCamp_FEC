@@ -32,6 +32,8 @@ import java.time.LocalDateTime;
  * [/latestCountData]: ProductDataRepository 조회 가장 최근에 측정된 초음파 센서를 지나간 물체의 갯수를 반환
  * [/getWeather] : 기상청 API에 접속하여 기상 예보 정보를 반환
  * [/getTime] : Device에게 현재 시간 정보를 JSON 형식으로 반환
+ *
+ * Notion : 현재 DB 교체 작업 진행중
  * */
 
 @RestController

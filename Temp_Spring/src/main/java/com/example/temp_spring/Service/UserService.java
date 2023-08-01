@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public void join(JoinRequest req) throws NoSuchAlgorithmException {
-        userRepository.save(req.toEntity(encoder.encode(req.getPassword())));
+        userRepository.save(req.toEntity());
     }
 
     public User login(LoginRequest req) throws NoSuchAlgorithmException {
@@ -39,8 +39,9 @@ public class UserService {
         }
 
         User user = optionalUser.get();
+
         // 찾아온 User의 password와 입력된 password가 다르면 null return
-        if(user.getPasswd()!=req.getPassword()){
+        if(!user.getPasswd().equals(req.getPassword())){
             return null;
         }
 

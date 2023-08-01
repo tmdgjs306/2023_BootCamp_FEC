@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from "axios";
 const Login = () => {
   const [loginId, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -16,7 +15,6 @@ const Login = () => {
       if (response.ok) {
         // @set user token in local storage + redirect to dashboard
         console.log('Login successful');
-        console.log(response);
       } else {
         console.log('Login failed');
       }

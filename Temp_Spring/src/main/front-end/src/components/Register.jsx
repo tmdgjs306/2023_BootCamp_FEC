@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const Register = () => {
-  const [username, setUsername] = useState('');
+  const [loginId, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -12,7 +12,7 @@ const Register = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, email, password }),
+          body: JSON.stringify({ loginId, password ,email}),
       }).then(response => response.text())
           .then(data => {
               console.log(data);
@@ -27,8 +27,8 @@ const Register = () => {
     <div>
       <h2>Register</h2>
       <div>
-        <label>Username:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+          <label>Id:</label>
+          <input type="text" value={loginId} onChange={(e) => setUsername(e.target.value)} />
       </div>
       <div>
         <label>Email:</label>

@@ -21,15 +21,14 @@ import javax.annotation.PostConstruct;
 public class InitUseRepository {
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
 
     @PostConstruct
     public void makeAdminAndUser() {
         if(!userRepository.existsByLoginId("root")) {
             User admin2 = User.builder()
                     .loginId("root")
-                    .passwd(encoder.encode("1234"))
-                    .name("관리자")
+                    .passwd("1234")
+                    .email("admin@gmail.com")
                     .role(UserRole.ADMIN)
                     .build();
             userRepository.save(admin2);
@@ -37,8 +36,8 @@ public class InitUseRepository {
         if(!userRepository.existsByLoginId("user")) {
             User user2 = User.builder()
                     .loginId("user")
-                    .passwd(encoder.encode("1234"))
-                    .name("유저")
+                    .passwd("1234")
+                    .email("user@gmail.com")
                     .role(UserRole.USER)
                     .build();
             userRepository.save(user2);
