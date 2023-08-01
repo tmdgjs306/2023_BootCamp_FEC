@@ -1,33 +1,35 @@
 package com.example.temp_spring.Data;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "TemperatureData")
+@Getter
+@Setter
 
 public class TemperatureData {
-
     @Id
-    public String _id;  //object_id
+    private ObjectId id;
+    private double value;
+    private String sensor;
+    private String time;
 
-    public String plant_id;
-    public double value;
-    public String sensor_name;
-    public String time_stamp;
-
-    public TemperatureData() {}
-
-    public TemperatureData(String _id, String plant_id, double value, String sensor_name, String time_stamp) {
-        this._id = _id;
-        this.plant_id = plant_id;
+    public TemperatureData(String sensor, double value, String time) {
+        this.sensor = sensor;
         this.value = value;
-        this.sensor_name = sensor_name;
-        this.time_stamp = time_stamp;
+        this.time = time;
     }
 
     @Override
     public String toString() {
-        return String.format(
-                "TemperatureData[id=%s, plant_id='%s', value='%.2f', sensor_name='%s', time_stamp='%s']",
-                _id, plant_id, value, sensor_name, time_stamp);
+        return "TemperatureData{" +
+                "id=" + id +
+                ", value=" + value +
+                ", sensor='" + sensor + '\'' +
+                ", time='" + time + '\'' +
+                '}';
     }
-
 }

@@ -1,9 +1,9 @@
 package com.example.temp_spring.Data;
 
-import java.util.List;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface TemperatureDataRepository extends MongoRepository<TemperatureData, String> {
+import java.util.List;
 
-    public TemperatureData findByValue(double value);
+public interface TemperatureDataRepository extends MongoRepository<TemperatureData, String> {
+    public List<TemperatureData> findBySensor(String sensor);
 }
