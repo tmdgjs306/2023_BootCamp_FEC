@@ -1,10 +1,21 @@
 package com.example.temp_spring.Security;
+import com.example.temp_spring.Service.UserService;
+import com.example.temp_spring.domain.user.User;
 import com.example.temp_spring.domain.user.UserRole;
+import com.example.temp_spring.jwt.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.Filter;
+
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasAuthority;
 
 /**
  * Project Name: F.E.C
@@ -15,34 +26,22 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig{
 
-    private final PrincipalDetailsService principalDetailsService;
+    private final UserService userService;
+    private final String secretkey ="asnlwEysd15BsYt9V7zq571GejMnGUNNFEzbnssdfcfPQysdf23408f12MGVA9XkHa";
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+        return httpSecurity
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(new JwtTokenFilter(userService,secretkey), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                // 인증
                 .antMatchers("/info").authenticated()
-                .antMatchers("/mainData").authenticated()
-                // 인가
                 .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
-                .antMatchers("/ledOn/**").hasAuthority(UserRole.ADMIN.name())
-                .antMatchers("/ledOff/**").hasAuthority(UserRole.ADMIN.name())
-                .anyRequest().permitAll()
-                .and()
-                // Form Login 방식 적용
-                .formLogin()
-                // 로그인 할 때 사용할 파라미터들
-                .usernameParameter("loginId")
-                .passwordParameter("password")
-                .loginPage("/login")     // 로그인 페이지 URL
-                .defaultSuccessUrl("/")   // 로그인 성공 시 이동할 URL
-                .failureUrl("/login")    // 로그인 실패 시 이동할 URL
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .invalidateHttpSession(true).deleteCookies("JSESSIONID");
+                .and().build();
     }
 }

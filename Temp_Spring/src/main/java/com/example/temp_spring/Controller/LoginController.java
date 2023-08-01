@@ -4,6 +4,7 @@ import com.example.temp_spring.domain.dto.JoinRequest;
 import com.example.temp_spring.domain.dto.LoginRequest;
 import com.example.temp_spring.Service.UserService;
 import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -29,14 +30,14 @@ import java.security.NoSuchAlgorithmException;
  * Update: 2023-07-29: HSH 불필요한 /session-login url 매핑 삭제
  * */
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("")
 public class LoginController {
     private final UserService userService;
 
     // /root로 접속했을때 호출 되는 핸들러 "index 페이지 반환"
-    @GetMapping(value = {"", "/"})
+   /* @GetMapping(value = {"", "/"})
     public String home(Model model, Authentication auth) {
         model.addAttribute("pageName", "스마트 팜 관리 시스템");
 
@@ -50,14 +51,14 @@ public class LoginController {
         }
 
         return "home";
-    }
+    }*/
 
-    @GetMapping("/join")
+   /* @GetMapping("/join")
     public String joinPage(Model model) {
         model.addAttribute("pageName", "스마트 팜 관리 시스템");
         model.addAttribute("joinRequest", new JoinRequest());
         return "join";
-    }
+    }*/
 
     @PostMapping("/join")
     public String join(@Valid @ModelAttribute JoinRequest joinRequest, BindingResult bindingResult, Model model) throws NoSuchAlgorithmException {
@@ -91,13 +92,26 @@ public class LoginController {
      * 로그인 처리 부분 현재는 Spring Security 에서 가로채 처리 하기 떄문에
      * 별도의 추가 코드가 필요 없다.
      * */
-    @GetMapping("/login")
+    /*@GetMapping("/login")
     public String loginPage(Model model) {
         model.addAttribute("pageName", "스마트 팜 관리 시스템");
         model.addAttribute("loginRequest", new LoginRequest());
         return "login";
-    }
+    }*/
 
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) throws NoSuchAlgorithmException {
+        System.out.println(loginRequest.getLoginId()+" "+loginRequest.getPassword());
+        User user = userService.login(loginRequest);
+
+        if (user == null){
+            return "로그인 실패!!";
+        }
+        String secretKey = "asnlwEysd15BsYt9V7zq571GejMnGUNNFEzbnssdfcfPQysdf23408f12MGVA9XkHa";
+        long expireTimeMs = 1000 * 60 * 30; // Token 유효시간 30분
+        String jwtToken = JwtTokenUtil.createToken(user.getLoginId(),secretKey,expireTimeMs);
+        return jwtToken;
+    }
 
     /* Spring Security 적용 이전 코드
      *  현재는 Spring Security 에서 알아서 처리 해주기 떄문에 더이상 필요 없는 부분이다.
