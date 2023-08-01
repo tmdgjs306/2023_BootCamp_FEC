@@ -1,0 +1,4 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://jisoo:0913@cluster0.2ub4pfn.mongodb.net/?retryWrites=true&w=majority/FEC
