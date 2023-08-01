@@ -11,8 +11,8 @@ const char* ssid = "KEB_INHA";
 const char* password = "inha123*";
 
 //URL Setting 
-String addDataUrl = "http://165.246.80.51:8080/session-login/addData";
-String getTimeUrl = "http://165.246.80.51:8080/session-login/getTime";
+String addDataUrl = "http://3.39.250.53:8080/addData";
+String getTimeUrl = "http://3.39.250.53:8080/getTime";
 //sensor setting
 int sensor = A2;    
 int Vo;
