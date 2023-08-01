@@ -40,6 +40,9 @@ public class UserService {
 
         User user = optionalUser.get();
         // 찾아온 User의 password와 입력된 password가 다르면 null return
+        if(user.getPasswd()!=req.getPassword()){
+            return null;
+        }
 
         return user;
 
