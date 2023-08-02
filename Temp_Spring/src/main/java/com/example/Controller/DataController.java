@@ -1,4 +1,4 @@
-package com.example.temp_spring.Controller;
+package com.example.Controller;
 import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
 import com.example.temp_spring.domain.dto.ProductDataRequest;
@@ -38,7 +38,7 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/test")
 public class DataController {
     private final TemperatureDataRepository temperatureDataRepository;
     private final com.example.temp_spring.repository.illuminanceDataRepository illuminanceDataRepository;

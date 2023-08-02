@@ -29,7 +29,7 @@ import static org.springframework.security.authorization.AuthorityAuthorizationM
 public class SecurityConfig{
 
     private final UserService userService;
-    private final String secretkey ="asnlwEysd15BsYt9V7zq571GejMnGUNNFE3408f12MGVA9XkHa";
+    private final String secretkey ="my-secret-key";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
