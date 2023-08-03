@@ -1,0 +1,16 @@
+.custom-button {
+    width: 150px;
+    height: 40px;
+    background-color: #028151;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: "Sansita", sans-serif;
+    font-size: 20px;
+  }
+  
+  .custom-button:hover {
+    background-color: #000;
+  }
+  
