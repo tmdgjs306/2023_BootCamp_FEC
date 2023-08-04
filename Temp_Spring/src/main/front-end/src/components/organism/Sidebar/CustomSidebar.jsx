@@ -10,16 +10,16 @@ const CustomSidebar = () => {
           <Link to="/dashboard">Dashboard</Link>
         </MenuItem>
         <MenuItem>
-          <Link to="/calendar">Overview</Link>
+          <Link to="/overview">Overview</Link>
         </MenuItem>
         <MenuItem>
-          <Link to="/e-commerce">Status</Link>
+          <Link to="/status">Status</Link>
         </MenuItem>
         <MenuItem>
-          <Link to="/calendar">Manage user</Link>
+          <Link to="/manage">Manage user</Link>
         </MenuItem>
         <MenuItem>
-          <Link to="/e-commerce">Performance</Link>
+          <Link to="/performance">Performance</Link>
         </MenuItem>
       </Menu>
     </Sidebar>

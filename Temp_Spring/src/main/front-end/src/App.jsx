@@ -1,7 +1,6 @@
 // react
-import React from 'react';
-import { BrowserRouter as Router, Route, Link, Routes, Navigate } from 'react-router-dom';
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Routes, Navigate } from 'react-router-dom';
 
 // pages
 import CustomSidebar from './components/organism/Sidebar/CustomSidebar';
@@ -14,30 +13,13 @@ import NotFoundPage from './pages/ErrorPages/NotFoundPage.jsx';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-
   return (
     <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Homepage</Link>
-          </li>
-          {isLoggedIn ? (
-            <>
-              <li>
-                <Link to="/dashboard">Dashboard</Link>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          )}
-        </ul>
-      </nav>
+      {/* public*/}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+      {/* protected*/}
         {isLoggedIn ? (
           <Route
             path="/dashboard"
@@ -51,7 +33,7 @@ const App = () => {
         ) : (
           <Route path="/dashboard" element={<Navigate to="/" />} />
         )}
-        {/* Add other routes here */}
+        {/* catch all */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
