@@ -1,8 +1,8 @@
 import './App.css';
-import Homepage from './Components/Homepage/Homepage';
-import Dashboard from './Components/Dashboard/Dashboard';
-import Login from './Components/Login/Login';
-import Register from './Components/Register/Register';
+import Homepage from './Pages/Homepage/Homepage';
+import Dashboard from './Pages/Protected/Dashboard/Dashboard';
+import Login from './Pages/Login/Login';
+import Register from './Pages/Register/Register';
 
 // Import React route dom
 
@@ -25,16 +25,14 @@ const router = createBrowserRouter([
 
 ])
 
-
-
 //
 function App() {
 
   return (
     <div>
-      <RouterProvider router={router}/>
+      <RouterProvider router={router} />
 
-      
+
     </div>
   )
 }
