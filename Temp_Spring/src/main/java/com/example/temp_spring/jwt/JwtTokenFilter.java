@@ -62,13 +62,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String token = authorizationHeader.split(" ")[1];
 
         //만약 token이 만료 되었다면 Null 리턴
-        if(JwtTokenUtil.isExpired(token,secretKey)){
+        if(JwtTokenUtil.isExpired(token)){
             filterChain.doFilter(req,res);
             return;
         }
 
         // 토큰에서 loginId 정보 추출
-        String loginId = JwtTokenUtil.getLoginId(token,secretKey);
+        String loginId = JwtTokenUtil.getLoginId(token);
 
         // 추출한 loginId로 User 정보 조회
         User loginUser = userService.getLoginUserByLoginId(loginId);

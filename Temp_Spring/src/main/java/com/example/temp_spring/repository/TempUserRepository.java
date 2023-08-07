@@ -13,4 +13,6 @@ public interface TempUserRepository extends JpaRepository<TempUser,Long> {
     @Query("select t from TempUser t")
     List<TempUser> findAllTempUser();
 
+    Optional<TempUser> findByLoginId(String loginId);
+
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class JwtTokenUtil {
 
+    private static final String secretkey ="asnlwEysd15BsYt9V7zq571GejMnGUNNFE3408f12MGVA9XkHa";
     // JWT Token 발급
     public static String createToken(String loginId, String key, long expireTimeMs){
         // Claim = Jwt Token에 들어갈 정보
@@ -24,20 +25,20 @@ public class JwtTokenUtil {
     }
 
     //Claim에서 loginId 값 꺼냄
-    public static String getLoginId(String token, String key){
-        return extractClaims(token,key).get("loginId").toString();
+    public static String getLoginId(String token){
+        return extractClaims(token).get("loginId").toString();
     }
 
     // 토큰의 유효 시간 검증
-    public static boolean isExpired(String token, String key){
-        Date expiredData = extractClaims(token,key).getExpiration();
+    public static boolean isExpired(String token){
+        Date expiredData = extractClaims(token).getExpiration();
 
         return expiredData.before(new Date());
     }
 
 
     // Private Key를 사용하여 Token Parsing
-    private static Claims extractClaims(String token, String key){
-        return Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
+    private static Claims extractClaims(String token){
+        return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(token).getBody();
     }
 }
