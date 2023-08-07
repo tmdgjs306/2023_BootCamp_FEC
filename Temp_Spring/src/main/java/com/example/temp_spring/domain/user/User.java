@@ -28,4 +28,5 @@ public class User {
     private String passwd;
     private String email;
     private UserRole role;
+    private String salt;
 }

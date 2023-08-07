@@ -11,6 +11,7 @@ import java.security.SecureRandom;
  */
 public class SHA256 {
 
+    //salt 반환
     public String getSalt(){
         SecureRandom rnd = new SecureRandom();
         byte[] salt = new byte[32];
@@ -18,6 +19,7 @@ public class SHA256 {
 
         return bytesToHex(salt);
     }
+
     // Password 암호화 키 스트레칭 적용, 32bit Salt 적용
     public String encrypt(String text,int count) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");

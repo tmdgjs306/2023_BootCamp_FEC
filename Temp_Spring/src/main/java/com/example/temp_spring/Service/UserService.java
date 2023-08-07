@@ -1,6 +1,9 @@
 package com.example.temp_spring.Service;
 
+import com.example.temp_spring.Security.SHA256;
+import com.example.temp_spring.domain.dto.TempUserJoinRequest;
 import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.repository.TempUserRepository;
 import com.example.temp_spring.repository.UserRepository;
 import com.example.temp_spring.domain.dto.JoinRequest;
 import com.example.temp_spring.domain.dto.LoginRequest;
@@ -20,8 +23,7 @@ public class UserService {
 
 
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder encoder;
-
+    private final SHA256 sha256 = new SHA256();
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
@@ -41,14 +43,13 @@ public class UserService {
         User user = optionalUser.get();
 
         // 찾아온 User의 password와 입력된 password가 다르면 null return
-        if(!user.getPasswd().equals(req.getPassword())){
+        if(!user.getPasswd().equals(sha256.encrypt(req.getPassword()+user.getSalt(),3))){
             return null;
         }
 
         return user;
 
     }
-
     public User getLoginUserById(Long userId) {
         if(userId == null) return null;
 

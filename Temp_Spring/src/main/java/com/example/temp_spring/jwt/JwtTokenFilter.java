@@ -27,9 +27,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest req , HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = req.getHeader(HttpHeaders.AUTHORIZATION);
 
-        // Header의 Autorization 값이 비어있으면 JWT Token 값을 전송하지 않는다.
+        // Header의 Autorization 값이 비어있으면 JWT Token 값이 없는 것
         if(authorizationHeader == null){
-            // 화면 로그인 시 쿠키의 "jwtToken"로 Jwt Token을 전송
+            // 클라이언트 로그인 시 쿠키의 "jwtToken"로 Jwt Token을 전송
             // 쿠키에도 Jwt Token이 없다면 로그인 하지 않은 것으로 간주
             if(req.getCookies() == null) {
                 filterChain.doFilter(req, res);
@@ -61,6 +61,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         // 전송 받은 값에서 'Bearer ' 뒷부분 (Jwt Token) 부분 추출
         String token = authorizationHeader.split(" ")[1];
 
+        //만약 token이 만료 되었다면 Null 리턴
         if(JwtTokenUtil.isExpired(token,secretKey)){
             filterChain.doFilter(req,res);
             return;

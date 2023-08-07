@@ -1,13 +1,16 @@
 package com.example.temp_spring.domain.dto;
 
+import com.example.temp_spring.Security.SHA256;
 import com.example.temp_spring.domain.user.User;
 import com.example.temp_spring.domain.user.UserRole;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * Project Name: F.E.C
@@ -22,28 +25,19 @@ import javax.validation.constraints.Size;
 @Setter
 @NoArgsConstructor
 public class JoinRequest {
-
+    private SHA256 sha256 = new SHA256();
     private String loginId;
     private String password;
-
+    private String salt = sha256.getSalt();
     private String email;
 
-
-    // Spring Security 적용 이전에 사용한 저장 방식
-    /*public User toEntity() throws NoSuchAlgorithmException {
+    public User toEntity() throws NoSuchAlgorithmException {
         return User.builder()
                 .loginId(this.loginId)
-                .passwd(this.password)
-                .name(this.nickname)
-                .role(UserRole.USER)
-                .build();
-    }*/
-    public User toEntity() {
-        return User.builder()
-                .loginId(this.loginId)
-                .passwd(this.password)
+                .passwd(sha256.encrypt(this.password+salt,3))
                 .email(this.email)
                 .role(UserRole.USER)
+                .salt(this.salt)
                 .build();
     }
 }

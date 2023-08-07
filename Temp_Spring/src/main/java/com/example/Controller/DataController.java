@@ -5,6 +5,7 @@ import com.example.temp_spring.domain.dto.ProductDataRequest;
 import com.example.temp_spring.domain.dto.illuminanceDataRequest;
 import com.example.temp_spring.domain.dto.TemperatureDataRequest;
 import com.example.temp_spring.domain.data.*;
+import com.example.temp_spring.jwt.JwtTokenUtil;
 import com.example.temp_spring.repository.ProductDataRepository;
 import com.example.temp_spring.repository.TemperatureDataRepository;
 import lombok.RequiredArgsConstructor;
@@ -91,5 +92,19 @@ public class DataController {
         jsonObject.put("minute",s.MinuteFormat(t));
         res.setContentType("application/json");
         res.getWriter().write(jsonObject.toJSONString());
+    }
+
+    @GetMapping("/userInfo")
+    public static void getUserInfo(HttpServletRequest req, HttpServletResponse res) throws IOException{
+        res.setContentType("text/plain");
+        res.setCharacterEncoding("UTF-8");
+        res.getWriter().write("유저 정보 ");
+    }
+
+    @GetMapping("/admin")
+    public static void getAdminInfo(HttpServletRequest req, HttpServletResponse res) throws IOException{
+        res.setContentType("text/plain");
+        res.setCharacterEncoding("UTF-8");
+        res.getWriter().write("관리자 정보 ");
     }
 }
