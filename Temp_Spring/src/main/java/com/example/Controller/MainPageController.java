@@ -39,47 +39,6 @@ import java.net.URL;
 public class MainPageController {
     private final UserService userService;
     private final String DeviceIP ="165.246.116.221:80";
-    @GetMapping("/info")
-    public String userInfo(Model model, Authentication auth) {
-        model.addAttribute("pageName", "세션 로그인");
-        model.addAttribute("pageName", "스마트 팜 모니터링 시스템");
-
-        User loginUser = userService.getLoginUserByLoginId(auth.getName());
-
-        if(loginUser == null) {
-            return "redirect:/login";
-        }
-
-        model.addAttribute("user", loginUser);
-        return "info";
-    }
-
-    @GetMapping("/admin")
-    public String adminPage(Model model) {
-        model.addAttribute("pageName", "스마트 팜 모니터링 시스템");
-        /* SpringSecurity 를 적용하기 이전에 활용했던 코드
-           현재는 SpringSecurity 에서 인증을 처리 하기 떄문에 사용 되지 않는 부분이다.*/
-        User loginUser = userService.getLoginUserById(0L);
-
-        if(loginUser == null) {
-            return "redirect:/session-login/login";
-        }
-
-        if(!loginUser.getRole().equals(UserRole.ADMIN)) {
-            return "redirect:/session-login";
-        }
-        return "admin";
-    }
-    @GetMapping("/mainData")
-    public String mainDataPage(Model model, Authentication auth){
-        model.addAttribute("pageName", "스마트 팜 모니터링 시스템");
-
-        if(auth == null) {
-            return "redirect:/login";
-        }
-
-        return "mainData";
-    }
 
     @GetMapping("/ledOn")
     public String ledOn(Model model, Authentication auth) throws IOException {

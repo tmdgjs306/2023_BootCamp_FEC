@@ -11,20 +11,10 @@ import com.example.temp_spring.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-
-<<<<<<< Updated upstream:Temp_Spring/src/main/java/com/example/Controller/LoginController.java
-=======
 import javax.servlet.http.Cookie;
->>>>>>> Stashed changes:Temp_Spring/src/main/java/com/example/temp_spring/Controller/LoginController.java
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -51,29 +41,14 @@ import java.util.List;
 @RequestMapping("/")
 public class LoginController {
     private final UserService userService;
-<<<<<<< Updated upstream:Temp_Spring/src/main/java/com/example/Controller/LoginController.java
-
-    @GetMapping("/test")
-    public void test(HttpServletResponse res, HttpServletRequest req) throws IOException {
-        res.setContentType("text/plain");
-        res.getWriter().write("ddddddddddddddd");
-    }
-=======
     private final TempUserService tempUserService;
->>>>>>> Stashed changes:Temp_Spring/src/main/java/com/example/temp_spring/Controller/LoginController.java
     @PostMapping("/join")
     public void join(@RequestBody TempUserJoinRequest tempUserJoinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
         //응답 메시지 설정
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
-<<<<<<< Updated upstream:Temp_Spring/src/main/java/com/example/Controller/LoginController.java
-        // loginId 중복 체크
-        if(userService.checkLoginIdDuplicate(joinRequest.getLoginId())) {
-=======
-
         // loginId 중복 체크 -> 중복된 ID일 경우 409 에러 메시지 전송
         if(userService.checkLoginIdDuplicate(tempUserJoinRequest.getLoginId())) {
->>>>>>> Stashed changes:Temp_Spring/src/main/java/com/example/temp_spring/Controller/LoginController.java
             res.sendError(HttpServletResponse.SC_CONFLICT,"이미 사용중인 로그인 아이디 입니다.");
             return;
         }
@@ -99,12 +74,8 @@ public class LoginController {
             res.sendError(HttpServletResponse.SC_UNAUTHORIZED,"아이디 혹은 비밀번호가 잘못입력되었습니다.");
             return;
         }
-<<<<<<< Updated upstream:Temp_Spring/src/main/java/com/example/Controller/LoginController.java
 
-        String secretKey = "my-secret-key";
-=======
         String secretKey = "asnlwEysd15BsYt9V7zq571GejMnGUNNFE3408f12MGVA9XkHa";
->>>>>>> Stashed changes:Temp_Spring/src/main/java/com/example/temp_spring/Controller/LoginController.java
         long expireTimeMs = 1000 * 60 * 30; // Token 유효시간 30분
 
         String jwtToken = JwtTokenUtil.createToken(user.getLoginId(),secretKey,expireTimeMs);
@@ -115,8 +86,6 @@ public class LoginController {
         cookie.setMaxAge(30*60);
         res.addCookie(cookie);
     }
-<<<<<<< Updated upstream:Temp_Spring/src/main/java/com/example/Controller/LoginController.java
-=======
 
     @GetMapping("log-out")
     public void l(HttpServletResponse res){
@@ -158,6 +127,5 @@ public class LoginController {
         System.out.println(jsonArray.toJSONString());
         res.getWriter().write(jsonArray.toJSONString());
     }
->>>>>>> Stashed changes:Temp_Spring/src/main/java/com/example/temp_spring/Controller/LoginController.java
 }
 
