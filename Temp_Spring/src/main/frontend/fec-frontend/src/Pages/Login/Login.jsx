@@ -1,6 +1,9 @@
 // react imports
 import React from 'react'
 import { Link } from 'react-router-dom';
+// token
+import axios from 'axios';
+import { useAuth } from '../../provider/AuthProvider';
 // react icons
 import { FaUserShield } from 'react-icons/fa'
 import { AiFillLock } from 'react-icons/ai'
@@ -14,6 +17,31 @@ import logo from '../../LoginAssets/logo.png';
 
 
 const Login = () => {
+    const { setToken } = useAuth(); // Use the setToken function from the AuthProvider
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleLogin = async (e) => {
+        e.preventDefault(); // Prevent the form from submitting the default way
+
+        try {
+            const response = await axios.post('/login', {
+                username,
+                password,
+            });
+
+            if (response.data.token) {
+                setToken(response.data.token); // Store the JWT token in the context
+            }
+
+            // Handle successful login response here
+            console.log('Login successful:', response.data);
+        } catch (error) {
+            // Handle login error here
+            console.error('Login error:', error);
+        }
+    };
     return (
         <div className='loginPage flex'>
 
@@ -46,7 +74,7 @@ const Login = () => {
                             <label htmlFor='username'>Username</label>
                             <div className="input flex">
                                 <FaUserShield className='icon' />
-                                <input type='text' loginId='username' placeholder='Your ID' />
+                                <input type='text' id='username' placeholder='Your ID' />
                             </div>
                         </div>
 
@@ -78,4 +106,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default Login;

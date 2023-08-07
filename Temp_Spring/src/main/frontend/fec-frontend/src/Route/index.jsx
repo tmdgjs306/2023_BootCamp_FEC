@@ -5,20 +5,26 @@ import Login from "../Pages/Login/Login";
 import Logout from "../pages/Login/Logout";
 import Register from "../Pages/Register/Register";
 import Homepage from "../Pages/Homepage/Homepage";
+import { Dashboard, ManageUsers, Overview, Performance, Status } from "../Pages/Protected";
 
-const Routes = () => {
+
+const CostumRoute = () => {
     const { token } = useAuth();
 
     // public routes
     const routesForPublic = [
         {
-            path: '/', element: <div><Homepage /></div>
+            path: '/', element: <Homepage />
         },
         {
-            path: '/login', element: <div><Login /></div>
+            path: '/login', element: <Login />
         },
         {
-            path: '/join', element: <div><Register /></div>
+            path: '/join', element: <Register />
+        },
+        {
+            path: "/logout",
+            element: <Logout />,
         },
     ];
 
@@ -29,16 +35,24 @@ const Routes = () => {
             element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
             children: [
                 {
-                    path: "",
-                    element: <div>User Home Page</div>,
+                    path: "/dashboard",
+                    element: <Dashboard />,
                 },
                 {
-                    path: "/profile",
-                    element: <div>User Profile</div>,
+                    path: "/manage-user",
+                    element: <ManageUsers />,
                 },
                 {
-                    path: "/logout",
-                    element: <Logout />,
+                    path: "/overview",
+                    element: <Overview />,
+                },
+                {
+                    path: "/performance",
+                    element: <Performance />,
+                },
+                {
+                    path: "/status",
+                    element: <Status />,
                 },
             ],
         },
@@ -54,6 +68,9 @@ const Routes = () => {
             path: "/login",
             element: <Login />,
         },
+        {
+            path: '/join', element: <Register />
+        },
     ];
 
     // Combine and conditionally include routes based on authentication status
@@ -67,4 +84,4 @@ const Routes = () => {
     return <RouterProvider router={router} />;
 };
 
-export default Routes;
+export default CostumRoute;

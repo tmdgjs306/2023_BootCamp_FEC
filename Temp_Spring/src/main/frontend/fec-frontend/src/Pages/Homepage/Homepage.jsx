@@ -1,18 +1,20 @@
-// react
 import React from 'react'
 import './Homepage.css';
-// pages
-import { Header, Navbar, Hero, AboutProject, AboutUs, Footer } from "../../Components/Homepage";
 
 function Homepage() {
     return (
-        <div className='homepage'>
-            <Header title="Home" />
-            <Navbar />
-            <Hero />
-            <AboutProject />
-            <AboutUs />
-            <Footer />
+        <div>
+            This is Home page
+            sections
+            <br />
+            navbar
+            header
+            hero
+            bottom
+            <br />
+            <a href='/login'>To Login</a>
+            <br />
+            <a href='/join'>To Register</a>
         </div>
     )
 }
