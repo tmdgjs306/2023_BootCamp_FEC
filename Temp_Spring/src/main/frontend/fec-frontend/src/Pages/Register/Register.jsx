@@ -1,9 +1,9 @@
 // react imports
 import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // token
 import axios from 'axios';
-import { useA, useA as AuthProvider } from '../../provider/AuthProvider';
+// import { useA, useA as AuthProvider } from '../../provider/AuthProvider';
 // react icons
 import { HiOutlineMail } from 'react-icons/hi';
 import { AiFillLock } from 'react-icons/ai'
@@ -20,7 +20,7 @@ const Register = () => {
   const [email, setEmail] = useState(''); // Add email state
   const [loginId, setLoginId] = useState('');
   const [password, setPassword] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -40,7 +40,7 @@ const Register = () => {
       alert(response.data.toString());
 
       // after successful register navigate to homepage
-      history.push('/');
+      navigate('/');
     } catch (error) {
       // Handle registration error here
       setEmail("");

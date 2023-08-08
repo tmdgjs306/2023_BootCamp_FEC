@@ -1,6 +1,6 @@
 // react imports
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 // token
 import axios from 'axios';
 import { useA } from '../../provider/AuthProvider';
@@ -22,6 +22,9 @@ const Login = () => {
     const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
 
+    // navigator
+    const navigate = useNavigate();
+
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent the form from submitting the default way
         const a = {
@@ -41,7 +44,7 @@ const Login = () => {
             }
 
             // Handle successful login response here
-            console.log('Login successful:', response.data);
+            navigate('/dashboard');
         } catch (error) {
             // Handle login error here
             console.error('Login error:', error);
