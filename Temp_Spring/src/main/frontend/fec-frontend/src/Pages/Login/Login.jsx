@@ -10,7 +10,6 @@ import { AiFillLock } from 'react-icons/ai'
 import { FaRegArrowAltCircleRight } from 'react-icons/fa'
 // css imports
 import './Login.css'
-import '../../App.css'
 // assets
 import video from '../../LoginAssets/video.mp4';
 import logo from '../../LoginAssets/logo.png';

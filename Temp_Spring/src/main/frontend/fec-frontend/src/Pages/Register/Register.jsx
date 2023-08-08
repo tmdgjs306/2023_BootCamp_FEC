@@ -11,7 +11,6 @@ import { FaUserShield } from 'react-icons/fa'
 import { FaRegArrowAltCircleRight } from 'react-icons/fa'
 // css imports
 import './Register.css'
-import '../../App.css'
 // assets
 import video from '../../LoginAssets/video1.mp4';
 import logo from '../../LoginAssets/logo.png';
