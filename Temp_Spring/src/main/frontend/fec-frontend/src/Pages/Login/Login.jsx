@@ -1,9 +1,9 @@
 // react imports
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 // token
 import axios from 'axios';
-import { useAuth } from '../../provider/AuthProvider';
+import { useA } from '../../provider/AuthProvider';
 // react icons
 import { FaUserShield } from 'react-icons/fa'
 import { AiFillLock } from 'react-icons/ai'
@@ -17,20 +17,25 @@ import logo from '../../LoginAssets/logo.png';
 
 
 const Login = () => {
-    const { setToken } = useAuth(); // Use the setToken function from the AuthProvider
+    const { setToken } = useA(); // Use the setToken function from the AuthProvider
 
-    const [username, setUsername] = useState('');
+    const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent the form from submitting the default way
-
+        const a = {
+            loginId: `${loginId}`,
+            password: `${password}`
+        }
+        const b = JSON.stringify(a);
         try {
-            const response = await axios.post('/login', {
-                username,
-                password,
-            });
-
+            const response = await axios.post('/api/login', b, {
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            }
+            );
             if (response.data.token) {
                 setToken(response.data.token); // Store the JWT token in the context
             }
@@ -67,14 +72,14 @@ const Login = () => {
                         <h3>Welcome back!</h3>
                     </div>
 
-                    <form action='' className='form grid'>
+                    <form action='' className='form grid' onSubmit={handleLogin}>
                         <span className='showMessage'>Login Status will go here</span>
                         {/*user input */}
                         <div className='inputDiv'>
                             <label htmlFor='username'>Username</label>
                             <div className="input flex">
                                 <FaUserShield className='icon' />
-                                <input type='text' id='username' placeholder='Your ID' />
+                                <input type='text' id='username' placeholder='Your ID' value={loginId} onChange={e => setLoginId(e.target.value)} />
                             </div>
                         </div>
 
@@ -83,7 +88,7 @@ const Login = () => {
                             <label htmlFor='password'>Password</label>
                             <div className="input flex">
                                 <AiFillLock className='icon' />
-                                <input type='password' id='password' placeholder='Your password' />
+                                <input type='password' id='password' placeholder='Your password' value={password} onChange={e => setPassword(e.target.value)} />
                             </div>
                         </div>
 
