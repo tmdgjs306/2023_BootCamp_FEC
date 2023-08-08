@@ -1,8 +1,10 @@
 package com.example.temp_spring;
 
 import com.example.temp_spring.Security.SHA256;
+import com.example.temp_spring.domain.data.PlantEnvironmentData;
 import com.example.temp_spring.domain.user.User;
 import com.example.temp_spring.domain.user.UserRole;
+import com.example.temp_spring.repository.PlantEnvironmentDataRepository;
 import com.example.temp_spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 public class InitUseRepository {
 
     private final UserRepository userRepository;
+    private final PlantEnvironmentDataRepository plantEnvironmentDataRepository;
     private SHA256 sha256 = new SHA256();
     @PostConstruct
     public void makeAdminAndUser() throws NoSuchAlgorithmException {
@@ -49,5 +52,67 @@ public class InitUseRepository {
             userRepository.save(user2);
         }
     }
-
+    @PostConstruct
+    public void makePlantEnvironmentData () throws NoSuchAlgorithmException{
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("로즈마리")){
+            PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
+                    .name("로즈마리")
+                    .minTemperature(10.0)
+                    .maxTemperature(25.0)
+                    .illuminance(2500L)
+                    .minHumidity(40.0)
+                    .maxHumidity(70.0)
+                    .carbonDioxide(700L)
+                    .build();
+            plantEnvironmentDataRepository.save(plantEnvironmentData);
+        }
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("완두콩")){
+            PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
+                    .name("완두콩")
+                    .minTemperature(18.0)
+                    .maxTemperature(25.0)
+                    .illuminance(2500L)
+                    .minHumidity(40.0)
+                    .maxHumidity(70.0)
+                    .carbonDioxide(700L)
+                    .build();
+            plantEnvironmentDataRepository.save(plantEnvironmentData);
+        }
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("난")){
+            PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
+                    .name("난")
+                    .minTemperature(18.0)
+                    .maxTemperature(25.0)
+                    .illuminance(2500L)
+                    .minHumidity(40.0)
+                    .maxHumidity(70.0)
+                    .carbonDioxide(700L)
+                    .build();
+            plantEnvironmentDataRepository.save(plantEnvironmentData);
+        }
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("상추")){
+            PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
+                    .name("상추")
+                    .minTemperature(15.0)
+                    .maxTemperature(20.0)
+                    .illuminance(1500L)
+                    .minHumidity(75.0)
+                    .maxHumidity(85.0)
+                    .carbonDioxide(700L)
+                    .build();
+            plantEnvironmentDataRepository.save(plantEnvironmentData);
+        }
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("케일")){
+            PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
+                    .name("케일")
+                    .minTemperature(10.0)
+                    .maxTemperature(20.0)
+                    .illuminance(2500L)
+                    .minHumidity(40.0)
+                    .maxHumidity(70.0)
+                    .carbonDioxide(700L)
+                    .build();
+            plantEnvironmentDataRepository.save(plantEnvironmentData);
+        }
+    }
 }

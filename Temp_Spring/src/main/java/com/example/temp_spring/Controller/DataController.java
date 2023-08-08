@@ -1,16 +1,17 @@
 package com.example.temp_spring.Controller;
 import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
+import com.example.temp_spring.Service.TempUserService;
 import com.example.temp_spring.domain.dto.ProductDataRequest;
 import com.example.temp_spring.domain.dto.illuminanceDataRequest;
 import com.example.temp_spring.domain.dto.TemperatureDataRequest;
 import com.example.temp_spring.domain.data.*;
+import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
 import com.example.temp_spring.jwt.JwtTokenUtil;
-import com.example.temp_spring.repository.ProductDataRepository;
-import com.example.temp_spring.repository.TemperatureDataRepository;
-import com.example.temp_spring.repository.UserRepository;
+import com.example.temp_spring.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -21,7 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -47,8 +50,12 @@ import java.util.Optional;
 @RequestMapping("/")
 public class DataController {
     private final TemperatureDataRepository temperatureDataRepository;
-    private final com.example.temp_spring.repository.illuminanceDataRepository illuminanceDataRepository;
+    private final illuminanceDataRepository illuminanceDataRepository;
     private final ProductDataRepository productDataRepository;
+    private final TempUserService tempUserService;
+
+    private final PlantEnvironmentDataRepository plantEnvironmentDataRepository;
+
     JSONParser parser = new JSONParser();
 
     private final UserRepository userRepository;
@@ -114,7 +121,7 @@ public class DataController {
         if(jwtTokenCookie == null) {
             return;
         }
-        // 쿠키 Jwt Token이 있다면 이 토큰으로 인증, 인가 진행
+
         String jwtToken = jwtTokenCookie.getValue();
         String loginId = JwtTokenUtil.getLoginId(jwtToken);
         Optional<User> optionalUser = userRepository.findByLoginId(loginId);
@@ -131,5 +138,51 @@ public class DataController {
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
         res.getWriter().write("관리자 정보 ");
+    }
+
+    @GetMapping("/getTempUser")
+    public void getTempUser(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+
+        List<TempUser> list = new ArrayList<>();
+        list = tempUserService.getAllTempUser();
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<list.size(); i++){
+            JSONObject jsonObject = new JSONObject();
+            TempUser tempUser = list.get(i);
+            jsonObject.put("index",i+1);
+            jsonObject.put("loginId",tempUser.getLoginId());
+            jsonObject.put("email",tempUser.getEmail());
+            jsonObject.put("password",tempUser.getPassword());
+            jsonArray.add(jsonObject);
+        }
+        System.out.println(jsonArray.toJSONString());
+        res.getWriter().write(jsonArray.toJSONString());
+    }
+
+    @GetMapping("/getPlantEnvironmentData")
+    public void getPlantEnvironmentData(HttpServletRequest req, HttpServletResponse res) throws IOException{
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+
+        List<PlantEnvironmentData> list = new ArrayList<>();
+        list = plantEnvironmentDataRepository.getAllPlantEnvironmentData();
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<list.size(); i++){
+            JSONObject jsonObject = new JSONObject();
+            PlantEnvironmentData plantEnvironmentData = list.get(i);
+            jsonObject.put("index",i+1);
+            jsonObject.put("name",plantEnvironmentData.getName());
+            jsonObject.put("minTemperature",plantEnvironmentData.getMinTemperature());
+            jsonObject.put("maxTemperature",plantEnvironmentData.getMaxTemperature());
+            jsonObject.put("minHumidity",plantEnvironmentData.getMinHumidity());
+            jsonObject.put("maxHumidity",plantEnvironmentData.getMaxHumidity());
+            jsonObject.put("illuminance",plantEnvironmentData.getIlluminance());
+            jsonObject.put("carbonDioxide",plantEnvironmentData.getCarbonDioxide());
+            jsonArray.add(jsonObject);
+        }
+        System.out.println(jsonArray.toJSONString());
+        res.getWriter().write(jsonArray.toJSONString());
     }
 }

@@ -44,6 +44,7 @@ public class LoginController {
     private final TempUserService tempUserService;
     @PostMapping("/join")
     public void join(@RequestBody TempUserJoinRequest tempUserJoinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
+        System.out.println(tempUserJoinRequest.getLoginId()+" "+tempUserJoinRequest.getEmail()+" "+tempUserJoinRequest.getPassword());
         //응답 메시지 설정
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
@@ -66,7 +67,7 @@ public class LoginController {
         //응답 메시지 설정
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
-
+        System.out.println(loginRequest.getLoginId()+" "+loginRequest.getPassword());
         // loginId로 유저 정보 조회
         User user = userService.login(loginRequest);
 
@@ -107,25 +108,5 @@ public class LoginController {
         res.getWriter().write(joinRequest.getLoginId()+" 유저가 정상적으로 승인 되었습니다.");
     }
 
-    @GetMapping("/getTempUser")
-    public void getTempUser(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
-
-        List<TempUser> list = new ArrayList<>();
-        list = tempUserService.getAllTempUser();
-        JSONArray jsonArray = new JSONArray();
-        for(int i=0; i<list.size(); i++){
-            JSONObject jsonObject = new JSONObject();
-            TempUser tempUser = list.get(i);
-            jsonObject.put("index",i+1);
-            jsonObject.put("loginId",tempUser.getLoginId());
-            jsonObject.put("email",tempUser.getEmail());
-            jsonObject.put("password",tempUser.getPassword());
-            jsonArray.add(jsonObject);
-        }
-        System.out.println(jsonArray.toJSONString());
-        res.getWriter().write(jsonArray.toJSONString());
-    }
 }
 

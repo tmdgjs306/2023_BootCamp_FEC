@@ -51,6 +51,7 @@ public class SecurityConfig{
                 .authorizeRequests()
                 .antMatchers("/userInfo").authenticated()
                 .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers("/getPlantEnvironmentData/**").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
