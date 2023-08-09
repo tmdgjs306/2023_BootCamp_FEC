@@ -5,6 +5,7 @@
 #include <ArduinoJson.h>
 #include <stdio.h>
 #include <ctime>
+#include <EEPROM.h>
 
 //WIFI setting
 const char* ssid = "KEB_INHA"; 
@@ -13,13 +14,15 @@ const char* password = "inha123*";
 //URL Setting 
 String addDataUrl = "http://3.39.250.53:8080/addData";
 String getTimeUrl = "http://3.39.250.53:8080/getTime";
+String getFarmIdUrl = "http://3.39.250.53:8080/getFarmId";
+
 //sensor setting
 int sensor = A2;    
 int Vo;
 float R1 = 10000;
 float logR2, R2, T, Tc, Tf;
 float c1 = 1.009249522e-03, c2 = 2.378405444e-04, c3 = 2.019202697e-07;
-
+String FarmId = "";
 //Time setting
 
 //JSON
@@ -83,6 +86,7 @@ String ipAddressConverter(String IpAddress){
   return String(a1)+".XXX.XXX."+String(a4);
 } 
 
+// 서버로 부터 시간 정보 전달 받음 
 void getServerTime(){
   WiFiClient WiFiClient;
   HTTPClient httpClient;
@@ -107,6 +111,22 @@ void getServerTime(){
     httpClient.end();
 }
 
+// 서버에서 FarmId 할당 받음 
+void getFarmId(){
+  WiFiClient wifiClient;
+  HTTPClient httpClient;
+  httpClient.begin(wifiClient,getFarmIdUrl);
+  httpClient.addHeader("Content-Type", "text/plan");
+  int httpResponseCode = httpClient.GET();
+  if(httpResponseCode>0){
+      Serial.print("HTTP Response code: ");
+      Serial.println(httpResponseCode);
+      FarmId = httpClient.getString();
+    }else{
+      Serial.print("Error Code: ");
+      Serial.println(httpResponseCode);
+    }
+}
 
 /// Web 핸들러 
 // 루트로 접속했을때 핸들러 
@@ -192,7 +212,10 @@ void setup() {
   pinMode(trig_pin,OUTPUT);
   pinMode(echo_pin,INPUT);
 
-  Serial.println("");         
+  Serial.println("");
+
+  //EEPROM 세팅 
+  EEPROM.begin(256);
 }
 
 void loop() {
@@ -207,7 +230,6 @@ void loop() {
   digitalWrite(trig_pin,HIGH);
   delayMicroseconds(10);
   digitalWrite(trig_pin,LOW);
-
   duration = pulseIn (echo_pin, HIGH);
   distance = ((34 * duration) / 1000) / 2;
  // Serial.print("distance : ");
@@ -248,7 +270,13 @@ void loop() {
     String hour = timeJson["hour"];
     String minute = timeJson["minute"];
     String time = year+month+day+hour+minute;
-  
+
+    // FarmID 정보 조회 
+    if(EEPROM.read(0)==255){
+      getFarmId();
+      EEPROM.write(0,stoi(FarmID));
+    }
+
     json["temperature"] = temp;
     json["illuminance"] = photoresistor_result;
     json["product"] = count;
