@@ -27,13 +27,13 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault(); // Prevent the form from submitting the default way
-        const a = {
+        const loginInfo = {
             loginId: `${loginId}`,
             password: `${password}`
         }
-        const b = JSON.stringify(a);
+        const loginRequest = JSON.stringify(loginInfo);
         try {
-            const response = await axios.post('/api/login', b, {
+            const response = await axios.post('/api/login', loginRequest, {
                     headers: {
                         "Content-Type": 'application/json'
                     }

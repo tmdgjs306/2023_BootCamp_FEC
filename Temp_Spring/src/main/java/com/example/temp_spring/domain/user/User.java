@@ -29,4 +29,5 @@ public class User {
     private String email;
     private UserRole role;
     private String salt;
+    private Long farmId;
 }

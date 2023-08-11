@@ -1,9 +1,9 @@
 package com.example.temp_spring.Security;
 import com.example.temp_spring.Service.UserService;
-import com.example.temp_spring.domain.user.User;
 import com.example.temp_spring.domain.user.UserRole;
 import com.example.temp_spring.jwt.JwtTokenFilter;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,17 +45,19 @@ public class SecurityConfig{
         return httpSecurity
                 .httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 정책 설정 -> Stateless
                 .and()
-                .addFilterBefore(new JwtTokenFilter(userService,secretkey), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(userService,secretkey), UsernamePasswordAuthenticationFilter.class) // JWT Token Filter 사용 설정, 유저 이름과 패스워드로 인증
                 .authorizeRequests()
-                .antMatchers("/userInfo").authenticated()
-                .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers("/userInfo").authenticated() // 비 로그인 유저 접근을 제한
+                .antMatchers("/admin/**").hasAuthority(UserRole.ADMIN.name()) // 로그인 + Role = Admin인 유저만 접근 제한
                 .antMatchers("/getPlantEnvironmentData/**").authenticated()
+                .antMatchers("/getTempUser").hasAuthority(UserRole.ADMIN.name())
+                .antMatchers("/acceptUser").hasAuthority(UserRole.ADMIN.name())
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(new AuthenticationEntryPoint() {
+                .authenticationEntryPoint(new AuthenticationEntryPoint() { // 인증 실패시 실행되는 로직
                     @Override
                     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
                             response.setContentType("text/plain");
@@ -64,7 +66,7 @@ public class SecurityConfig{
                             response.getWriter().write("인증 실패");
                     }
                 })
-                .accessDeniedHandler(new AccessDeniedHandler() {
+                .accessDeniedHandler(new AccessDeniedHandler() { // 인가 실패시 실행되는 로직
                     @Override
                     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
                             response.setContentType("text/plain");

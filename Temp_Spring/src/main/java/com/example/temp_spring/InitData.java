@@ -7,7 +7,6 @@ import com.example.temp_spring.domain.user.UserRole;
 import com.example.temp_spring.repository.PlantEnvironmentDataRepository;
 import com.example.temp_spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -22,7 +21,7 @@ import java.security.NoSuchAlgorithmException;
  */
 @Component
 @RequiredArgsConstructor
-public class InitUseRepository {
+public class InitData {
 
     private final UserRepository userRepository;
     private final PlantEnvironmentDataRepository plantEnvironmentDataRepository;

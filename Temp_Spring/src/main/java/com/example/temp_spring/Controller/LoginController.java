@@ -79,22 +79,23 @@ public class LoginController {
         String secretKey = "asnlwEysd15BsYt9V7zq571GejMnGUNNFE3408f12MGVA9XkHa";
         long expireTimeMs = 1000 * 60 * 30; // Token 유효시간 30분
 
+        //토큰 생성
         String jwtToken = JwtTokenUtil.createToken(user.getLoginId(),secretKey,expireTimeMs);
         Cookie cookie = new Cookie("jwtToken", jwtToken);
-        cookie.setSecure(true);
-        cookie.setHttpOnly(true);
+        cookie.setSecure(true); // 보안 설정
+        cookie.setHttpOnly(true); // 보안 설정
         cookie.setPath("/");
-        cookie.setMaxAge(30*60);
-        res.addCookie(cookie);
+        cookie.setMaxAge(30*60); // 쿠키 시간 설정
+        res.addCookie(cookie); // 쿠키에 값 추가
     }
 
-    @GetMapping("log-out")
+    @GetMapping("log-out") // 로그 아웃 기능 -> 쿠키에서 Token 값 삭제
     public void l(HttpServletResponse res){
         Cookie c = new Cookie("jwtToken",null);
         c.setMaxAge(0);
         res.addCookie(c);
     }
-    @PostMapping("/acceptUser")
+    @PostMapping("/acceptUser") // 유저 승인 기능
     public void acceptUser(@RequestBody JoinRequest joinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
         //응답 메시지 설정
         res.setContentType("text/plain");

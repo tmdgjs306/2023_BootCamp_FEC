@@ -24,4 +24,5 @@ public class TempUser {
     private String password;
     private String email;
     private UserRole role;
+    private Long farmId;
 }

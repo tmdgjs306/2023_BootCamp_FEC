@@ -19,7 +19,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TempUserService {
 
-    private final UserRepository userRepository;
     private final TempUserRepository tempUserRepository;
 
     public void join(TempUserJoinRequest req) throws NoSuchAlgorithmException {

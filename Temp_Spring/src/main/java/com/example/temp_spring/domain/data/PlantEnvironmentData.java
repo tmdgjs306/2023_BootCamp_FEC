@@ -18,9 +18,9 @@ import javax.persistence.Id;
 public class PlantEnvironmentData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 기본키 값 자등 증가 하여 저장
+    private Long id; // 기본키 PK
 
-    private String name;
+    private String name; // 외래키 FK
 
     private Double minTemperature;
     private Double maxTemperature;

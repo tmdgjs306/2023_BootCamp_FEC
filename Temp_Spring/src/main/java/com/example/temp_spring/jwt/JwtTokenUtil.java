@@ -12,7 +12,8 @@ public class JwtTokenUtil {
     // JWT Token 발급
     public static String createToken(String loginId, String key, long expireTimeMs){
         // Claim = Jwt Token에 들어갈 정보
-        // Claim에 loginId 정보 삽입 -> 나중에 꺼낼 수 있음 -> 이것을 권한 검사 등에 사용
+        // Claim에 loginId 정보 삽입 -> 나중에 꺼낼 수 있다.
+        // 핵심 정보가 들어가면 안된다. -> 토큰을 탈취당할 수 있기 때문
         Claims claims = Jwts.claims();
         claims.put("loginId",loginId); // Token에 들어갈 정보
 

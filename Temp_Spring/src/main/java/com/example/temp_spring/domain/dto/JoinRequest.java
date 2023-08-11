@@ -31,6 +31,8 @@ public class JoinRequest {
     private String salt = sha256.getSalt();
     private String email;
 
+    private Long farmId;
+
     public User toEntity() throws NoSuchAlgorithmException {
         return User.builder()
                 .loginId(this.loginId)
@@ -38,6 +40,7 @@ public class JoinRequest {
                 .email(this.email)
                 .role(UserRole.USER)
                 .salt(this.salt)
+                .farmId(this.farmId)
                 .build();
     }
 }

@@ -10,24 +10,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-/**
- * Project Name: F.E.C
- * Team: Newbies
- * author: 한승헌
- * Description: 초음파 센서 관련 데이터 저장시 필요한 객체
- */
 @Entity
 @Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductData {
+public class FarmInformationData {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // 기본키 값 자동 증가하여 저장
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id; // 기본키 PK
 
-    private String sensor;
-    private Long value;
+
+    private Long farmId; // 외래키 FK
+    private Long illuminanceValue;
+    private Double TemperatureValue;
+    private Double humidityValue;
+    private Double carbonDioxideValue;
     private String time;
 
 }

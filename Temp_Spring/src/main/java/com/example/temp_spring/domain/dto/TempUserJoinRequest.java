@@ -15,13 +15,14 @@ public class TempUserJoinRequest {
     private String password;
     private String email;
 
-
+    private Long farmId;
     public TempUser toEntity() {
         return TempUser.builder()
                 .loginId(this.loginId)
                 .password(this.password)
                 .email(this.email)
                 .role(UserRole.USER)
+                .farmId(this.farmId)
                 .build();
     }
 }

@@ -2,9 +2,6 @@ package com.example.temp_spring.Controller;
 import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
 import com.example.temp_spring.Service.TempUserService;
-import com.example.temp_spring.domain.dto.ProductDataRequest;
-import com.example.temp_spring.domain.dto.illuminanceDataRequest;
-import com.example.temp_spring.domain.dto.TemperatureDataRequest;
 import com.example.temp_spring.domain.data.*;
 import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
@@ -49,51 +46,79 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/")
 public class DataController {
-    private final TemperatureDataRepository temperatureDataRepository;
-    private final illuminanceDataRepository illuminanceDataRepository;
-    private final ProductDataRepository productDataRepository;
+
     private final TempUserService tempUserService;
+
+    private final FarmInformationDataRepository farmInformationDataRepository;
 
     private final PlantEnvironmentDataRepository plantEnvironmentDataRepository;
 
     JSONParser parser = new JSONParser();
 
     private final UserRepository userRepository;
+
+    // 아두이노 장치에서 받은 데이터 DB에 저장
     @PostMapping("/addData")
     public void addData(@RequestBody String req) throws ParseException {
+
+        //Json 데이터 파싱
         JSONObject jsonObject = (JSONObject) parser.parse(req);
         Double tempValue = (Double) jsonObject.get("temperature");
-        Long photoValue = (Long) jsonObject.get("illuminance");
-        Long countValue = (Long) jsonObject.get("product");
+        Long illuminanceValue = (Long) jsonObject.get("illuminance");
         String timeValue = (String) jsonObject.get("time");
-        temperatureDataRepository.save(new TemperatureDataRequest().toEntity(tempValue,timeValue));
-        illuminanceDataRepository.save(new illuminanceDataRequest().toEntity(photoValue,timeValue));
-        productDataRepository.save(new ProductDataRequest().toEntity(countValue,timeValue));
+        Long farmId = (Long) jsonObject.get("farmId");
+
+        // farmInformationDataRepository에 저장
+        FarmInformationData data = FarmInformationData.builder()
+                .farmId(farmId)
+                .TemperatureValue(tempValue)
+                .humidityValue(Math.random() * 100)
+                .carbonDioxideValue(Math.random() * 1000)
+                .illuminanceValue(illuminanceValue)
+                .time(timeValue)
+                .build();
+        farmInformationDataRepository.save(data);
     }
 
-    @GetMapping("/latestTemperatureData")
-    public TemperatureData getLatestTemperatureData() {
-        TemperatureData temperatureData = temperatureDataRepository.findLatestTemperatureDataData();
-        return temperatureData;
+
+    @GetMapping("/latestEnvironmentData") // 농장 번호로 조회하여 자신의 농장의 최신 온도, 조도, 습도, CO2 값 전송
+    public FarmInformationData getLatestFarmInformationData(HttpServletRequest req){
+
+        // Cookie 에서 토큰 추출
+        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
+                .filter(cookie -> cookie.getName().equals("jwtToken"))
+                .findFirst()
+                .orElse(null);
+
+        if(jwtTokenCookie == null) {
+            return null;
+        }
+
+        // 추출한 토큰을 이용하여 로그인 ID 정보 획득
+        String jwtToken = jwtTokenCookie.getValue();
+        String loginId = JwtTokenUtil.getLoginId(jwtToken);
+        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
+        if(optionalUser.isEmpty())
+            return null;
+
+        // loginId를 이용하여 유저 정보 획득
+        User user = optionalUser.get();
+        Long FarmId = user.getFarmId();
+
+        // DB 테이블을 조회하여 해당 농장에서 가장 최근에 측정된 온도 데이터 값 불러옴
+        FarmInformationData farmInformationData = farmInformationDataRepository.findLatestFarmInformationData(FarmId);
+        return farmInformationData;
     }
 
-    @GetMapping("/latestPhotoData")
-    public illuminanceData getLatestPhotoData(){
-        illuminanceData photoData = illuminanceDataRepository.findLatestPhotoData();
-        return photoData;
-    }
-    @GetMapping("/latestCountData")
-    public ProductData getLatestCountData(){
-        ProductData countData = productDataRepository.findLatestCountData();
-        return countData;
-    }
-
+    // 온도 정보 반환
     @GetMapping("/getWeather")
     public String getWeatherData() throws IOException {
         getWeather a1 = new getWeather();
         String result = a1.get();
         return result;
     }
+
+    // 아두이노쪽 요청 처리 로직 -> 현재 시간 반환
     @GetMapping("/getTime")
     public void getTimeData(HttpServletRequest req, HttpServletResponse res) throws IOException{
         LocalDateTime t = LocalDateTime.now();
@@ -108,6 +133,8 @@ public class DataController {
         res.getWriter().write(jsonObject.toJSONString());
     }
 
+
+    // 사용자 정보 반환
     @GetMapping("/userInfo")
     public void getUserInfo(HttpServletRequest req, HttpServletResponse res) throws IOException{
         res.setContentType("application/json");
@@ -133,6 +160,7 @@ public class DataController {
         res.getWriter().write(jsonObject.toJSONString());
     }
 
+    //관리자 기능 테스트
     @GetMapping("/admin")
     public void getAdminInfo(HttpServletRequest req, HttpServletResponse res) throws IOException{
         res.setContentType("text/plain");
@@ -140,6 +168,8 @@ public class DataController {
         res.getWriter().write("관리자 정보 ");
     }
 
+
+    // 임시 유저 리스트 반환
     @GetMapping("/getTempUser")
     public void getTempUser(HttpServletRequest req, HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
@@ -161,6 +191,8 @@ public class DataController {
         res.getWriter().write(jsonArray.toJSONString());
     }
 
+
+    // 식물 환경 정보 반환
     @GetMapping("/getPlantEnvironmentData")
     public void getPlantEnvironmentData(HttpServletRequest req, HttpServletResponse res) throws IOException{
         res.setContentType("application/json");
@@ -182,7 +214,6 @@ public class DataController {
             jsonObject.put("carbonDioxide",plantEnvironmentData.getCarbonDioxide());
             jsonArray.add(jsonObject);
         }
-        System.out.println(jsonArray.toJSONString());
         res.getWriter().write(jsonArray.toJSONString());
     }
 }
