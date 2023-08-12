@@ -153,28 +153,28 @@ class getweather{
     }
 
 
-    User --* userRole : has-a
+    User *-- userRole : has-a
     getTimeFormatString <.. getweather: uses
     getTimeFormatString <.. DataController: uses
     JoinRequest ..> LoginController: uses
-    JoinRequest ..> UserService: uses
+    JoinRequest --o UserService: Aggregation
     tempUserJoinRequest ..> LoginController: uses
     LoginRequest ..> LoginController: uses
-    TempUserRepository *--TempUser: uses
-    UserRepository *-- User: uses
+    TempUserRepository <..TempUser: uses
+    UserRepository <.. User: uses
 
-    JwtTokenFilter ..> JwtTokenUtil: uses
+    JwtTokenFilter --* JwtTokenUtil: uses
     JwtTokenFilter <.. SecurityConfig: uses
 
     JwtTokenUtil <.. DataController: uses
     JwtTokenFilter <.. LoginController: uses
     SHA256 <.. JoinRequest: uses
-    SHA256 <.. UserService: uses
+    SHA256 o-- UserService: Aggregation
     TempUserService --* TempUserRepository: uses
-    TempUserService <.. DataController: uses
-    TempUserService <.. LoginController: uses
+    TempUserService o-- DataController: Aggregation
+    TempUserService o-- LoginController: Aggregation
     UserService --* UserRepository: uses
-    UserService <.. LoginController: uses
-    UserService <.. JwtTokenFilter: uses
-    UserService <.. SecurityConfig: uses
+    UserService o-- LoginController: Aggregation
+    UserService o-- JwtTokenFilter: Aggregation
+    UserService o-- SecurityConfig: Aggregation
 ```
