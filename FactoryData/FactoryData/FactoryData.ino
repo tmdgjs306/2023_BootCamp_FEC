@@ -6,126 +6,84 @@
 #include <stdio.h>
 #include <ctime>
 #include <EEPROM.h>
+#include <DHT.h>
 
-//WIFI setting
-const char* ssid = "KEB_INHA"; 
+// WIFI setting
+const char* ssid = "KEB_INHA";
 const char* password = "inha123*";
 
-//URL Setting 
+// URL Setting
 String addDataUrl = "http://3.39.250.53:8080/addData";
 String getTimeUrl = "http://3.39.250.53:8080/getTime";
 String getFarmIdUrl = "http://3.39.250.53:8080/getFarmId";
 
-//sensor setting
-int sensor = A2;    
-int Vo;
-float R1 = 10000;
-float logR2, R2, T, Tc, Tf;
-float c1 = 1.009249522e-03, c2 = 2.378405444e-04, c3 = 2.019202697e-07;
 String FarmId = "";
-//Time setting
 
-//JSON
+// JSON
 char buffer[96];
 StaticJsonDocument<200> timeJson;
-//led
-const int led = D2;
 
-//photoresistor sensor setting
+// photoresistor sensor setting
 int photoresistor = A1;
 
-// 지연 효과 변수 
+// humidity temperature sensor setting
+DHT dht(D2, DHT22);
+
+// 지연 효과 변수
 unsigned long previousMillis = 0;
-const long interval = 10000; 
+const long interval = 10000;
 
-// 초음파 센서 
-int echo_pin = D8;
-int trig_pin = D9;
-int count =0;
-int pre_time = 0;
+// WebServer Setting
+WebServer server(80);
 
-//WebServer Setting
-WebServer server(80); // Create WebServer Object, port 
-void printConnectMsg(){
+void printConnectMsg() {
   Serial.println("");
   Serial.print("Connected to ");
   Serial.println(ssid);
-  Serial.print("IP address: "); 
-  Serial.println(WiFi.localIP()); //print assigned ip address 
+  Serial.print("IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
- //온도 센서의 값을 읽고 온도로 변환
-float getTemp(){
-  Vo = analogRead(sensor);
-  R2 = R1 * (4095.0 / (float)Vo - 1.0);
-  logR2 = log(R2);
-  T = (1.0 / (c1 + c2*logR2 + c3*logR2*logR2*logR2));
-  Tc = T - 273.15;
-  return Tc;
+float getTemperature() {
+  return dht.readTemperature();
 }
 
-//온도 센서의 값을 화씨 온도로 변환 
-float tcToTf(float Tc){
-  return (Tc * 9.0/5.0) +32.0;
+float getHumidity() {
+  return dht.readHumidity();
 }
 
-// 현재 카운트 값 반환
-int getCount(){
-  return count;
-} 
-
-// 조도 센서 값 측정 
-int getPhotoresistor(){
+int getPhotoresistor() {
   return analogRead(photoresistor);
 }
 
-// IP 주소 XXX 처리 
-String ipAddressConverter(String IpAddress){
-  int a1,a2,a3,a4;
-  sscanf(IpAddress.c_str(),"%d.%d.%d.%d", &a1, &a2, &a3, &a4);
-  return String(a1)+".XXX.XXX."+String(a4);
-} 
+String ipAddressConverter(String IpAddress) {
+  int a1, a2, a3, a4;
+  sscanf(IpAddress.c_str(), "%d.%d.%d.%d", &a1, &a2, &a3, &a4);
+  return String(a1) + ".XXX.XXX." + String(a4);
+}
 
-// 서버로 부터 시간 정보 전달 받음 
-void getServerTime(){
+void getServerTime() {
   WiFiClient WiFiClient;
   HTTPClient httpClient;
-  httpClient.begin(WiFiClient,getTimeUrl);
+  httpClient.begin(WiFiClient, getTimeUrl);
   httpClient.addHeader("Content-Type", "application/json");
   int httpResponseCode = httpClient.GET();
   String response;
-  if(httpResponseCode>0){
-      Serial.print("HTTP Response code: ");
-      Serial.println(httpResponseCode);
-      response = httpClient.getString();
-    }else{
-      Serial.print("Error Code: ");
-      Serial.println(httpResponseCode);
-    }
-    DeserializationError error = deserializeJson(timeJson,response);
-    if(error){
-      Serial.print(F("deserializeJson() failed: "));
-      Serial.println(error.f_str());
-      return;
-    }
-    httpClient.end();
-}
-
-// 서버에서 FarmId 할당 받음 
-void getFarmId(){
-  WiFiClient wifiClient;
-  HTTPClient httpClient;
-  httpClient.begin(wifiClient,getFarmIdUrl);
-  httpClient.addHeader("Content-Type", "text/plan");
-  int httpResponseCode = httpClient.GET();
-  if(httpResponseCode>0){
-      Serial.print("HTTP Response code: ");
-      Serial.println(httpResponseCode);
-      FarmId = httpClient.getString();
-    }else{
-      Serial.print("Error Code: ");
-      Serial.println(httpResponseCode);
-    }
+  if (httpResponseCode > 0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    response = httpClient.getString();
+  } else {
+    Serial.print("Error Code: ");
+    Serial.println(httpResponseCode);
+  }
+  DeserializationError error = deserializeJson(timeJson, response);
+  if (error) {
+    Serial.print(F("deserializeJson() failed: "));
+    Serial.println(error.f_str());
+    return;
+  }
+  httpClient.end();
 }
 
 /// Web 핸들러 
@@ -153,151 +111,125 @@ void getTempJson(){
   server.send(200 , "text/Json",buffer); 
 }
 
-//Count 값을 JSON 형태로 파싱하여 반환 
-void getCountJson(){
-  int count = getCount();
+// getHumidity 로 접속했을때 핸들러 
+void getHumidityJson(){
+  float Humidity = getHumidity();
   StaticJsonDocument<200> doc;
   JsonObject root = doc.to<JsonObject>();
-  root["Sensor"] = "ultrasonicWave";
-  root["Value"] = count;
+  root["Sensor"] = "Humidity";
+  root["Value"] = humidity;
 
   serializeJson(root,buffer);
   server.send(200 , "text/Json",buffer); 
 }
 
-// RED LED 제어 함수   
-void handleRedledOn(){
-  Serial.println("D2 ON Call!!");
-  digitalWrite(led,HIGH);
-  server.send(200,"text/plain","LED ON!!");
+// getPhotoresistor 로 접속했을때 핸들러 
+void getPhotoJson(){
+  int Photoresistor = getPhotoresistor();
+  StaticJsonDocument<200> doc;
+  JsonObject root = doc.to<JsonObject>();
+  root["Sensor"] = "Photoresisor";
+  root["Value"] = photoresistor;
+
+  serializeJson(root,buffer);
+  server.send(200 , "text/Json",buffer); 
 }
 
-// RED LED 제어 함수 
-void handleRedledOff(){
-  Serial.println("D2 OFF Call!!");
-  digitalWrite(led, LOW);
-  server.send(200,"text/plain","LED OFF!!");
+void getFarmId() {
+  WiFiClient wifiClient;
+  HTTPClient httpClient;
+  httpClient.begin(wifiClient, getFarmIdUrl);
+  httpClient.addHeader("Content-Type", "text/plan");
+  int httpResponseCode = httpClient.GET();
+  if (httpResponseCode > 0) {
+    Serial.print("HTTP Response code: ");
+    Serial.println(httpResponseCode);
+    FarmId = httpClient.getString();
+  } else {
+    Serial.print("Error Code: ");
+    Serial.println(httpResponseCode);
+  }
 }
 
 void setup() {
-
-  Serial.begin(115200); // ESP32 baud rate
-
-  //WIFI Setting  
-  WiFi.mode(WIFI_STA); 
-  WiFi.begin(ssid, password); 
+  Serial.begin(115200);
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
   Serial.println("");
 
-  while(WiFi.status() != WL_CONNECTED) {
-  delay(500);
-  Serial.print(".");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
   }
-  printConnectMsg(); //시리얼에 IP 주소 정보 출력 
 
-  server.on("/", handleRootEvent); // root(/) Enter Function 
-  server.on("/getTemp",getTempJson); // (/getTemp) 접속시 Json 포맷으로 온도 데이터 전송 
-  server.on("/getCount",getCountJson); // (/getCount) 접속시 Json 포맷으로 카운트 값 전송 
-  server.on("/red_led_on",handleRedledOn);
-  server.on("/red_led_off",handleRedledOff);
-  server.begin(); // Server Start 
+  printConnectMsg();
+  server.begin();
   Serial.println("HTTP server started");
 
-  //time setting
-
-  //led Setting
-  pinMode(led,OUTPUT);
-  digitalWrite(led, LOW);
-
-  // 초음파 센서 세팅 
-  pinMode(trig_pin,OUTPUT);
-  pinMode(echo_pin,INPUT);
-
-  Serial.println("");
-
-  //EEPROM 세팅 
+  dht.begin();
   EEPROM.begin(256);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  server.handleClient(); // Client session Receive
   unsigned long currentMillis = millis();
 
-  // 물체가 초음파 센서를 지나면 카운트
-  long duration, distance;
-  digitalWrite(trig_pin,LOW);
-  delayMicroseconds(2);
-  digitalWrite(trig_pin,HIGH);
-  delayMicroseconds(10);
-  digitalWrite(trig_pin,LOW);
-  duration = pulseIn (echo_pin, HIGH);
-  distance = ((34 * duration) / 1000) / 2;
- // Serial.print("distance : ");
-  //Serial.print(distance);
-  //Serial.println("cm");
-
-  if(distance > 2 && distance < 8)
-  {
-    int now_time = millis();
-    if(now_time - pre_time > 500)
-    {
-      count +=1;
-      pre_time = now_time;
-      //Serial.println(count);
-    }
-  }
-  delay(500);
-  if(currentMillis - previousMillis >= interval){
+  if (currentMillis - previousMillis >= interval) {
     previousMillis = currentMillis;
-  if((WiFi.status()) == WL_CONNECTED){
-    getServerTime();
-    // 연결 설정 
-    WiFiClient WiFiClient;
-    HTTPClient httpClient; 
-    httpClient.begin(WiFiClient,addDataUrl);
-    httpClient.addHeader("Content-Type", "application/json");
 
-    //Json 객체 생성 
-    StaticJsonDocument<200> json;
+    if ((WiFi.status()) == WL_CONNECTED) {
+      getServerTime();
+      WiFiClient WiFiClient;
+      HTTPClient httpClient;
+      httpClient.begin(WiFiClient, addDataUrl);
+      httpClient.addHeader("Content-Type", "application/json");
 
-    // 센서 측정값 저장 
-    float temp = getTemp();
-    int photoresistor_result = getPhotoresistor();
-    int count = getCount();
-    String year = timeJson["year"];
-    String month = timeJson["month"];
-    String day = timeJson["day"];
-    String hour = timeJson["hour"];
-    String minute = timeJson["minute"];
-    String time = year+month+day+hour+minute;
+      StaticJsonDocument<200> json;
 
-    // FarmID 정보 조회 
-    if(EEPROM.read(0)==255){
-      getFarmId();
-      EEPROM.write(0,stoi(FarmID));
+      float temperature = getTemperature();
+      int photoresistor_result = getPhotoresistor();
+      float humidity = getHumidity(); 
+      String year = timeJson["year"];
+      String month = timeJson["month"];
+      String day = timeJson["day"];
+      String hour = timeJson["hour"];
+      String minute = timeJson["minute"];
+      String time = year + month + day + hour + minute;
+
+      if (EEPROM.read(0) == 255) {
+        getFarmId();
+        EEPROM.write(0, FarmId.toInt());
+      }
+
+      json["temperature"] = temperature;
+      json["illuminance"] = photoresistor_result;
+      json["humidity"] = humidity;
+      json["time"] = time;
+
+      String parsedJsonToString;
+      serializeJson(json, parsedJsonToString);
+
+      int httpResponseCode = httpClient.POST(parsedJsonToString);
+
+      if (httpResponseCode > 0) {
+        Serial.print("HTTP Response code: ");
+        Serial.println(httpResponseCode);
+        String response = httpClient.getString();
+        Serial.println(response);
+      } else {
+        Serial.print("Error Code: ");
+        Serial.println(httpResponseCode);
+      }
+
+      Serial.print("Temperature: ");
+      Serial.println(temperature);
+      Serial.print("Illuminance: ");
+      Serial.println(photoresistor_result);
+      Serial.print("Humidity: ");
+      Serial.println(humidity);
+
+
+
+      httpClient.end();
     }
-
-    json["temperature"] = temp;
-    json["illuminance"] = photoresistor_result;
-    json["product"] = count;
-    json["time"] = time;
-    // Json 형태로 데이터 저장  
-    String parsedJsonToString;
-    serializeJson(json,parsedJsonToString);
-
-    // 데이터 서버로 전송 
-    int httpResponseCode = httpClient.POST(parsedJsonToString);
-
-    if(httpResponseCode>0){
-      Serial.print("HTTP Response code: ");
-      Serial.println(httpResponseCode);
-      String response = httpClient.getString();
-      Serial.println(response);
-    }else{
-      Serial.print("Error Code: ");
-      Serial.println(httpResponseCode);
-    }
-    httpClient.end();
-  }
   }
 }
