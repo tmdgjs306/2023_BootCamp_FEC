@@ -1,3 +1,4 @@
+```mermaid
 ---
 title: FEC
 ---
@@ -176,3 +177,4 @@ class getweather{
     UserService <.. LoginController: uses
     UserService <.. JwtTokenFilter: uses
     UserService <.. SecurityConfig: uses
+```
