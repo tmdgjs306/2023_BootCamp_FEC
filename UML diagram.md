@@ -134,7 +134,8 @@ class getweather{
     }
     class UserRepository{
         <<Interface>>
-
+        -userRepository: UserRepository
+        - sha256: SHA256
     }
     class TempUserRepository{
         <<Interface>>
@@ -163,7 +164,7 @@ class getweather{
     TempUserRepository <..TempUser: uses
     UserRepository <.. User: uses
 
-    JwtTokenFilter --* JwtTokenUtil: uses
+    JwtTokenFilter <.. JwtTokenUtil: uses
     JwtTokenFilter <.. SecurityConfig: uses
 
     JwtTokenUtil <.. DataController: uses
@@ -173,7 +174,7 @@ class getweather{
     TempUserService --* TempUserRepository: uses
     TempUserService o-- DataController: Aggregation
     TempUserService o-- LoginController: Aggregation
-    UserService --* UserRepository: uses
+    UserService --|> UserRepository: Realization
     UserService o-- LoginController: Aggregation
     UserService o-- JwtTokenFilter: Aggregation
     UserService o-- SecurityConfig: Aggregation
