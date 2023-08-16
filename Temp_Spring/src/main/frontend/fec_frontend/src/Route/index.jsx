@@ -1,19 +1,14 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { useAuth } from "../provider/authProvider";
+import useAuth from "../hook/useAuth";
 import { ProtectedRoute } from "./ProtectedRoute";
-<<<<<<< Updated upstream
-=======
 // pages
->>>>>>> Stashed changes
 import Login from "../Pages/Login/Login";
 import Logout from "../pages/Login/Logout";
 import Register from "../Pages/Register/Register";
 import Homepage from "../Pages/Homepage/Homepage";
 import { Dashboard, ManageUsers, Overview, Performance, Status } from "../Pages/Protected";
-<<<<<<< Updated upstream
-=======
 import UserProfile from "../Pages/Protected/Profile/UserProfile";
->>>>>>> Stashed changes
+
 
 
 const CostumRoute = () => {
@@ -25,24 +20,12 @@ const CostumRoute = () => {
             path: '/', element: <Homepage />
         },
         {
-<<<<<<< Updated upstream
-            path: '/login', element: <Login />
-        },
-        {
-            path: '/join', element: <Register />
-        },
-        {
-            path: "/logout",
-            element: <Logout />,
-        },
-=======
             path: 'api/login', element: <Login />
         },
         {
             path: 'api/join', element: <Register />
         },
 
->>>>>>> Stashed changes
     ];
 
     // private route
@@ -52,25 +35,6 @@ const CostumRoute = () => {
             element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
             children: [
                 {
-<<<<<<< Updated upstream
-                    path: "/dashboard",
-                    element: <Dashboard />,
-                },
-                {
-                    path: "/manage-user",
-                    element: <ManageUsers />,
-                },
-                {
-                    path: "/overview",
-                    element: <Overview />,
-                },
-                {
-                    path: "/performance",
-                    element: <Performance />,
-                },
-                {
-                    path: "/status",
-=======
                     path: "api/dashboard",
                     element: <Dashboard />,
                 },
@@ -92,7 +56,6 @@ const CostumRoute = () => {
                 },
                 {
                     path: "api/status",
->>>>>>> Stashed changes
                     element: <Status />,
                 },
             ],
@@ -106,16 +69,12 @@ const CostumRoute = () => {
             element: <div>Home Page</div>,
         },
         {
-            path: "/login",
+            path: "api/login",
             element: <Login />,
         },
         {
-<<<<<<< Updated upstream
-            path: '/join', element: <Register />
-=======
-            path: '/join', 
+            path: 'api/join',
             element: <Register />
->>>>>>> Stashed changes
         },
     ];
 

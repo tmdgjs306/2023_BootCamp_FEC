@@ -1,10 +1,4 @@
-<<<<<<< Updated upstream
 
-const AboutProject = () => {
-    return (
-        <div>About project</div>)
-    }
-=======
 import greenhouse from '../../Assets/greenhouse.png';
 const AboutProject = () => {
     return (
@@ -99,5 +93,5 @@ const AboutProject = () => {
 
     )
 }
->>>>>>> Stashed changes
+
 export default AboutProject;

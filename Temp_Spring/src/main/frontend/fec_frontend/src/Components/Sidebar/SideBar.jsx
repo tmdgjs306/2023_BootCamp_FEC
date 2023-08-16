@@ -7,13 +7,9 @@ import { RiUser5Fill } from 'react-icons/ri'
 import { ImStatsDots } from 'react-icons/im'
 import { ImLeaf } from 'react-icons/im'
 import { IoFlower } from 'react-icons/io5'
-<<<<<<< Updated upstream
-import {PiUsersThreeFill} from 'react-icons/pi';
-import {TbBellFilled} from 'react-icons/tb';
-=======
 import { PiUsersThreeFill } from 'react-icons/pi';
 import { TbBellFilled } from 'react-icons/tb';
->>>>>>> Stashed changes
+
 
 
 const SideBar = () => {
@@ -135,14 +131,8 @@ const SideBar = () => {
                     </div>
                 </div>
             </div>
-
-<<<<<<< Updated upstream
-            <div className="sticky inset-x-0 bottom-10 border-t border-gray-100 bg-[#F2F7F2] p-2">
-                <form action="/log-out">
-=======
             <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
                 <form action="/api/log-out">
->>>>>>> Stashed changes
                     <button
                         type="submit"
                         className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
