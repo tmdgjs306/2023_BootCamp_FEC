@@ -63,16 +63,14 @@ public class DataController {
     @GetMapping("/getFarmId")
     public void getFarmId(HttpServletResponse res) throws IOException {
         // FarmId 생성
-        int farmId = farmIdService.getFarmId();
+        String farmId = farmIdService.getFarmId();
 
-        // Json 형태로 파싱
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("farmId",farmId);
+        System.out.println(farmId);
 
         // Json 양식으로 아두이노 서버에 응답
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-        res.getWriter().write(jsonObject.toJSONString());
+        res.getWriter().write(farmId);
     }
     // 아두이노 장치에서 받은 데이터 DB에 저장
     @PostMapping("/addData")
@@ -83,10 +81,11 @@ public class DataController {
         Double tempValue = (Double) jsonObject.get("temperature");
         Long illuminanceValue = (Long) jsonObject.get("illuminance");
         String timeValue = (String) jsonObject.get("time");
-        Long temp = (Long) jsonObject.get("farmId");
+        String f = (String)jsonObject.get("farmId");
+        Long temp = Long.parseLong(f);
         int farmId = temp.intValue();
         System.out.println(farmId);
-        Double Humidity =(Double) jsonObject.get("himidity");
+        Double Humidity =(Double) jsonObject.get("humidity");
         // farmInformationDataRepository에 저장
         FarmInformationData data = FarmInformationData.builder()
                 .farmId(farmId)
@@ -176,6 +175,7 @@ public class DataController {
         User user = optionalUser.get();
         jsonObject.put("loginId",user.getLoginId());
         jsonObject.put("email",user.getEmail());
+        jsonObject.put("farmId",user.getFarmId());
         res.getWriter().write(jsonObject.toJSONString());
     }
 

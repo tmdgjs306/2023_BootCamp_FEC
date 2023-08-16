@@ -108,6 +108,13 @@ public class LoginController {
         res.setStatus(HttpServletResponse.SC_OK);
         res.getWriter().write(joinRequest.getLoginId()+" 유저가 정상적으로 승인 되었습니다.");
     }
+    @PostMapping("rejectUser")
+    public void rejectUser(@RequestBody JoinRequest joinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
 
+        tempUserService.delete(joinRequest.getLoginId());
+        res.sendRedirect("/getTempUser");
+    }
 }
 
