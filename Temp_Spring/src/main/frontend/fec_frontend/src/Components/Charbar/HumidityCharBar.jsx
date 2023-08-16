@@ -1,4 +1,3 @@
-import React from "react";
 import { Chart, Tooltip, Interval, Effects, Legend, Guide, Axis, } from "bizcharts";
 
 const { Text } = Guide;

@@ -1,5 +1,4 @@
-// import 
-import React from 'react';
+
 //import for team source
 import seungheon from '../../HomepageAssets/seungheon.png';
 import ceceg from '../../HomepageAssets/ceceg.png';

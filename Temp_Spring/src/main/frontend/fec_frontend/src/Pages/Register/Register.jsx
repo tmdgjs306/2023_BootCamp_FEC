@@ -1,17 +1,16 @@
 // react imports
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 // token
 import axios from 'axios';
-import { useA, useA as AuthProvider } from '../../provider/AuthProvider';
+// import { useA } from '../../provider/AuthProvider';
 // react icons
 import { HiOutlineMail } from 'react-icons/hi';
 import { AiFillLock } from 'react-icons/ai'
 import { FaUserShield } from 'react-icons/fa'
 import { FaRegArrowAltCircleRight } from 'react-icons/fa'
 // css imports
-import './Register.css'
-import '../../App.css'
+import './Register.scss'
 // assets
 import video from '../../LoginAssets/video1.mp4';
 import logo from '../../LoginAssets/logo.png';

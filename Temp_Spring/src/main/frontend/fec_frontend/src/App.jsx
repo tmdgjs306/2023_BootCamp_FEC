@@ -1,9 +1,10 @@
-import './App.css';
+// page imports
 import Homepage from './Pages/Homepage/Homepage';
 import Dashboard from './Pages/Protected/Dashboard/Dashboard';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
-
+// css
+import './index.css'
 // Import React route dom
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'

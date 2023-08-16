@@ -1,4 +1,4 @@
-import React from 'react'
+
 import '../../Components/Homepage/Homepage.css';
 
 import AboutProject from '../../Components/Homepage/AboutProject';

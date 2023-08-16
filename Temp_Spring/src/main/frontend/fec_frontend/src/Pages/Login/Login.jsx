@@ -1,5 +1,5 @@
 // react imports
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 // token
 import axios from 'axios';
@@ -9,8 +9,8 @@ import { FaUserShield } from 'react-icons/fa'
 import { AiFillLock } from 'react-icons/ai'
 import { FaRegArrowAltCircleRight } from 'react-icons/fa'
 // css imports
-import './Login.css'
-import '../../App.css'
+import './Login.scss'
+
 // assets
 import video from '../../LoginAssets/video.mp4';
 import logo from '../../LoginAssets/logo.png';

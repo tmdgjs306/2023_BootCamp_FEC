@@ -1,13 +1,15 @@
+// eslint-disable-next-line no-unused-vars
 import React, { useState } from 'react'
 import {
     Chart,
     Point,
-    Area,
+    // eslint-disable-next-line no-unused-vars
     Annotation,
     Axis,
     Coordinate,
     registerShape,
-    registerAnimation,
+    // eslint-disable-next-line no-unused-vars
+
 } from 'bizcharts';
 
 registerShape('point', 'pointer', {
@@ -19,6 +21,7 @@ registerShape('point', 'pointer', {
         const start = this.parsePoint({ x: 0, y: 0.5 });
 
 
+        // eslint-disable-next-line no-unused-vars
         const preAngle = this.preAngle || 0;
 
         const angle1 = Math.atan((start.y - center.y) / (start.x - center.x));
@@ -30,17 +33,18 @@ registerShape('point', 'pointer', {
     },
 });
 
-const scale = {
-    value: {
-        min: 0,
-        max: 1,
-        tickInterval: 0.1,
-        formatter: v => v * 100
-    }
-}
 
 
 const Co2CharBar = () => {
+
+    const scale = {
+        value: {
+            min: 0,
+            max: 1,
+            tickInterval: 0.1
+        }
+    }
+    // eslint-disable-next-line no-unused-vars
     const [data, setData] = useState([{ value: 0.56 }]);
     const startAngle = Math.PI / 2
     const endAngle = startAngle + Math.PI * 2;
