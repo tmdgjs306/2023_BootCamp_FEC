@@ -2,7 +2,6 @@
 ---
 title: FEC
 ---
-
 classDiagram
 class getTimeFormatString {
 -Month: String
@@ -132,50 +131,53 @@ class getweather{
         +ledOn(): String
         +ledoff(): String
     }
-    class UserRepository{
+    class FarmIdDataRepository{
         <<Interface>>
-        -userRepository: UserRepository
-        - sha256: SHA256
+    }
+    class FarmInformationDataRepository{
+        <<Interface>>
+    }
+    class FarmPlantDataRepository{
+        <<Interface>>
+    }
+    class PlantEnvironmentDataRepository{
+        <<Interface>>
     }
     class TempUserRepository{
         <<Interface>>
     }
-    class Carbon2DataRepository{
-        <<Interface>>
-    }
-    class HumidityDataRepository{
-        <<Interface>>
-    }
-    class IlluminanceDataRepository{
-        <<Interface>>
-    }
-    class TemperatureDataRepository{
+    class UserRepository{
         <<Interface>>
     }
 
 
-    User *-- userRole : has-a
-    getTimeFormatString <.. getweather: uses
-    getTimeFormatString <.. DataController: uses
-    JoinRequest ..> LoginController: uses
+
+    User *-- userRole : Composition
+    getTimeFormatString <.. getweather: Dependency
+    getTimeFormatString <.. DataController: Dependency
+    JoinRequest ..> LoginController: Dependency
     JoinRequest --o UserService: Aggregation
-    tempUserJoinRequest ..> LoginController: uses
-    LoginRequest ..> LoginController: uses
-    TempUserRepository <..TempUser: uses
-    UserRepository <.. User: uses
+    tempUserJoinRequest ..> LoginController: Dependency
+    LoginRequest ..> LoginController: Dependency
+    TempUserRepository <..TempUser: Dependency
+    UserRepository <|-- User: Realization
 
-    JwtTokenFilter <.. JwtTokenUtil: uses
-    JwtTokenFilter <.. SecurityConfig: uses
+    JwtTokenFilter <.. JwtTokenUtil: Dependency
+    JwtTokenFilter <.. SecurityConfig: Dependency
 
-    JwtTokenUtil <.. DataController: uses
-    JwtTokenFilter <.. LoginController: uses
-    SHA256 <.. JoinRequest: uses
+    JwtTokenUtil <.. DataController: Dependency
+    JwtTokenFilter <.. LoginController: Dependency
+    SHA256 <.. JoinRequest: Dependency
     SHA256 o-- UserService: Aggregation
-    TempUserService --* TempUserRepository: uses
+    TempUserService --|> TempUserRepository: Realization
     TempUserService o-- DataController: Aggregation
     TempUserService o-- LoginController: Aggregation
     UserService --|> UserRepository: Realization
     UserService o-- LoginController: Aggregation
     UserService o-- JwtTokenFilter: Aggregation
     UserService o-- SecurityConfig: Aggregation
+    FarmIdData <.. FarmIdService: Dependncy
+    FarmIdData <.. FarmIdDataRepository: Dependency
+    FarmIdService --|> FarmIdDataRepository: Realization
+    FarmIdService <.. DataController: Dependency
 ```
