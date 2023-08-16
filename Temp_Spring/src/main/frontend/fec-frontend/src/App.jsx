@@ -1,40 +1,34 @@
-import './App.css';
-import Homepage from './Pages/Homepage/Homepage';
-import Dashboard from './Pages/Protected/Dashboard/Dashboard';
+// react
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Routes, Navigate } from 'react-router-dom';
+// pages
 import Login from './Pages/Login/Login';
+import Homepage from './Pages/Homepage/Homepage';
 import Register from './Pages/Register/Register';
+import Dashboard from './Pages/Protected/Dashboard/Dashboard';
+// other pages
+import Questions from './Pages/Other/q&a.jsx';
+import NotFoundPage from './Pages/Other/notfound.jsx';
+import About from './Pages/Other/about';
+import NotificationIcon from './Components/Header/Notification';
 
-// Import React route dom
-
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-// getting costumized child router from router
-const router = createBrowserRouter([
-  {
-    path: '/', element: <div><Homepage /></div>
-  },
-  {
-    path: '/login', element: <div><Login /></div>
-  },
-  {
-    path: '/join', element: <div><Register /></div>
-  },
-  {
-    path: '/dashboard', element: <div><Dashboard /></div>
-  },
-
-])
-
-//
-function App() {
+const App = () => {
 
   return (
-    <div>
-      <RouterProvider router={router} />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Homepage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/join" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path='/frequently-asked-questions' element={<Questions />} />
+        <Route path='/not-found' element={<NotFoundPage />} />
+        <Route path='/about' element={<About />} />
+        <Route path='/notication' element={<NotificationIcon />} />
 
-
-    </div>
+      </Routes>
+    </Router>
   )
-}
+};
 
-export default App
+export default App;

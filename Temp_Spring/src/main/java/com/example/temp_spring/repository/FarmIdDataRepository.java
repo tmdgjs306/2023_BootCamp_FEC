@@ -11,6 +11,6 @@ public interface FarmIdDataRepository extends JpaRepository<FarmIdData, Long> {
     @Override
     Optional<FarmIdData> findById(Long aLong);
 
-    @Override
-    boolean existsById(Long aLong);
+
+    boolean existsByFarmId(int farmId);
 }

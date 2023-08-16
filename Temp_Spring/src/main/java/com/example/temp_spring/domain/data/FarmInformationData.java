@@ -22,7 +22,7 @@ public class FarmInformationData {
     private Long id; // 기본키 PK
 
 
-    private Long farmId; // 외래키 FK
+    private int farmId; // 외래키 FK
     private Long illuminanceValue;
     private Double TemperatureValue;
     private Double humidityValue;

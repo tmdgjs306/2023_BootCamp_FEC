@@ -1,6 +1,7 @@
 package com.example.temp_spring.Controller;
 import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
+import com.example.temp_spring.Service.FarmIdService;
 import com.example.temp_spring.Service.TempUserService;
 import com.example.temp_spring.domain.data.*;
 import com.example.temp_spring.domain.user.TempUser;
@@ -57,6 +58,22 @@ public class DataController {
 
     private final UserRepository userRepository;
 
+    private final FarmIdService farmIdService;
+
+    @GetMapping("/getFarmId")
+    public void getFarmId(HttpServletResponse res) throws IOException {
+        // FarmId 생성
+        int farmId = farmIdService.getFarmId();
+
+        // Json 형태로 파싱
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("farmId",farmId);
+
+        // Json 양식으로 아두이노 서버에 응답
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        res.getWriter().write(jsonObject.toJSONString());
+    }
     // 아두이노 장치에서 받은 데이터 DB에 저장
     @PostMapping("/addData")
     public void addData(@RequestBody String req) throws ParseException {
@@ -66,13 +83,15 @@ public class DataController {
         Double tempValue = (Double) jsonObject.get("temperature");
         Long illuminanceValue = (Long) jsonObject.get("illuminance");
         String timeValue = (String) jsonObject.get("time");
-        Long farmId = (Long) jsonObject.get("farmId");
-
+        Long temp = (Long) jsonObject.get("farmId");
+        int farmId = temp.intValue();
+        System.out.println(farmId);
+        Double Humidity =(Double) jsonObject.get("himidity");
         // farmInformationDataRepository에 저장
         FarmInformationData data = FarmInformationData.builder()
                 .farmId(farmId)
                 .TemperatureValue(tempValue)
-                .humidityValue(Math.random() * 100)
+                .humidityValue(Humidity)
                 .carbonDioxideValue(Math.random() * 1000)
                 .illuminanceValue(illuminanceValue)
                 .time(timeValue)

@@ -20,7 +20,7 @@ public class FarmPlantData {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 기본키 PK
 
-    private Long farmId; // 외래키 FK
+    private int farmId; // 외래키 FK
     private String plantName;
 
 }

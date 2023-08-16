@@ -18,7 +18,7 @@ import javax.persistence.Id;
 public class FarmIdData {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // P
+    private Long id; // PK
 
-    private Long farmId;
+    private int farmId;
 }

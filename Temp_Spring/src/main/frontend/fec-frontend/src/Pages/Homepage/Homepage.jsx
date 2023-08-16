@@ -1,20 +1,21 @@
 import React from 'react'
-import './Homepage.css';
+import '../../Components/Homepage/Homepage.css';
+
+import AboutProject from '../../Components/Homepage/AboutProject';
+import AboutUs from '../../Components/Homepage/AboutUs';
+import Hero from '../../Components/Homepage/Hero';
+import Header from '../../Components/Homepage/Header';
+import Footer from '../../Components/Homepage/Footer';
+
 
 function Homepage() {
     return (
         <div>
-            This is Home page
-            sections
-            <br />
-            navbar
-            header
-            hero
-            bottom
-            <br />
-            <a href='/login'>To Login</a>
-            <br />
-            <a href='/join'>To Register</a>
+            <Header />
+            <Hero />
+            <AboutProject />
+            <AboutUs />
+            <Footer />
         </div>
     )
 }
