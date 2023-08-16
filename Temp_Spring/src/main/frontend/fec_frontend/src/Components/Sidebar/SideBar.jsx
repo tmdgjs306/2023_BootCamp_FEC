@@ -7,11 +7,19 @@ import { RiUser5Fill } from 'react-icons/ri'
 import { ImStatsDots } from 'react-icons/im'
 import { ImLeaf } from 'react-icons/im'
 import { IoFlower } from 'react-icons/io5'
+<<<<<<< Updated upstream
 import {PiUsersThreeFill} from 'react-icons/pi';
 import {TbBellFilled} from 'react-icons/tb';
+=======
+import { PiUsersThreeFill } from 'react-icons/pi';
+import { TbBellFilled } from 'react-icons/tb';
+>>>>>>> Stashed changes
 
 
 const SideBar = () => {
+    const handleLogout = () => {
+        navigate('/');
+    };
     return (
         <div className="flex h-screen w-36 flex-col justify-between border-e bg-[#F2F7F2]">
             <div>
@@ -22,7 +30,7 @@ const SideBar = () => {
                         <ul className="space-y-10 pt-6">
                             <li>
                                 <a
-                                    href="/dashboard"
+                                    href="/api/dashboard"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
                                 >
                                     <TbLayoutDashboard className='icon w-9 h-9' />
@@ -36,7 +44,7 @@ const SideBar = () => {
                             </li>
                             <li>
                                 <a
-                                    href="/profile"
+                                    href="/api/profile"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
                                 >
 
@@ -51,7 +59,7 @@ const SideBar = () => {
                             </li>
                             <li>
                                 <a
-                                    href="/notication"
+                                    href="/api/notication"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
 
@@ -66,7 +74,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/overview"
+                                    href="/api/overview"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
 
                                 >
@@ -82,7 +90,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/manage-users"
+                                    href="/api/manage-user"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
 
@@ -97,7 +105,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/performance"
+                                    href="/api/performance"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
                                     <IoFlower className='icon w-8 h-8' />
@@ -111,7 +119,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/plant-status"
+                                    href="/api/status"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
                                     <ImLeaf className='icon w-8 h-8' />
@@ -128,8 +136,13 @@ const SideBar = () => {
                 </div>
             </div>
 
+<<<<<<< Updated upstream
             <div className="sticky inset-x-0 bottom-10 border-t border-gray-100 bg-[#F2F7F2] p-2">
                 <form action="/log-out">
+=======
+            <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
+                <form action="/api/log-out">
+>>>>>>> Stashed changes
                     <button
                         type="submit"
                         className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
@@ -138,7 +151,7 @@ const SideBar = () => {
 
                         <span
                             className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 hover:text-green-700"
-                        >
+                            onClick={handleLogout}>
                             Logout
                         </span>
                     </button>

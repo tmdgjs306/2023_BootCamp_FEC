@@ -23,6 +23,10 @@ const router = createBrowserRouter([
   {
     path: '/dashboard', element: <div><Dashboard /></div>
   },
+<<<<<<< Updated upstream
+=======
+  
+>>>>>>> Stashed changes
 
 ])
 

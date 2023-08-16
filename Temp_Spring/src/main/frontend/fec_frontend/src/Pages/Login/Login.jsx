@@ -62,7 +62,7 @@ const Login = () => {
                         <p className='p'>Smart monitoring web application</p>
                     </div>
                     <div className='footerDiv flex'>
-                        <span className='text'>Don't have a account?</span>
+                        <span className='text'>Don&apos;t have a account?</span>
                         <Link to={'/join'}>
                             <button className='btn'>Join now</button>
                         </Link>

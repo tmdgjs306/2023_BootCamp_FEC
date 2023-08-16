@@ -1,6 +1,6 @@
 import React from 'react';
 import './Dashboard.css';
-// import Header from '../../../Components/Header/Header'; // Import the Header component
+import Header from '../../../Components/Header/Header'; // Import the Header component
 import SideBar from '../../../Components/Sidebar/SideBar';
 import TemperatureCharBar from '../../../Components/Charbar/TemperatureCharBar';
 import HumidityCharbar from '../../../Components/Charbar/HumidityCharBar';
@@ -9,10 +9,11 @@ import Chartline from '../../../Components/Chartline/chartline';
 
 const Dashboard = () => {
     return (
-        <div className=" w-screen h-screen flex bg-[#14213d]">
+        <div className=" min-h-screen flex bg-[#14213d]">
             <SideBar />
             <div className="flex-1 flex flex-col ">
-                 {/*<Header /> */}
+
+                {/* <Header /> */}
                 {/* Move the Header component here */}
                 <div className="flex flex-col">
 

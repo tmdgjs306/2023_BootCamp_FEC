@@ -17,7 +17,7 @@ const AboutUs = () => {
         },
         {
             name: 'Han Seung Heon',
-            role: 'Team Leader, Back-end developer',
+            role: 'Team Leader, Back-end developer, Hardware',
             imageSrc: seungheon,
             socialLinks: {
                 email: '#',
@@ -26,7 +26,7 @@ const AboutUs = () => {
         },
         {
             name: 'Lim Jisoo',
-            role: 'Computer vision, AI, Hardware',
+            role: 'Computer vision, AI',
             imageSrc: jisoo,
             socialLinks: {
                 email: 'imearth0913@gmail.com',
@@ -49,7 +49,7 @@ const AboutUs = () => {
                     {teamMembers.map((member, index) => (
                         <div
                             key={index}
-                            className="flex-shrink px-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:px-6 mb-8 "
+                            className="flex-shrink px-4 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:px-6 mb-8 shadow-xl transition hover:border-pink-500/10 hover:shadow-green-500/10 "
                         >
                             <div className="relative overflow-hidden bg-black dark:bg-gray-900 mb-12 hover-grayscale-0 wow fadeInUp">
                                 <div className="relative overflow-hidden px-6">

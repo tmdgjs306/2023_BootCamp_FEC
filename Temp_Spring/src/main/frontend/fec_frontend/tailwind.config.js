@@ -7,7 +7,8 @@ export default {
     extend:
     {
       fontFamily: {
-        'sans': ['"Nunito", sans-serif']
+        'sans': ['Nunito', "Gruppo", 'sans-serif'], 
+        
       },
     },
   },

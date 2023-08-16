@@ -1,16 +1,7 @@
-<<<<<<< Updated upstream
-import React from 'react';
-import './App.css';
-
-const ManageUsers = () => {
-    return (
-        <div>Manage users</div>
-=======
-
 import SideBar from '../../../Components/Sidebar/SideBar';
 import Header from '../../../Components/Header/Header';
 
-const ManageUsers = () => {
+const UserProfile = () => {
     return (
         <div className="overflow-hidden w-screen h-screen flex bg-[#14213d]">
             <SideBar />
@@ -19,8 +10,7 @@ const ManageUsers = () => {
                 Users
             </div>
         </div>
->>>>>>> Stashed changes
     )
 }
 
-export default ManageUsers;
+export default UserProfile

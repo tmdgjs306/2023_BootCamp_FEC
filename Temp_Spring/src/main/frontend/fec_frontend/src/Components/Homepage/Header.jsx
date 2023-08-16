@@ -17,10 +17,10 @@ const Header = () => {
                             />
                         </a>
                         <nav aria-label="Global">
-                            <ul className="flex items-center gap-6 text-sm">
+                            <ul className="flex items-center gap-6 text-lg">
                                 <li>
                                     <a
-                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-white/75"
+                                        className="text-gray-500 transition hover:text-gray-500/75 dark:text-white dark:hover:text-orange/75"
                                         href="/"
                                     >
                                         Home
@@ -33,16 +33,16 @@ const Header = () => {
                     <div className="flex items-center gap-4">
                         <div className="hidden sm:flex sm:gap-4">
                             <a
-                                className="rounded-md bg-teal-600 px-5 py-3 text-sm font-medium text-white shadow dark:hover:bg-orange-500"
+                                className="rounded-md bg-teal-600 px-5 py-3.5 text-sm font-medium text-white shadow dark:hover:bg-orange-500 shadow-xl transition hover:border-pink-500/10 hover:shadow-orange-500/10"
                                 href="/login"
                             >
-                                Login
+                                Log in
                             </a>
-                            <a className="px-5 py-2.5 text-sm leading-relaxed text-white">
+                            <a className="px-5 py-2.5 text-md leading-relaxed text-white">
                                 or
                             </a>
                             <a
-                                className="rounded-md bg-teal-600 px-5 py-3.5 text-sm font-medium text-white shadow dark:hover:bg-orange-500"
+                                className="rounded-md bg-teal-600 px-5 py-3.5 text-sm font-medium text-white shadow dark:hover:bg-orange-500 shadow-xl transition hover:border-pink-500/10 hover:shadow-orange-500/10"
                                 href="/join"
                             >
                                 Register
