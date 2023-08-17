@@ -25,7 +25,7 @@ const AboutProject = () => {
                             <dt
                                 className="order-last text-lg font-medium text-gray-500 dark:text-gray-400"
                             >
-                                Real-Time Sensor Data <br></br> Temperature, Humidity, CO2, Plant Status Report
+                                Real-Time Sensor Data <br></br> Temperature, Humidity, CO2
                             </dt>
 
                             <dd className="text-4xl font-extrabold text-green-600 md:text-5xl">
@@ -39,6 +39,18 @@ const AboutProject = () => {
                             <dt
                                 className="order-last text-lg font-medium text-gray-500 dark:text-gray-400"
                             >
+                                Main feature <br></br> Dashboard, Overview, Plant Status,<br /> Performance, Plant Status Report
+                            </dt>
+
+                            <dd className="text-4xl font-extrabold text-green-600 md:text-5xl">5</dd>
+                        </div>
+                        
+                        <div
+                            className="flex flex-col rounded-lg px-4 py-8 text-center dark:border-gray-800 shadow-xl transition hover:border-pink-500/10 hover:shadow-green-500/10"
+                        >
+                            <dt
+                                className="order-last text-lg font-medium text-gray-500 dark:text-gray-400"
+                            >
 
                                 In simple Words <br></br>Easy, Friendly, Convenient
                             </dt>
@@ -46,17 +58,6 @@ const AboutProject = () => {
                             <dd className="text-4xl font-extrabold text-green-600 md:text-5xl">3</dd>
                         </div>
 
-                        <div
-                            className="flex flex-col rounded-lg px-4 py-8 text-center dark:border-gray-800 shadow-xl transition hover:border-pink-500/10 hover:shadow-green-500/10"
-                        >
-                            <dt
-                                className="order-last text-lg font-medium text-gray-500 dark:text-gray-400"
-                            >
-                                Main feature <br></br> Dashboard, Overview, Plant Status, Performance
-                            </dt>
-
-                            <dd className="text-4xl font-extrabold text-green-600 md:text-5xl">5</dd>
-                        </div>
                     </dl>
                 </div>
             </div>

@@ -11,19 +11,18 @@ import { PiUsersThreeFill } from 'react-icons/pi';
 import { TbBellFilled } from 'react-icons/tb';
 
 
-
 const SideBar = () => {
     const handleLogout = () => {
         navigate('/');
     };
     return (
-        <div className="flex flex-col bg-[#F2F7F2] w-60 p-3">
+        <div className="overflow-hidden flex flex-col bg-[#F2F7F2] w-32 w-1/5 p-3">
             <div className='flex items-center gap-2 px-1 py-3'>
                 <img className='flex justify-center h-16 w-16' src={logo} alt='Fec Logo' />
                 {/* menu parts */}
             </div>
             <div className="flex-1">
-               
+
                 <div className="px-2">
                     <ul className="space-y-10 pt-6">
                         <li>
