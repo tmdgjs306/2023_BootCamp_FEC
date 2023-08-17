@@ -1,5 +1,4 @@
-package com.example.temp_spring.Data;
-
+package com.example.temp_spring.domain.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,12 +15,12 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemperatureData {
+public class FarmPlantData {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // 기본키 PK
 
-    private String sensor;
-    private Double value;
-    private String time;
+    private int farmId; // 외래키 FK
+    private String plantName;
+
 }

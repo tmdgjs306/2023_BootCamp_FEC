@@ -3,6 +3,8 @@ import Homepage from './Pages/Homepage/Homepage';
 import Dashboard from './Pages/Protected/Dashboard/Dashboard';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
+import ManageUsers from "./Pages/Protected/ManageUsers/ManageUsers.jsx";
+import UserProfile from "./Pages/Protected/Profile/UserProfile.jsx";
 // css
 import './index.css'
 // Import React route dom
@@ -22,6 +24,12 @@ const router = createBrowserRouter([
   },
   {
     path: '/dashboard', element: <div><Dashboard /></div>
+  },
+  {
+    path: '/manageuser', element: <div><ManageUsers /></div>
+  },
+  {
+    path: '/profile', element: <div><UserProfile /></div>
   },
 ])
 

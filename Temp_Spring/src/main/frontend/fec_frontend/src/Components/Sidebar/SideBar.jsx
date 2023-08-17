@@ -17,9 +17,9 @@ const SideBar = () => {
         navigate('/');
     };
     return (
-        <div className="flex h-screen w-36 flex-col justify-between border-e bg-[#F2F7F2]">
-            <div>
-                <img className='relative flex justify-center w-16 h-16' src={logo} alt='Fec Logo' />
+        <div className="z-20 flex-shrink-0 hidden w-40 pl-2 overflow-y-auto md:block h-screen bg-[#F2F7F2] items-center">
+            <div className=''>
+                <img className='flex justify-center h-16 w-16' src={logo} alt='Fec Logo' />
                 {/* menu parts */}
                 <div className="border-t border-gray-200">
                     <div className="px-2">
@@ -27,7 +27,7 @@ const SideBar = () => {
                             <li>
                                 <a
                                     href="/dashboard"
-                                    className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
+                                    className="group relative flex justify-center rounded px-2 py-1 text-gray-500 hover:text-orange-700 text-green-700 "
                                 >
                                     <TbLayoutDashboard className='icon w-9 h-9' />
 
@@ -129,24 +129,25 @@ const SideBar = () => {
                             </li>
                         </ul>
                     </div>
+                    <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
+                        <form action="/log-out">
+                            <button
+                                type="submit"
+                                className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
+                            >
+                                <IoLogOutOutline className='icon w-10 h-10' />
+
+                                <span
+                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 hover:text-green-700"
+                                    onClick={handleLogout}>
+                                    Logout
+                                </span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
-                <form action="/log-out">
-                    <button
-                        type="submit"
-                        className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
-                    >
-                        <IoLogOutOutline className='icon w-10 h-10' />
 
-                        <span
-                            className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 hover:text-green-700"
-                            onClick={handleLogout}>
-                            Logout
-                        </span>
-                    </button>
-                </form>
-            </div>
         </div>
     )
 }

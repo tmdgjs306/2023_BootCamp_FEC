@@ -12,7 +12,12 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
-
+/**
+ * Project Name: F.E.C
+ * Team: Newbies
+ * author: 한승헌
+ * Description: 기상청 API에서 날씨 정보를 받아와 String 형태로 반환하는 클래스
+ */
 public class getWeather
 {
     // [in] x, y : 예보지점 X, Y 좌표
@@ -29,23 +34,11 @@ public class getWeather
         try
         {
             LocalDateTime t = LocalDateTime.now();
-            String Month;
-            if(t.getMonthValue()>=10){
-                Month = Integer.toString(t.getMonthValue());
-            }
-            else{
-                Month = "0"+Integer.toString(t.getMonthValue());
-            }
-
-            String Date = Integer.toString(t.getYear())+Month+Integer.toString(t.getDayOfMonth());
-
-            String Hour;
-            if(t.getHour()>=10){
-                Hour = Integer.toString(t.getHour())+"0"+"0";
-            }
-            else{
-                Hour = "0"+Integer.toString(t.getHour())+"0"+"0";
-            }
+            getTimeFormatString timeFormat = new getTimeFormatString();
+            String Date = timeFormat.DateFormat(t);
+            String Hour = timeFormat.HourFormat(t);
+            if(t.equals("0"))Hour = "24";
+            else Hour = Integer.toString(Integer.parseInt(Hour)-1);
             URL url = new URL(
                     "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
                             + "?ServiceKey=n2NMYt0rWusbUZp9FjIEqrnTPs5zY22beubl2pGnkilwf5SHv84PmYVeLeFwtSpsHxlEsYem1kj%2BnYftRClKAQ%3D%3D" // 서비스키
@@ -53,11 +46,10 @@ public class getWeather
                             + "&numOfRows=60" // 한 페이지 결과 수 (10개 카테고리값 * 6시간)
                             //	+ "&dataType=XML" // 요청자료형식(XML/JSON) Default: XML
                             + "&base_date=" + t.format(DateTimeFormatter.ofPattern(Date))  // 발표 날짜
-                            + "&base_time=" + t.format(DateTimeFormatter.ofPattern(Hour)) // 발표 시각
+                            + "&base_time=" + t.format(DateTimeFormatter.ofPattern(Hour+"0"+"0")) // 발표 시각
                             + "&nx=" + x // 예보지점의 X 좌표값
                             + "&ny=" + y // 예보지점의 Y 좌표값
             );
-
             con = (HttpURLConnection)url.openConnection();
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(con.getInputStream());
 
@@ -137,7 +129,7 @@ public class getWeather
         }
         else
         { // error
-            System.out.println("Error : " + s);
+            sb.append("Error : " + s);
         }
         return sb.toString();
     }

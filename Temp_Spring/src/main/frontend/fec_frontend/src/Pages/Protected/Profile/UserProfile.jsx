@@ -14,7 +14,7 @@ const UserProfile = () => {
             <SideBar />
             <div className='relative max-w-md w-full'>
                 <div className="mt-8 flex flex-wrap space-x-0 space-y-2 md:space-x-4 md:space-y-0">
-                    <div class="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
+                    <div className="flex-1 bg-white p-4 shadow rounded-lg md:w-1/2">
                         Users table
                     </div>
                 </div>
