@@ -65,8 +65,6 @@ public class DataController {
         // FarmId 생성
         String farmId = farmIdService.getFarmId();
 
-        System.out.println(farmId);
-
         // Json 양식으로 아두이노 서버에 응답
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
@@ -75,7 +73,6 @@ public class DataController {
     // 아두이노 장치에서 받은 데이터 DB에 저장
     @PostMapping("/addData")
     public void addData(@RequestBody String req) throws ParseException {
-
         //Json 데이터 파싱
         JSONObject jsonObject = (JSONObject) parser.parse(req);
         Double tempValue = (Double) jsonObject.get("temperature");
@@ -84,7 +81,6 @@ public class DataController {
         String f = (String)jsonObject.get("farmId");
         Long temp = Long.parseLong(f);
         int farmId = temp.intValue();
-        System.out.println(farmId);
         Double Humidity =(Double) jsonObject.get("humidity");
         // farmInformationDataRepository에 저장
         FarmInformationData data = FarmInformationData.builder()
@@ -97,8 +93,6 @@ public class DataController {
                 .build();
         farmInformationDataRepository.save(data);
     }
-
-
     @GetMapping("/latestEnvironmentData") // 농장 번호로 조회하여 자신의 농장의 최신 온도, 조도, 습도, CO2 값 전송
     public FarmInformationData getLatestFarmInformationData(HttpServletRequest req){
 
@@ -206,7 +200,6 @@ public class DataController {
             jsonObject.put("password",tempUser.getPassword());
             jsonArray.add(jsonObject);
         }
-        System.out.println(jsonArray.toJSONString());
         res.getWriter().write(jsonArray.toJSONString());
     }
 

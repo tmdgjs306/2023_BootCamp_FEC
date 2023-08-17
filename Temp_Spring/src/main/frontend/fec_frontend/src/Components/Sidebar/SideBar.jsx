@@ -9,12 +9,14 @@ import { ImLeaf } from 'react-icons/im'
 import { IoFlower } from 'react-icons/io5'
 import { PiUsersThreeFill } from 'react-icons/pi';
 import { TbBellFilled } from 'react-icons/tb';
+import axios from "axios";
 
 
 
 const SideBar = () => {
-    const handleLogout = () => {
-        navigate('/');
+    const handleLogout = async () => {
+        const response = await  axios('/api/log-out');
+        navigator ='/';
     };
     return (
         <div className="flex h-screen w-36 flex-col justify-between border-e bg-[#F2F7F2]">
@@ -132,7 +134,7 @@ const SideBar = () => {
                 </div>
             </div>
             <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
-                <form action="/log-out">
+                <form action="/api/log-out" method="get">
                     <button
                         type="submit"
                         className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
@@ -147,6 +149,7 @@ const SideBar = () => {
                     </button>
                 </form>
             </div>
+            <a href="/api/log-out">log-out!</a>
         </div>
     )
 }

@@ -7,7 +7,7 @@ const ManageUsers = () => {
     const [users, setUsers] = useState({
         loginId: "",
         email: "",
-        farmId : 11
+        farmId : ""
     });
     const [newUserRequests, setNewUserRequests] = useState([]);
     const navigate = useNavigate();

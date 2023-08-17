@@ -2,7 +2,9 @@ package com.example.temp_spring.Service;
 
 import com.example.temp_spring.Security.SHA256;
 import com.example.temp_spring.domain.dto.TempUserJoinRequest;
+import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.domain.user.UserRole;
 import com.example.temp_spring.repository.TempUserRepository;
 import com.example.temp_spring.repository.UserRepository;
 import com.example.temp_spring.domain.dto.JoinRequest;
@@ -24,6 +26,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final SHA256 sha256 = new SHA256();
+    private final TempUserService tempUserService;
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
     }
@@ -32,7 +35,17 @@ public class UserService {
         userRepository.save(req.toEntity());
     }
 
-    public void join(User user){
+    public void join(String tempUserId) throws NoSuchAlgorithmException {
+        TempUser tempUser = tempUserService.findById(tempUserId);
+        String salt = sha256.getSalt();
+        User user = User.builder()
+                .loginId(tempUser.getLoginId())
+                .passwd(sha256.encrypt(tempUser.getPassword()+salt,3))
+                .role(UserRole.USER)
+                .farmId(tempUser.getFarmId())
+                .salt(salt)
+                .email(tempUser.getEmail())
+                .build();
         userRepository.save(user);
     }
 
