@@ -8,7 +8,7 @@ erDiagram
     User ||--|{ FarmPlant : contains
     User{
         Long id PK "AUTO INCREASE"
-        Int farmId FK
+        Int farmId FK "NOT NULL, UNIQUE"
         String salt
         String loginid "NOT NULL, UNIQUE" 
         String password "NOT NULL"
@@ -18,11 +18,12 @@ erDiagram
 
     farmId{
         Long id PK "AUTO INCREASE"
-        int farmId FK
+        int farmId
     }
 
     TempUser{
         Long id PK "AUTO INCREASE"
+        Int farmId FK "NOT NULL, UNIQUE"
         String loginId "NOT NULL"
         String password "NOT NULL"
         String email "NOT NULL"
@@ -30,7 +31,7 @@ erDiagram
     }
     FarmInformation{
         Long id PK "AUTO INCREASE"
-        Int farmId FK
+        Int farmId
         Long illuminanceValue 
         Double temperatureValue
         Double humidityValue
@@ -41,7 +42,7 @@ erDiagram
     FarmPlant{
         Long id PK "AUTO INCREASE"
         Int farmId FK
-        String plantName
+        String plantName "NOT NULL, UNIQUE"
     }
     PlantEnvironment{
         Long id PK "AUTO INCREASE"
