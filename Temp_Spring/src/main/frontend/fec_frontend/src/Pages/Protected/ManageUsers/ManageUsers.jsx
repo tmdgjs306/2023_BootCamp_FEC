@@ -33,11 +33,7 @@ const ManageUsers = () => {
         }
     };
     const handleUserAction = async (actionType, loginId) => {
-        let endpoint ="";
-        if(actionType ==='accept')
-            endpoint = '/api/acceptUser';
-        else
-            endpoint = '/api/rejectUser';
+        const endpoint = actionType === 'accept' ? '/api/acceptUser' : '/api/rejectUser';
         try {
             const response = await axios.post(endpoint, { loginId }, {
                 headers: {
