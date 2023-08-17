@@ -22,7 +22,6 @@ registerShape('point', 'pointer', {
 
 
         // eslint-disable-next-line no-unused-vars
-        const preAngle = this.preAngle || 0;
 
         const angle1 = Math.atan((start.y - center.y) / (start.x - center.x));
         const angle = (Math.PI - 2 * (angle1)) * cfg.points[0].x;
@@ -78,7 +77,7 @@ const Co2CharBar = () => {
             />
             <Point
                 position="value*1"
-                color="#0099CC"
+                color="#9CAF88"
                 shape="pointer"
             />
             <Annotation.Arc
