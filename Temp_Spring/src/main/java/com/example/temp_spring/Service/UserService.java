@@ -32,6 +32,10 @@ public class UserService {
         userRepository.save(req.toEntity());
     }
 
+    public void join(User user){
+        userRepository.save(user);
+    }
+
     public User login(LoginRequest req) throws NoSuchAlgorithmException {
         Optional<User> optionalUser = userRepository.findByLoginId(req.getLoginId());
 

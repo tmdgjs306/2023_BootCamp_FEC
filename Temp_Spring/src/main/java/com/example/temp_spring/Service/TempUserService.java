@@ -33,5 +33,5 @@ public class TempUserService {
         return tempUserRepository.findAllTempUser();
     }
 
-
+    public TempUser findById(String loginId){return tempUserRepository.findByLoginId(loginId);}
 }

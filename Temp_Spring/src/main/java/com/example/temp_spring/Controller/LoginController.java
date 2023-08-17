@@ -7,6 +7,7 @@ import com.example.temp_spring.Service.UserService;
 import com.example.temp_spring.domain.dto.TempUserJoinRequest;
 import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.domain.user.UserRole;
 import com.example.temp_spring.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -98,23 +99,33 @@ public class LoginController {
     @PostMapping("/acceptUser") // 유저 승인 기능
     public void acceptUser(@RequestBody JoinRequest joinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
         //응답 메시지 설정
+        System.out.println(joinRequest.getLoginId()+joinRequest.getEmail());
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
 
         //UserDB에 저장, tempUser DB 에서 정보 삭제
-        userService.join(joinRequest);
+        JoinRequest userReq = new JoinRequest();
+        TempUser t = tempUserService.findById(joinRequest.getLoginId());
+        User newUser = User.builder()
+                .loginId(t.getLoginId())
+                .email(t.getEmail())
+                .farmId(t.getFarmId())
+                .role(UserRole.USER)
+                .build();
+
+        userService.join(newUser);
         tempUserService.delete(joinRequest.getLoginId());
+
 
         res.setStatus(HttpServletResponse.SC_OK);
         res.getWriter().write(joinRequest.getLoginId()+" 유저가 정상적으로 승인 되었습니다.");
     }
-    @PostMapping("rejectUser")
+    @PostMapping("/rejectUser")
     public void rejectUser(@RequestBody JoinRequest joinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
         tempUserService.delete(joinRequest.getLoginId());
-        res.sendRedirect("/getTempUser");
     }
 }
 
