@@ -26,7 +26,7 @@ const SideBar = () => {
                         <ul className="space-y-10 pt-6">
                             <li>
                                 <a
-                                    href="/api/dashboard"
+                                    href="/dashboard"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
                                 >
                                     <TbLayoutDashboard className='icon w-9 h-9' />
@@ -40,7 +40,7 @@ const SideBar = () => {
                             </li>
                             <li>
                                 <a
-                                    href="/api/profile"
+                                    href="/profile"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
                                 >
 
@@ -55,7 +55,7 @@ const SideBar = () => {
                             </li>
                             <li>
                                 <a
-                                    href="/api/notication"
+                                    href="/notication"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
 
@@ -70,7 +70,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/api/overview"
+                                    href="/overview"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
 
                                 >
@@ -86,7 +86,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/api/manage-user"
+                                    href="/manageuser"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
 
@@ -101,7 +101,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/api/performance"
+                                    href="/performance"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
                                     <IoFlower className='icon w-8 h-8' />
@@ -115,7 +115,7 @@ const SideBar = () => {
 
                             <li>
                                 <a
-                                    href="/api/status"
+                                    href="/status"
                                     className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
                                 >
                                     <ImLeaf className='icon w-8 h-8' />
@@ -132,7 +132,7 @@ const SideBar = () => {
                 </div>
             </div>
             <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
-                <form action="/api/log-out">
+                <form action="/log-out">
                     <button
                         type="submit"
                         className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"

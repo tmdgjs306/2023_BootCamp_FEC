@@ -3,12 +3,9 @@ import useAuth from "../hook/useAuth";
 import { ProtectedRoute } from "./ProtectedRoute";
 // pages
 import Login from "../Pages/Login/Login";
-import Logout from "../pages/Login/Logout";
 import Register from "../Pages/Register/Register";
 import Homepage from "../Pages/Homepage/Homepage";
-import { Dashboard, ManageUsers, Overview, Performance, Status } from "../Pages/Protected";
-import UserProfile from "../Pages/Protected/Profile/UserProfile";
-
+import { Dashboard, ManageUsers, Overview, Performance, Status, UserProfile } from "../Pages/Protected";
 
 
 const CostumRoute = () => {
@@ -20,10 +17,10 @@ const CostumRoute = () => {
             path: '/', element: <Homepage />
         },
         {
-            path: 'api/login', element: <Login />
+            path: '/login', element: <Login />
         },
         {
-            path: 'api/join', element: <Register />
+            path: '/join', element: <Register />
         },
 
     ];
@@ -35,27 +32,27 @@ const CostumRoute = () => {
             element: <ProtectedRoute />, // Wrap the component in ProtectedRoute
             children: [
                 {
-                    path: "api/dashboard",
+                    path: "/dashboard",
                     element: <Dashboard />,
                 },
                 {
-                    path: "api/manage-user",
+                    path: "/manageuser",
                     element: <ManageUsers />,
                 },
                 {
-                    path: "api/profile",
+                    path: "/profile",
                     element: <UserProfile />,
                 },
                 {
-                    path: "api/overview",
+                    path: "/overview",
                     element: <Overview />,
                 },
                 {
-                    path: "api/performance",
+                    path: "/performance",
                     element: <Performance />,
                 },
                 {
-                    path: "api/status",
+                    path: "/status",
                     element: <Status />,
                 },
             ],

@@ -8,7 +8,7 @@ const Header = () => {
     return (
         <div className="bg-[#14213d] mx-auto max-w-7xl px-2 sm:px-6 lg:px-24">
             <div className="flex items-center sm:justify-between sm:gap-4">
-                <div className="flex items-center sm:justify-between sm:gap-4">
+                <div className="text-left prose prose-lg text-2xl  py-3 text-gray-600">
                     <div
                         className="flex flex-1 items-center justify-between gap-8 sm:justify-end"
                     >

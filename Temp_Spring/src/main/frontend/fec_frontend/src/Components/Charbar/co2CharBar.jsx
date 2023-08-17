@@ -45,7 +45,7 @@ const Co2CharBar = () => {
         }
     }
     // eslint-disable-next-line no-unused-vars
-    const [data, setData] = useState([{ value: 0.56 }]);
+    const [data, setData] = useState([{ value: 0.88 }]);
     const startAngle = Math.PI / 2
     const endAngle = startAngle + Math.PI * 2;
     return (
@@ -78,7 +78,7 @@ const Co2CharBar = () => {
             />
             <Point
                 position="value*1"
-                color="#1890FF"
+                color="#0099CC"
                 shape="pointer"
             />
             <Annotation.Arc
@@ -95,7 +95,7 @@ const Co2CharBar = () => {
                 start={[0, 1]}
                 end={[data[0].value, 1]}
                 style={{
-                    stroke: '#1890FF',
+                    stroke: '#156064',
                     lineCap: 'round',
                     lineWidth: 18,
                     lineDash: null,
@@ -106,7 +106,7 @@ const Co2CharBar = () => {
                 content={`${Math.round(data[0].value * 100)}%`}
                 style={{
                     fontSize: 24,
-                    fill: '#262626',
+                    fill: '#156064',
                     textAlign: 'center',
                 }}
             />
