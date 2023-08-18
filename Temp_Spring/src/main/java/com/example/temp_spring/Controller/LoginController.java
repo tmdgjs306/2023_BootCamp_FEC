@@ -102,11 +102,10 @@ public class LoginController {
         res.setCharacterEncoding("UTF-8");
 
         //UserDB에 저장, tempUser DB 에서 정보 삭제
-
         userService.join(joinRequest.getLoginId());
         tempUserService.delete(joinRequest.getLoginId());
 
-
+        //클라이언트에게 응답 전송
         res.setStatus(HttpServletResponse.SC_OK);
         res.getWriter().write(joinRequest.getLoginId()+" 유저가 정상적으로 승인 되었습니다.");
     }
@@ -115,6 +114,7 @@ public class LoginController {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
+        //TempUserDB 에서 정보 삭제
         tempUserService.delete(joinRequest.getLoginId());
     }
 }

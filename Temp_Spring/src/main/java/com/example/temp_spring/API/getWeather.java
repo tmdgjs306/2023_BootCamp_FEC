@@ -123,14 +123,17 @@ public class getWeather
             con.disconnect();
 
         StringBuilder sb = new StringBuilder();
+        JSONObject jsonObject = new JSONObject();
         if (s == null)
         { // ok!
+            jsonObject.put("temperature",v[3]);
+            jsonObject.put("humidity",v[4]);
             sb.append("날씨 : " + v[2]+" ").append("기온 : " + v[3] + "℃ ").append("습도 : " + v[4]+"%");
         }
         else
         { // error
             sb.append("Error : " + s);
         }
-        return sb.toString();
+        return jsonObject.toJSONString();
     }
 }

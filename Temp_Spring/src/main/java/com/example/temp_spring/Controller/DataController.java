@@ -3,6 +3,7 @@ import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
 import com.example.temp_spring.Service.FarmIdService;
 import com.example.temp_spring.Service.TempUserService;
+import com.example.temp_spring.Service.TodoListService;
 import com.example.temp_spring.domain.data.*;
 import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
@@ -60,6 +61,8 @@ public class DataController {
 
     private final FarmIdService farmIdService;
 
+    private  final TodoListService todoListService;
+
     @GetMapping("/getFarmId")
     public void getFarmId(HttpServletResponse res) throws IOException {
         // FarmId 생성
@@ -73,6 +76,7 @@ public class DataController {
     // 아두이노 장치에서 받은 데이터 DB에 저장
     @PostMapping("/addData")
     public void addData(@RequestBody String req) throws ParseException {
+
         //Json 데이터 파싱
         JSONObject jsonObject = (JSONObject) parser.parse(req);
         Double tempValue = (Double) jsonObject.get("temperature");
@@ -82,6 +86,7 @@ public class DataController {
         Long temp = Long.parseLong(f);
         int farmId = temp.intValue();
         Double Humidity =(Double) jsonObject.get("humidity");
+
         // farmInformationDataRepository에 저장
         FarmInformationData data = FarmInformationData.builder()
                 .farmId(farmId)
@@ -122,7 +127,7 @@ public class DataController {
         return farmInformationData;
     }
 
-    // 온도 정보 반환
+    // 외부 온도 정보 반환
     @GetMapping("/getWeather")
     public String getWeatherData() throws IOException {
         getWeather a1 = new getWeather();
@@ -149,8 +154,11 @@ public class DataController {
     // 사용자 정보 반환
     @GetMapping("/userInfo")
     public void getUserInfo(HttpServletRequest req, HttpServletResponse res) throws IOException{
+        //응답 헤더 설정
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
+
+        // Token 에서 loginId 정보 추출
         JSONObject jsonObject = new JSONObject();
         Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
                 .filter(cookie -> cookie.getName().equals("jwtToken"))
@@ -160,13 +168,16 @@ public class DataController {
         if(jwtTokenCookie == null) {
             return;
         }
-
         String jwtToken = jwtTokenCookie.getValue();
         String loginId = JwtTokenUtil.getLoginId(jwtToken);
+
+        // loginId로 유저 조회
         Optional<User> optionalUser = userRepository.findByLoginId(loginId);
         if(optionalUser.isEmpty())
             return;
         User user = optionalUser.get();
+
+        // 유저 정보 전송
         jsonObject.put("loginId",user.getLoginId());
         jsonObject.put("email",user.getEmail());
         jsonObject.put("farmId",user.getFarmId());
@@ -180,7 +191,6 @@ public class DataController {
         res.setCharacterEncoding("UTF-8");
         res.getWriter().write("관리자 정보 ");
     }
-
 
     // 임시 유저 리스트 반환
     @GetMapping("/getTempUser")
@@ -227,5 +237,80 @@ public class DataController {
             jsonArray.add(jsonObject);
         }
         res.getWriter().write(jsonArray.toJSONString());
+    }
+
+    // Todo-List 반환
+    @GetMapping("/getTodoData")
+    public void getTodoData(HttpServletResponse res, HttpServletRequest req) throws IOException {
+        // 헤더 설정정보
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+
+        //쿠키에서 토큰 정보 추출
+        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
+                .filter(cookie -> cookie.getName().equals("jwtToken"))
+                .findFirst()
+                .orElse(null);
+
+        if(jwtTokenCookie == null) {
+            return;
+        }
+
+        // 추출한 토큰을 이용하여 로그인 ID 정보 획득
+        String jwtToken = jwtTokenCookie.getValue();
+        String loginId = JwtTokenUtil.getLoginId(jwtToken);
+
+        // todolist Json Array 형식으로 반환
+        List<TodoListData> list = new ArrayList<>();
+        list = todoListService.getTodoListByLoginId(loginId);
+        JSONArray jsonArray = new JSONArray();
+        for(int i=0; i<list.size(); i++){
+            JSONObject jsonObject = new JSONObject();
+            TodoListData todoListData = list.get(i);
+            jsonObject.put("index",i+1);
+            jsonObject.put("loginId",todoListData.getLoginId());
+            jsonObject.put("plantName",todoListData.getPlantName());
+            jsonObject.put("time",todoListData.getTime());
+            jsonObject.put("todo",todoListData.getTodo());
+            jsonArray.add(jsonObject);
+        }
+        res.getWriter().write(jsonArray.toJSONString());
+    }
+
+    // Todo-List 저장
+    @PostMapping("/addTodoData")
+    public void addTodoData(@RequestBody String req, HttpServletResponse res, HttpServletRequest request) throws ParseException {
+        // 헤더 설정
+        res.setContentType("text/plain");
+        res.setCharacterEncoding("UTF-8");
+
+        // cookie에서 토큰 추출
+        Cookie jwtTokenCookie = Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals("jwtToken"))
+                .findFirst()
+                .orElse(null);
+
+        if(jwtTokenCookie == null) {
+            return;
+        }
+
+        // 추출한 토큰을 이용하여 로그인 ID 정보 획득
+        String jwtToken = jwtTokenCookie.getValue();
+        String loginId = JwtTokenUtil.getLoginId(jwtToken);
+
+
+        JSONObject jsonObject = (JSONObject) parser.parse(req);
+
+        String time = (String) jsonObject.get("time");
+        String plantName = (String) jsonObject.get("plantName");
+        String todo = (String) jsonObject.get("todo");
+
+        TodoListData todoListData = TodoListData.builder()
+                .loginId(loginId)
+                .plantName(plantName)
+                .time(time)
+                .todo(todo)
+                .build();
+        todoListService.add(todoListData);
     }
 }
