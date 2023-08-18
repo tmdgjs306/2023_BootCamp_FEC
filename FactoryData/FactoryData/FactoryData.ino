@@ -13,9 +13,9 @@ const char* ssid = "KEB_INHA";
 const char* password = "inha123*";
 
 //URL Setting 
-String addDataUrl = "http://165.246.80.31:8080/addData";
-String getTimeUrl = "http://165.246.80.31:8080/getTime";
-String getFarmIdUrl = "http://165.246.80.31:8080/getFarmId";
+String addDataUrl = "http://165.246.80.211:8080/addData";
+String getTimeUrl = "http://165.246.80.211:8080/getTime";
+String getFarmIdUrl = "http://165.246.80.211:8080/getFarmId";
 
 //Temperature sensor setting
 int sensor = A2;    
@@ -86,7 +86,7 @@ float tcToTf(float Tc){
 
 float getHumidity(){
   float h = dht.readHumidity();
-  return h;
+  return h+0.0000001;
 }
 // 현재 카운트 값 반환
 int getCount(){
