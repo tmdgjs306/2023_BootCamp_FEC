@@ -1,6 +1,7 @@
 package com.example.temp_spring.Controller;
 import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
+import com.example.temp_spring.Service.FarmAvgService;
 import com.example.temp_spring.Service.FarmIdService;
 import com.example.temp_spring.Service.TempUserService;
 import com.example.temp_spring.Service.TodoListService;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,6 +64,8 @@ public class DataController {
     private final FarmIdService farmIdService;
 
     private  final TodoListService todoListService;
+
+    private final FarmAvgService farmAvgService;
 
     @GetMapping("/getFarmId")
     public void getFarmId(HttpServletResponse res) throws IOException {
@@ -312,5 +316,49 @@ public class DataController {
                 .todo(todo)
                 .build();
         todoListService.add(todoListData);
+    }
+    @GetMapping("/getAvgData")
+    public void getAvgHourData(HttpServletRequest req, HttpServletResponse res, @RequestBody String data) throws ParseException, IOException {
+        // 헤더 설정정보
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+
+        //쿠키에서 토큰 정보 추출
+        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
+                .filter(cookie -> cookie.getName().equals("jwtToken"))
+                .findFirst()
+                .orElse(null);
+
+        if(jwtTokenCookie == null) {
+            return;
+        }
+
+        // 추출한 토큰을 이용하여 로그인 ID 정보 획득 후 FarmId 조회
+        String jwtToken = jwtTokenCookie.getValue();
+        String loginId = JwtTokenUtil.getLoginId(jwtToken);
+        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
+        if(optionalUser.isEmpty())
+            return;
+        User user = optionalUser.get();
+        int farmId = user.getFarmId();
+
+        // 입력 파라미터에서 Time 값 추출 후 시간 계산
+        JSONObject jsonObject = (JSONObject) parser.parse(data);
+        String hour = (String) jsonObject.get("hour");
+
+        LocalDateTime t1 = LocalDateTime.now().minusHours(Integer.parseInt(hour)); // 현재 시간 기준으로 계산
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        String formattedStartTime = t1.format(formatter); // LocalDateTime을 문자열로 포맷팅
+        System.out.println(formattedStartTime);
+
+        Double avgTemperature = farmAvgService.getAvgTemperatureValue(farmId,formattedStartTime);
+        Double avgHumidity = farmAvgService.getAvgHumidityValue(farmId,formattedStartTime);
+        Double avgCarbonDioxide = farmAvgService.getAvgCarbonDioxideValue(farmId,formattedStartTime);
+
+        JSONObject avgJson  = new JSONObject();
+        avgJson.put("Temperature",avgTemperature);
+        avgJson.put("Humidity",avgHumidity);
+        avgJson.put("CarbonDioxide",avgCarbonDioxide);
+        res.getWriter().write(avgJson.toJSONString());
     }
 }
