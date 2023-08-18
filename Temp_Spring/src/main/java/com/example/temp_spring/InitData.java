@@ -36,6 +36,7 @@ public class InitData {
                     .email("admin@gmail.com")
                     .role(UserRole.ADMIN)
                     .salt(salt)
+                    .farmId(2147000000)
                     .build();
             userRepository.save(admin2);
         }
@@ -47,6 +48,7 @@ public class InitData {
                     .email("user@gmail.com")
                     .role(UserRole.USER)
                     .salt(salt)
+                    .farmId(9255255)
                     .build();
             userRepository.save(user2);
         }

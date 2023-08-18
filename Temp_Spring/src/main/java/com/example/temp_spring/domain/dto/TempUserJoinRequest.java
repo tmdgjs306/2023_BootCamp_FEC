@@ -15,7 +15,7 @@ public class TempUserJoinRequest {
     private String password;
     private String email;
 
-    private Long farmId;
+    private int farmId;
     public TempUser toEntity() {
         return TempUser.builder()
                 .loginId(this.loginId)

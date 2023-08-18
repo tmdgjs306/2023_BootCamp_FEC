@@ -32,6 +32,7 @@ const ManageUsers = () => {
             console.error("Error fetching new user requests:", error);
         }
     };
+
     const handleUserAction = async (actionType, loginId) => {
         const endpoint = actionType === 'accept' ? '/api/acceptUser' : '/api/rejectUser';
         try {

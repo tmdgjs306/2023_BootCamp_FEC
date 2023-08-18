@@ -13,5 +13,5 @@ public interface FarmInformationDataRepository extends JpaRepository<FarmInforma
     Optional<FarmInformationData> findById(Long aLong);
 
     @Query("SELECT u FROM FarmInformationData u WHERE u.id = (SELECT MAX(u2.id) FROM FarmInformationData u2 WHERE u2.farmId = :farmId)")
-    FarmInformationData findLatestFarmInformationData(@Param("farmId") Long farmId);
+    FarmInformationData findLatestFarmInformationData(@Param("farmId") int farmId);
 }

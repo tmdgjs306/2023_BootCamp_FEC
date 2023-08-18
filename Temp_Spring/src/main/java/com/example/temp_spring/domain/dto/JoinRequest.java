@@ -31,7 +31,7 @@ public class JoinRequest {
     private String salt = sha256.getSalt();
     private String email;
 
-    private Long farmId;
+    private int farmId;
 
     public User toEntity() throws NoSuchAlgorithmException {
         return User.builder()

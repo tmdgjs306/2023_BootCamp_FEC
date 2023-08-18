@@ -115,7 +115,7 @@ public class DataController {
 
         // loginId를 이용하여 유저 정보 획득
         User user = optionalUser.get();
-        Long FarmId = user.getFarmId();
+        int FarmId = user.getFarmId();
 
         // DB 테이블을 조회하여 해당 농장에서 가장 최근에 측정된 온도 데이터 값 불러옴
         FarmInformationData farmInformationData = farmInformationDataRepository.findLatestFarmInformationData(FarmId);

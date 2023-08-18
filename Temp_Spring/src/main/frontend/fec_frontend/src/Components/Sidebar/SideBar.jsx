@@ -149,7 +149,6 @@ const SideBar = () => {
                     </button>
                 </form>
             </div>
-            <a href="/api/log-out">log-out!</a>
         </div>
     )
 }
