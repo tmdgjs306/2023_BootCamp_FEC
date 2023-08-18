@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const CO2Chart = () => {
     // need to change useSate to []
-    const [co2Data, setCO2Data] = useState(300);
+    const [co2Data, setCO2Data] = useState([]);
 
     const getColor = value => {
         if (value >= 0 && value <= 100) {
@@ -42,10 +42,10 @@ const CO2Chart = () => {
 
     useEffect(() => {
         // Fetch live CO2 data
-        axios.get('/latestEnvironmentData')
+        axios.get('/api/latestEnvironmentData')
             .then(response => {
-                const { carbonDioxideValue } = response.data;
-                setCO2Data(carbonDioxideValue);
+                let String = JSON.stringify(response.data);
+                setCO2Data(JSON.parse(String).carbonDioxideValue);
             })
             .catch(error => {
                 console.error('Error fetching CO2 data:', error);

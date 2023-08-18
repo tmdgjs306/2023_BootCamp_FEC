@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const HumidityChart = () => {
     // need to change useSate to []
-    const [outsideTemperature, setOutsideTemperature] = useState(25);
-    const [insideTemperature, setInsideTemperature] = useState(28);
+    const [outsideTemperature, setOutsideTemperature] = useState([]);
+    const [insideTemperature, setInsideTemperature] = useState([]);
 
     const options = {
         chart: {
@@ -32,20 +32,20 @@ const HumidityChart = () => {
 
     useEffect(() => {
         // Fetch outside temperature data
-        axios.get('api/getWeather')
+        axios.get('/api/latestEnvironmentData')
             .then(response => {
-                const { temperature } = response.data;
-                setOutsideTemperature(temperature);
+                let String = JSON.stringify(response.data);
+                setOutsideTemperature(JSON.parse(String).temperatureValue);
             })
             .catch(error => {
                 console.error('Error fetching outside temperature:', error);
             });
 
         // Fetch inside temperature data
-        axios.get('api/latestEnvironmentData')
+        axios.get('/api/latestEnvironmentData')
             .then(response => {
-                const { temperature } = response.data;
-                setInsideTemperature(temperature);
+                let String = JSON.stringify(response.data);
+                setOutsideTemperature(JSON.parse(String).temperatureValue);
             })
             .catch(error => {
                 console.error('Error fetching inside temperature:', error);
