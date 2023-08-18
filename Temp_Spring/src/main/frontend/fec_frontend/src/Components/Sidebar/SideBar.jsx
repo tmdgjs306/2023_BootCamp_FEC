@@ -10,14 +10,15 @@ import { IoFlower } from 'react-icons/io5'
 import { PiUsersThreeFill } from 'react-icons/pi';
 import { TbBellFilled } from 'react-icons/tb';
 
+// was better if link used by menu const
 
 const SideBar = () => {
     const handleLogout = () => {
         navigate('/');
     };
     return (
-        <div className="overflow-hidden flex flex-col bg-[#F2F7F2] w-32 w-1/5 p-3">
-            <div className='flex items-center gap-2 px-1 py-3'>
+        <div className="overflow-hidden flex flex-col bg-[#F2F7F2] w-40 w-1/5 p-3">
+            <div className='flex gap-4 px-1 py-8'>
                 <img className='flex justify-center h-16 w-16' src={logo} alt='Fec Logo' />
                 {/* menu parts */}
             </div>

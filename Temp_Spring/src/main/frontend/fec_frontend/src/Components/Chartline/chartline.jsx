@@ -22,9 +22,8 @@ const data = [
     date: "2023.08.16",
     temperature: "21C",
   },
-
-
 ];
+
 const ChartLine = () => {
   return (
     <Chart padding={[10, 20, 50, 40]} autoFit height={300} data={data} >

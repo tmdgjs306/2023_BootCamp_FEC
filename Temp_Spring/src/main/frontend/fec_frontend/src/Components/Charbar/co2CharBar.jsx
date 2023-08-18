@@ -33,7 +33,6 @@ registerShape('point', 'pointer', {
 });
 
 
-
 const Co2CharBar = () => {
 
     const scale = {

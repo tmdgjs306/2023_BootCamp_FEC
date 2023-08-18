@@ -4,11 +4,11 @@ import Header from '../Header/Header';
 
 const DashboardLayout = ({ children }) => {
     return (
-        <div className="flex h-screen bg-[#14213d]">
+        <div className="flex bg-[#14213d]">
             <SideBar />
-            <div className="flex-1 p-8">
+            <div className="flex-1 ">
                 <Header />
-                <div className='mt-8'>
+                <div className='mt-10 grid grid-col-3'>
                     {children}
                 </div>
             </div>

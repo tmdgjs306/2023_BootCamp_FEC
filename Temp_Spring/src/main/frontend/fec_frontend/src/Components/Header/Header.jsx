@@ -6,11 +6,11 @@ import bellicon from '../../Assets/bellicon.png';
 
 const Header = () => {
     return (
-        <div className="bg-[#14213d] h-16 px-4 flex items-center border-b border-gray-200 justify-between">
+        <div className="bg-[#14213d] h-16 px-4 flex border-b border-gray-200 justify-between">
             <div className="flex items-center sm:justify-between sm:gap-4">
-                <div className="text-left prose prose-lg text-2xl  py-3 text-gray-600">
+                <div className="text-left prose prose-lg text-2xl py-3 text-gray-600">
                     <div
-                        className="flex flex-1 items-center justify-between gap-8 sm:justify-end"
+                        className="flex flex-1 gap-8 sm:justify-end left-0"
                     >
                         <div className="flex gap-4">
                             <a
