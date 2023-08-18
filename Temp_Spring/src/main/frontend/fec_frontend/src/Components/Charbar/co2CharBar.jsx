@@ -1,115 +1,63 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from 'react'
-import {
-    Chart,
-    Point,
-    // eslint-disable-next-line no-unused-vars
-    Annotation,
-    Axis,
-    Coordinate,
-    registerShape,
-    // eslint-disable-next-line no-unused-vars
+import React, { useEffect, useState } from 'react';
+import ApexCharts from 'react-apexcharts';
+import axios from 'axios';
 
-} from 'bizcharts';
+const CO2Chart = () => {
+    // need to change useSate to []
+    const [co2Data, setCO2Data] = useState(300);
 
-registerShape('point', 'pointer', {
-    draw(cfg, container) {
-
-        const group = container.addGroup();
-
-        const center = this.parsePoint({ x: 0, y: 0 });
-        const start = this.parsePoint({ x: 0, y: 0.5 });
-
-
-        // eslint-disable-next-line no-unused-vars
-
-        const angle1 = Math.atan((start.y - center.y) / (start.x - center.x));
-        const angle = (Math.PI - 2 * (angle1)) * cfg.points[0].x;
-
-        this.preAngle = angle;
-
-        return group;
-    },
-});
-
-
-const Co2CharBar = () => {
-
-    const scale = {
-        value: {
-            min: 0,
-            max: 1,
-            tickInterval: 0.1
+    const getColor = value => {
+        if (value >= 0 && value <= 100) {
+            return '#ffff3f'; // too low
+        } else if (value > 100 && value <= 900) {
+            return '#bfd200'; // good
+        } else if (value > 900 && value <= 2000) {
+            return '#2b9348'; // perfect
         }
-    }
-    // eslint-disable-next-line no-unused-vars
-    const [data, setData] = useState([{ value: 0.88 }]);
-    const startAngle = Math.PI / 2
-    const endAngle = startAngle + Math.PI * 2;
-    return (
-        <Chart
-            height={400}
-            data={data}
-            scale={scale}
-            autoFit
-        >
-            <Coordinate
-                type="polar"
-                radius={0.75}
-                startAngle={startAngle}
-                endAngle={endAngle}
-            />
-            <Axis
-                name="value"
-                line={null}
-                visible={false}
-                label={{
-                    offset: -36,
-                    style: {
-                        fontSize: 18,
-                        textAlign: 'center',
-                        textBaseline: 'middle',
+    };
+
+    const options = {
+        chart: {
+            height: 280,
+            type: 'radialBar',
+        },
+        series: [co2Data],
+        plotOptions: {
+            radialBar: {
+                dataLabels: {
+                    value: {
+                        formatter: function (val) {
+                            return val + " ppm"; // ppm unit
+                        },
                     },
-                }}
+                },
+                max: 5000, // Set the maximum value
+            },
+        },
+        fill: {
+            colors: [getColor(co2Data)], // color function 
+        },
+        labels: ['CO2 Level']
+    };
 
-                grid={null}
-            />
-            <Point
-                position="value*1"
-                color="#9CAF88"
-                shape="pointer"
-            />
-            <Annotation.Arc
-                start={[0, 1]}
-                end={[1, 1]}
-                style={{
-                    stroke: '#CBCBCB',
-                    lineWidth: 18,
-                    lineDash: null,
-                    lineCap: 'round',
-                }}
-            />
-            <Annotation.Arc
-                start={[0, 1]}
-                end={[data[0].value, 1]}
-                style={{
-                    stroke: '#156064',
-                    lineCap: 'round',
-                    lineWidth: 18,
-                    lineDash: null,
-                }}
-            />
-            <Annotation.Text
-                position={['50%', '50%']}
-                content={`${Math.round(data[0].value * 100)}%`}
-                style={{
-                    fontSize: 24,
-                    fill: '#156064',
-                    textAlign: 'center',
-                }}
-            />
-        </Chart>
-    )
-}
+    useEffect(() => {
+        // Fetch live CO2 data
+        axios.get('/latestEnvironmentData')
+            .then(response => {
+                const { carbonDioxideValue } = response.data;
+                setCO2Data(carbonDioxideValue);
+            })
+            .catch(error => {
+                console.error('Error fetching CO2 data:', error);
+            });
+    }, []);
 
-export default Co2CharBar
+    return (
+        <div>
+
+            <ApexCharts options={options} series={options.series} type="radialBar" height={280} />
+        </div>
+    );
+};
+
+export default CO2Chart;

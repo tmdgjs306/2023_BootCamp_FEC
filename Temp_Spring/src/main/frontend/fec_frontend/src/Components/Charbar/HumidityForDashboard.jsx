@@ -4,51 +4,51 @@ import axios from 'axios';
 
 const HumidityChart = () => {
     // need to change useSate to []
-    const [outsideTemperature, setOutsideTemperature] = useState(25);
-    const [insideTemperature, setInsideTemperature] = useState(28);
+    const [outsideHumidity, setOutsideHumidity] = useState(89);
+    const [insideHumidity, setInsideHumidity] = useState(90);
 
     const options = {
         chart: {
             height: 280,
             type: 'radialBar',
         },
-        series: [insideTemperature, outsideTemperature],
+        series: [insideHumidity, outsideHumidity],
         plotOptions: {
             radialBar: {
                 dataLabels: {
                     value: {
                         formatter: function (val) {
-                            return val + " °C"; // Display the value with the degree symbol and "°C"
+                            return val + " %";
                         },
                     },
                 },
             },
         },
         fill: {
-            colors: ['#52b69a', '#b5e48c'], // Set colors inside, outside
+            colors: ['#bbadff', '#4361ee'], // Set colors inside, outside
         },
         labels: ['Inside', 'Outside']
     };
 
     useEffect(() => {
-        // Fetch outside temperature data
-        axios.get('api/getWeather')
+        // Fetch outside humidity data
+        axios.get('/latestEnvironmentData')
             .then(response => {
-                const { temperature } = response.data;
-                setOutsideTemperature(temperature);
+                const { humidityValue } = response.data;
+                setOutsideHumidity(humidityValue);
             })
             .catch(error => {
-                console.error('Error fetching outside temperature:', error);
+                console.error('Error fetching outside humidity:', error);
             });
 
-        // Fetch inside temperature data
-        axios.get('api/latestEnvironmentData')
+        // Fetch inside humidity data
+        axios.get('/latestEnvironmentData')
             .then(response => {
-                const { temperature } = response.data;
-                setInsideTemperature(temperature);
+                const { humidityValue } = response.data;
+                setInsideHumidity(humidityValue);
             })
             .catch(error => {
-                console.error('Error fetching inside temperature:', error);
+                console.error('Error fetching inside humidity:', error);
             });
     }, []);
 

@@ -4,7 +4,7 @@ import Header from '../Header/Header';
 
 const DashboardLayout = ({ children }) => {
     return (
-        <div className="flex bg-[#14213d]">
+        <div className="flex h-screen overflow-hidden bg-[#14213d]">
             <SideBar />
             <div className="flex-1 ">
                 <Header />
