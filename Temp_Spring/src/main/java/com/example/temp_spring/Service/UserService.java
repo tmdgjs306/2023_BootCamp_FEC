@@ -10,6 +10,7 @@ import com.example.temp_spring.repository.UserRepository;
 import com.example.temp_spring.domain.dto.JoinRequest;
 import com.example.temp_spring.domain.dto.LoginRequest;
 import lombok.RequiredArgsConstructor;
+import org.json.simple.JSONObject;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,17 +23,11 @@ import java.util.Optional;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-
-
     private final UserRepository userRepository;
     private final SHA256 sha256 = new SHA256();
     private final TempUserService tempUserService;
     public boolean checkLoginIdDuplicate(String loginId) {
         return userRepository.existsByLoginId(loginId);
-    }
-
-    public void join(JoinRequest req) throws NoSuchAlgorithmException {
-        userRepository.save(req.toEntity());
     }
 
     public void join(String tempUserId) throws NoSuchAlgorithmException {
@@ -83,5 +78,22 @@ public class UserService {
         if(optionalUser.isEmpty()) return null;
 
         return optionalUser.get();
+    }
+
+    public String getUserInfo(String loginId){
+        JSONObject jsonObject = new JSONObject();
+        User user = getLoginUserByLoginId(loginId);
+
+        //JSON 형태로 값 전송
+        jsonObject.put("loginId",user.getLoginId());
+        jsonObject.put("email",user.getEmail());
+        jsonObject.put("farmId",user.getFarmId());
+
+        return jsonObject.toJSONString();
+    }
+
+    public int getFarmIdByLoginId(String loginId){
+        User user = getLoginUserByLoginId(loginId);
+        return user.getFarmId();
     }
 }

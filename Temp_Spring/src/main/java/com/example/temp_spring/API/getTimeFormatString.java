@@ -1,6 +1,10 @@
 package com.example.temp_spring.API;
 
+import org.json.simple.JSONObject;
+
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Project Name: F.E.C
  * Team: Newbies
@@ -73,26 +77,20 @@ public class getTimeFormatString {
         Date = Integer.toString(t.getYear())+Month+Integer.toString(t.getDayOfMonth());
         return Date+Hour;
     }
-    public String arduinoDataFormat(LocalDateTime t){
-        if(t.getMonthValue()>=10){
-            Month = Integer.toString(t.getMonthValue());
-        }
-        else{
-            Month = "0"+Integer.toString(t.getMonthValue());
-        }
+    public String arduinoDataFormat(LocalDateTime localDateTime){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("year",YearFormat(localDateTime));
+        jsonObject.put("month",MonthFormat(localDateTime));
+        jsonObject.put("day",DayFormat(localDateTime));
+        jsonObject.put("hour",HourFormat(localDateTime));
+        jsonObject.put("minute",MinuteFormat(localDateTime));
+        return jsonObject.toJSONString();
+    }
 
-        if(t.getHour()>=10){
-            Hour = Integer.toString(t.getHour());
-        }
-        else{
-            Hour = "0"+Integer.toString(t.getHour());
-        }
-        if(t.getMinute()>=10){
-            Minute = Integer.toString(t.getMinute());
-        }
-        else{
-            Minute = "0"+Integer.toString(t.getMinute());
-        }
-        return Integer.toString(t.getYear())+Month+Integer.toString(t.getDayOfMonth())+Hour+Minute;
+    public String avgTimeFormat(int hour){
+        LocalDateTime avgTime = LocalDateTime.now().minusHours(hour);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
+        String formattedStartTime = avgTime.format(formatter); // LocalDateTime을 문자열로 포맷팅
+        return formattedStartTime;
     }
 }

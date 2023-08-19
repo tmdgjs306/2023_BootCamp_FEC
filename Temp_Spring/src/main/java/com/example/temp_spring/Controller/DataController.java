@@ -1,13 +1,11 @@
 package com.example.temp_spring.Controller;
 import com.example.temp_spring.API.getTimeFormatString;
 import com.example.temp_spring.API.getWeather;
-import com.example.temp_spring.Service.FarmAvgService;
-import com.example.temp_spring.Service.FarmIdService;
-import com.example.temp_spring.Service.TempUserService;
-import com.example.temp_spring.Service.TodoListService;
+import com.example.temp_spring.Service.*;
 import com.example.temp_spring.domain.data.*;
 import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.jwt.CookieParser;
 import com.example.temp_spring.jwt.JwtTokenUtil;
 import com.example.temp_spring.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,19 +49,14 @@ import java.util.Optional;
 public class DataController {
 
     private final TempUserService tempUserService;
-
-    private final FarmInformationDataRepository farmInformationDataRepository;
-
-    private final PlantEnvironmentDataRepository plantEnvironmentDataRepository;
-
-    JSONParser parser = new JSONParser();
-
-    private final UserRepository userRepository;
-
+    private final UserService userService;
+    private final FarmInformationDataService farmInformationDataService;
+    private final getTimeFormatString timeFormatString = new getTimeFormatString();
+    private final CookieParser cookieParser;
+    private final PlantEnvironmentDataService plantEnvironmentDataService;
+    private final JSONParser parser = new JSONParser();
     private final FarmIdService farmIdService;
-
     private  final TodoListService todoListService;
-
     private final FarmAvgService farmAvgService;
 
     @GetMapping("/getFarmId")
@@ -77,57 +69,24 @@ public class DataController {
         res.setCharacterEncoding("UTF-8");
         res.getWriter().write(farmId);
     }
+
     // 아두이노 장치에서 받은 데이터 DB에 저장
     @PostMapping("/addData")
     public void addData(@RequestBody String req) throws ParseException {
-
-        //Json 데이터 파싱
-        JSONObject jsonObject = (JSONObject) parser.parse(req);
-        Double tempValue = (Double) jsonObject.get("temperature");
-        Long illuminanceValue = (Long) jsonObject.get("illuminance");
-        String timeValue = (String) jsonObject.get("time");
-        String f = (String)jsonObject.get("farmId");
-        Long temp = Long.parseLong(f);
-        int farmId = temp.intValue();
-        Double Humidity =(Double) jsonObject.get("humidity");
-
-        // farmInformationDataRepository에 저장
-        FarmInformationData data = FarmInformationData.builder()
-                .farmId(farmId)
-                .TemperatureValue(tempValue)
-                .humidityValue(Humidity)
-                .carbonDioxideValue(Math.random() * 1000)
-                .illuminanceValue(illuminanceValue)
-                .time(timeValue)
-                .build();
-        farmInformationDataRepository.save(data);
+        farmInformationDataService.add(req);
     }
+
     @GetMapping("/latestEnvironmentData") // 농장 번호로 조회하여 자신의 농장의 최신 온도, 조도, 습도, CO2 값 전송
     public FarmInformationData getLatestFarmInformationData(HttpServletRequest req){
 
-        // Cookie 에서 토큰 추출
-        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
-                .filter(cookie -> cookie.getName().equals("jwtToken"))
-                .findFirst()
-                .orElse(null);
+        // JWT Token 을 조회하여 LoginID 획득
+        String loginId = cookieParser.parseCookie(req);
 
-        if(jwtTokenCookie == null) {
-            return null;
-        }
-
-        // 추출한 토큰을 이용하여 로그인 ID 정보 획득
-        String jwtToken = jwtTokenCookie.getValue();
-        String loginId = JwtTokenUtil.getLoginId(jwtToken);
-        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
-        if(optionalUser.isEmpty())
-            return null;
-
-        // loginId를 이용하여 유저 정보 획득
-        User user = optionalUser.get();
-        int FarmId = user.getFarmId();
+        //farmId 조회
+        int farmId = userService.getFarmIdByLoginId(loginId);
 
         // DB 테이블을 조회하여 해당 농장에서 가장 최근에 측정된 온도 데이터 값 불러옴
-        FarmInformationData farmInformationData = farmInformationDataRepository.findLatestFarmInformationData(FarmId);
+        FarmInformationData farmInformationData = farmInformationDataService.findLatestFarmInformationData(farmId);
         return farmInformationData;
     }
 
@@ -141,19 +100,17 @@ public class DataController {
 
     // 아두이노쪽 요청 처리 로직 -> 현재 시간 반환
     @GetMapping("/getTime")
-    public void getTimeData(HttpServletRequest req, HttpServletResponse res) throws IOException{
-        LocalDateTime t = LocalDateTime.now();
-        getTimeFormatString s = new getTimeFormatString();
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("year",s.YearFormat(t));
-        jsonObject.put("month",s.MonthFormat(t));
-        jsonObject.put("day",s.DayFormat(t));
-        jsonObject.put("hour",s.HourFormat(t));
-        jsonObject.put("minute",s.MinuteFormat(t));
-        res.setContentType("application/json");
-        res.getWriter().write(jsonObject.toJSONString());
-    }
+    public void getTimeData(HttpServletResponse res) throws IOException{
+        //현재 시간 정보 획득
+        LocalDateTime localDateTime = LocalDateTime.now();
 
+        //아두이노 에서 사용할 형식으로 변환
+        String arduinoDateFormat = timeFormatString.arduinoDataFormat(localDateTime);
+
+        //아두이노 장치에 응답
+        res.setContentType("application/json");
+        res.getWriter().write(arduinoDateFormat);
+    }
 
     // 사용자 정보 반환
     @GetMapping("/userInfo")
@@ -163,29 +120,13 @@ public class DataController {
         res.setCharacterEncoding("UTF-8");
 
         // Token 에서 loginId 정보 추출
-        JSONObject jsonObject = new JSONObject();
-        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
-                .filter(cookie -> cookie.getName().equals("jwtToken"))
-                .findFirst()
-                .orElse(null);
-
-        if(jwtTokenCookie == null) {
-            return;
-        }
-        String jwtToken = jwtTokenCookie.getValue();
-        String loginId = JwtTokenUtil.getLoginId(jwtToken);
+        String loginId = cookieParser.parseCookie(req);
 
         // loginId로 유저 조회
-        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
-        if(optionalUser.isEmpty())
-            return;
-        User user = optionalUser.get();
+        String userInfo= userService.getUserInfo(loginId);
 
         // 유저 정보 전송
-        jsonObject.put("loginId",user.getLoginId());
-        jsonObject.put("email",user.getEmail());
-        jsonObject.put("farmId",user.getFarmId());
-        res.getWriter().write(jsonObject.toJSONString());
+        res.getWriter().write(userInfo);
     }
 
     //관리자 기능 테스트
@@ -198,49 +139,20 @@ public class DataController {
 
     // 임시 유저 리스트 반환
     @GetMapping("/getTempUser")
-    public void getTempUser(HttpServletRequest req, HttpServletResponse res) throws IOException {
+    public void getTempUser(HttpServletResponse res) throws IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-
-        List<TempUser> list = new ArrayList<>();
-        list = tempUserService.getAllTempUser();
-        JSONArray jsonArray = new JSONArray();
-        for(int i=0; i<list.size(); i++){
-            JSONObject jsonObject = new JSONObject();
-            TempUser tempUser = list.get(i);
-            jsonObject.put("index",i+1);
-            jsonObject.put("loginId",tempUser.getLoginId());
-            jsonObject.put("email",tempUser.getEmail());
-            jsonObject.put("password",tempUser.getPassword());
-            jsonArray.add(jsonObject);
-        }
-        res.getWriter().write(jsonArray.toJSONString());
+        String tempUserList = tempUserService.getAllTempUser();
+        res.getWriter().write(tempUserList);
     }
-
 
     // 식물 환경 정보 반환
     @GetMapping("/getPlantEnvironmentData")
     public void getPlantEnvironmentData(HttpServletRequest req, HttpServletResponse res) throws IOException{
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
-
-        List<PlantEnvironmentData> list = new ArrayList<>();
-        list = plantEnvironmentDataRepository.getAllPlantEnvironmentData();
-        JSONArray jsonArray = new JSONArray();
-        for(int i=0; i<list.size(); i++){
-            JSONObject jsonObject = new JSONObject();
-            PlantEnvironmentData plantEnvironmentData = list.get(i);
-            jsonObject.put("index",i+1);
-            jsonObject.put("name",plantEnvironmentData.getName());
-            jsonObject.put("minTemperature",plantEnvironmentData.getMinTemperature());
-            jsonObject.put("maxTemperature",plantEnvironmentData.getMaxTemperature());
-            jsonObject.put("minHumidity",plantEnvironmentData.getMinHumidity());
-            jsonObject.put("maxHumidity",plantEnvironmentData.getMaxHumidity());
-            jsonObject.put("illuminance",plantEnvironmentData.getIlluminance());
-            jsonObject.put("carbonDioxide",plantEnvironmentData.getCarbonDioxide());
-            jsonArray.add(jsonObject);
-        }
-        res.getWriter().write(jsonArray.toJSONString());
+        String allPlantEnvironmentData = plantEnvironmentDataService.getAllPlantEnvironmentData();
+        res.getWriter().write(allPlantEnvironmentData);
     }
 
     // Todo-List 반환
@@ -251,71 +163,23 @@ public class DataController {
         res.setCharacterEncoding("UTF-8");
 
         //쿠키에서 토큰 정보 추출
-        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
-                .filter(cookie -> cookie.getName().equals("jwtToken"))
-                .findFirst()
-                .orElse(null);
-
-        if(jwtTokenCookie == null) {
-            return;
-        }
-
-        // 추출한 토큰을 이용하여 로그인 ID 정보 획득
-        String jwtToken = jwtTokenCookie.getValue();
-        String loginId = JwtTokenUtil.getLoginId(jwtToken);
-
+        String loginId = cookieParser.parseCookie(req);
         // todolist Json Array 형식으로 반환
-        List<TodoListData> list = new ArrayList<>();
-        list = todoListService.getTodoListByLoginId(loginId);
-        JSONArray jsonArray = new JSONArray();
-        for(int i=0; i<list.size(); i++){
-            JSONObject jsonObject = new JSONObject();
-            TodoListData todoListData = list.get(i);
-            jsonObject.put("index",i+1);
-            jsonObject.put("loginId",todoListData.getLoginId());
-            jsonObject.put("plantName",todoListData.getPlantName());
-            jsonObject.put("time",todoListData.getTime());
-            jsonObject.put("todo",todoListData.getTodo());
-            jsonArray.add(jsonObject);
-        }
-        res.getWriter().write(jsonArray.toJSONString());
+        String todoList = todoListService.getTodoListByLoginId(loginId);
+
+        res.getWriter().write(todoList);
     }
 
     // Todo-List 저장
     @PostMapping("/addTodoData")
-    public void addTodoData(@RequestBody String req, HttpServletResponse res, HttpServletRequest request) throws ParseException {
+    public void addTodoData(@RequestBody String data, HttpServletResponse res, HttpServletRequest request) throws ParseException {
         // 헤더 설정
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
 
-        // cookie에서 토큰 추출
-        Cookie jwtTokenCookie = Arrays.stream(request.getCookies())
-                .filter(cookie -> cookie.getName().equals("jwtToken"))
-                .findFirst()
-                .orElse(null);
-
-        if(jwtTokenCookie == null) {
-            return;
-        }
-
-        // 추출한 토큰을 이용하여 로그인 ID 정보 획득
-        String jwtToken = jwtTokenCookie.getValue();
-        String loginId = JwtTokenUtil.getLoginId(jwtToken);
-
-
-        JSONObject jsonObject = (JSONObject) parser.parse(req);
-
-        String time = (String) jsonObject.get("time");
-        String plantName = (String) jsonObject.get("plantName");
-        String todo = (String) jsonObject.get("todo");
-
-        TodoListData todoListData = TodoListData.builder()
-                .loginId(loginId)
-                .plantName(plantName)
-                .time(time)
-                .todo(todo)
-                .build();
-        todoListService.add(todoListData);
+        //todoData Repository에 값 저장
+        String loginId = cookieParser.parseCookie(request);
+        todoListService.add(data,loginId);
     }
     @GetMapping("/getAvgData")
     public void getAvgHourData(HttpServletRequest req, HttpServletResponse res, @RequestBody String data) throws ParseException, IOException {
@@ -324,41 +188,25 @@ public class DataController {
         res.setCharacterEncoding("UTF-8");
 
         //쿠키에서 토큰 정보 추출
-        Cookie jwtTokenCookie = Arrays.stream(req.getCookies())
-                .filter(cookie -> cookie.getName().equals("jwtToken"))
-                .findFirst()
-                .orElse(null);
-
-        if(jwtTokenCookie == null) {
-            return;
-        }
-
-        // 추출한 토큰을 이용하여 로그인 ID 정보 획득 후 FarmId 조회
-        String jwtToken = jwtTokenCookie.getValue();
-        String loginId = JwtTokenUtil.getLoginId(jwtToken);
-        Optional<User> optionalUser = userRepository.findByLoginId(loginId);
-        if(optionalUser.isEmpty())
-            return;
-        User user = optionalUser.get();
-        int farmId = user.getFarmId();
+        String loginId = cookieParser.parseCookie(req);
+        int farmId = userService.getFarmIdByLoginId(loginId);
 
         // 입력 파라미터에서 Time 값 추출 후 시간 계산
         JSONObject jsonObject = (JSONObject) parser.parse(data);
         String hour = (String) jsonObject.get("hour");
+        String formattedStartTime = timeFormatString.avgTimeFormat(Integer.parseInt(hour));
 
-        LocalDateTime t1 = LocalDateTime.now().minusHours(Integer.parseInt(hour)); // 현재 시간 기준으로 계산
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmm");
-        String formattedStartTime = t1.format(formatter); // LocalDateTime을 문자열로 포맷팅
-        System.out.println(formattedStartTime);
-
+        // 입력받은 시간 기준으로 평균값 계산
         Double avgTemperature = farmAvgService.getAvgTemperatureValue(farmId,formattedStartTime);
         Double avgHumidity = farmAvgService.getAvgHumidityValue(farmId,formattedStartTime);
         Double avgCarbonDioxide = farmAvgService.getAvgCarbonDioxideValue(farmId,formattedStartTime);
 
+        // JSON 형식으로 계산한 통계 값 전송
         JSONObject avgJson  = new JSONObject();
         avgJson.put("Temperature",avgTemperature);
         avgJson.put("Humidity",avgHumidity);
         avgJson.put("CarbonDioxide",avgCarbonDioxide);
+
         res.getWriter().write(avgJson.toJSONString());
     }
 }
