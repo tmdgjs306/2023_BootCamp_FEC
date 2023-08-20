@@ -8,7 +8,7 @@ import { ImStatsDots } from 'react-icons/im'
 import { ImLeaf } from 'react-icons/im'
 import { IoFlower } from 'react-icons/io5'
 import { PiUsersThreeFill } from 'react-icons/pi';
-import { TbBellFilled } from 'react-icons/tb';
+
 
 // was better if link used by menu const
 
@@ -17,24 +17,27 @@ const SideBar = () => {
         navigate('/');
     };
     return (
-        <div className="overflow-hidden flex flex-col bg-[#F2F7F2] w-40 w-1/5 p-3">
-            <div className='flex gap-4 px-1 py-8'>
-                <img className='flex justify-center h-16 w-16' src={logo} alt='Fec Logo' />
-                {/* menu parts */}
-            </div>
-            <div className="flex-1">
 
-                <div className="px-2">
-                    <ul className="space-y-10 pt-6">
+        <div className="bg-[#F2F7F2] left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden ease-linear">
+            {/* header */}
+            <div className='flex items-center justify-between gap-2 px-4 py-1.5 lg:py-5.5'>
+                <img className='flex justify-center h-16 w-16 transition-transform transform hover:scale-110' src={logo} alt='Fec Logo' />
+            </div>
+            {/* menu parts */}
+            <div className="flex-1">
+                <div className="px-6">
+                    <ul className="space-y-auto pt-4">
                         <li>
                             <a
                                 href="/dashboard"
-                                className="group relative flex justify-center rounded px-2 py-1 text-gray-500 hover:text-orange-700 text-green-700 "
+                                className="group relative flex flex-col items-center rounded px-2 py-4"
                             >
-                                <TbLayoutDashboard className='icon w-9 h-9' />
 
+                                <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                    <TbLayoutDashboard className='icon w-6 h-6' />
+                                </div>
                                 <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
+                                    className="mt-1 text-md font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
                                 >
                                     Dashboard
                                 </span>
@@ -43,43 +46,33 @@ const SideBar = () => {
                         <li>
                             <a
                                 href="/profile"
-                                className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
+                                className="group relative flex flex-col items-center rounded px-2 py-4 group-hover:text-orange-700 text-green-700"
                             >
+                                <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                    <RiUser5Fill className='icon w-7 h-7' />
+                                </div>
 
-                                <RiUser5Fill className='icon w-9 h-9' />
                                 <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
+                                    className="mt-1 text-md font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
                                 >
                                     Profile
                                 </span>
 
                             </a>
                         </li>
-                        <li>
-                            <a
-                                href="/notication"
-                                className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
-                            >
-
-                                <TbBellFilled className='icon w-9 h-9' />
-                                <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
-                                >
-                                    Notication
-                                </span>
-                            </a>
-                        </li>
 
                         <li>
                             <a
                                 href="/overview"
-                                className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700 "
+                                className="group relative flex flex-col items-center rounded px-2 py-4 "
 
                             >
-                                <ImStatsDots className='icon w-7 h-7' />
 
+                                <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                    <ImStatsDots className='icon w-7 h-7' />
+                                </div>
                                 <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
+                                    className="mt-1 text-md font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
                                 >
                                     Overview
                                 </span>
@@ -89,14 +82,16 @@ const SideBar = () => {
                         <li>
                             <a
                                 href="/manageuser"
-                                className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
+                                className="group relative flex flex-col items-center rounded px-2 py-4 "
                             >
+                                <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                    <PiUsersThreeFill className='icon w-7 h-7' />
+                                </div>
 
-                                <PiUsersThreeFill className='icon w-8 h-8' />
                                 <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
+                                    className="mt-1 text-md font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
                                 >
-                                    Users
+                                    Manage users
                                 </span>
                             </a>
                         </li>
@@ -104,11 +99,14 @@ const SideBar = () => {
                         <li>
                             <a
                                 href="/performance"
-                                className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
+                                className="group relative flex flex-col items-center rounded px-2 py-4"
                             >
-                                <IoFlower className='icon w-8 h-8' />
+                                <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                    <IoFlower className='icon w-7 h-7' />
+                                </div>
+
                                 <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
+                                    className="mt-1 text-md font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
                                 >
                                     Performance
                                 </span>
@@ -118,12 +116,13 @@ const SideBar = () => {
                         <li>
                             <a
                                 href="/status"
-                                className="group relative flex justify-center rounded px-2 py-1.5 text-gray-500 hover:text-orange-700 text-green-700"
+                                className="group relative flex flex-col items-center rounded px-2 py-4"
                             >
-                                <ImLeaf className='icon w-8 h-8' />
-
+                                <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                    <ImLeaf className='icon w-7 h-7' />
+                                </div>
                                 <span
-                                    className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100"
+                                    className="mt-1 text-md font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
                                 >
                                     Plant status
                                 </span>
@@ -131,25 +130,27 @@ const SideBar = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 bg-[#F2F7F2] p-2">
+                <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 p-8">
                     <form action="/log-out">
                         <button
                             type="submit"
-                            className="group relative flex w-full justify-center rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
+                            className="group relative flex w-full justify-center rounded-lg px-2 py-0.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
                         >
-                            <IoLogOutOutline className='icon w-10 h-10' />
+                            <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
+                                <IoLogOutOutline className='icon w-10 h-10' />
 
-                            <span
-                                className="absolute start-full top-1/2 ms-4 -translate-y-1/2 rounded bg-gray-900 px-2 py-1.5 text-xs font-medium text-white opacity-0 group-hover:opacity-100 hover:text-green-700"
-                                onClick={handleLogout}>
-                                Logout
-                            </span>
+                                <span
+                                    className="mt-1 text-xs font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
+                                    onClick={handleLogout}>
+                                    Logout
+                                </span>
+                            </div>
                         </button>
                     </form>
                 </div>
             </div>
 
-        </div>
+        </div >
     )
 }
 

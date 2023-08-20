@@ -1,8 +1,13 @@
-import React from 'react'
-import userdefault from '../../Assets/profileiconn.png';
+import userdefault from '../../Assets/profileicon.png';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const UserProfileGrid = () => {
-    // get api/userInfo -> email, login ID, farm ID
+    const [email, setEmail] = useState('root@gmail.com');
+    const [loginId, setLoginId] = useState('root');
+    const [farmId, setFarmId] = useState('11111');
+
+    // Fetch user info 
     useEffect(() => {
         const fetchUserInfo = async () => {
             try {
@@ -18,30 +23,33 @@ const UserProfileGrid = () => {
 
         fetchUserInfo();
     }, []);
-    return (
-        <div className="h-screen w-full bg-gray-50 flex justify-center items-center">
-            <div className="h-56 w-72 absolute flex justify-center items-center">
-                <img
-                    className="object-cover h-20 w-20 rounded-full"
-                    src={userdefault} alt='default user profile picture'
-                />
-            </div>
 
-            <div
-                className="h-56 mx-4 w-5/6 bg-blue-400 rounded-3xl shadow-md sm:w-80 sm:mx-0 "
-            >
-                <div
-                    className=" bg-white h-1/2 w-full rounded-3xl flex flex-col justify-around items-center"
-                >
-                    <div className="w-full h-1/2 flex flex-col justify-center items-center">
-                        <h1 className="text-gray-700 font-bold">{loginId}</h1>
-                        <h1 className="text-gray-500 text-sm">{email}</h1>
-                        <h1 className="text-gray-500 text-sm">{farmId}</h1>
-                    </div>
+    return (
+        <div className="flex-grow p-10 ">
+            <div className='bg-[#F2F7F2] p-4 shadow rounded-3xl'>
+                <h2 className="text-2xl text-blue-900 font-bold mb-4">{loginId}'s profile</h2>
+                <div className="flex justify-center items-center p-10">
+                    <img
+                        className="object-cover h-20 w-20 rounded-full"
+                        src={userdefault}
+                        alt="default user profile picture"
+                    />
                 </div>
-            </div>
+
+                <div className="bg-blue-900 rounded-3xl shadow-md">
+                    <div className='bg-[#F2F7F2] rounded-3xl'>
+                        <div className="bg-[#14213d] p-4 rounded-3xl">
+                            <div className="text-white font-bold">ID: {loginId}</div>
+                            <div className="text-gray-100 text-sm">Email: {email}</div>
+                            <div className="text-gray-100 text-sm">Farm ID: {farmId}</div>
+                        </div>
+                    </div>
+
+                </div>
+            </div >
         </div>
+
     )
 }
 
-export default UserProfileGrid
+export default UserProfileGrid;

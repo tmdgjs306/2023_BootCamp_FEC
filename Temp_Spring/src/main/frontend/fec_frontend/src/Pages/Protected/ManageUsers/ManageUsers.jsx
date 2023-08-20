@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import SideBar from '../../../Components/Sidebar/SideBar';
+// layout
+import DashboardLayout from '../../../Components/Layout/DashboardLayout';
 
 const ManageUsers = () => {
     const [users, setUsers] = useState({
@@ -53,8 +53,7 @@ const ManageUsers = () => {
     });
     console.log(users.farmId);
     return (
-        <div className="overflow-hidden w-screen h-screen flex bg-[#14213d]">
-            <SideBar />
+        <DashboardLayout>
             <div className="col-span-12 mt-5">
                 <div className='grid gap-2 grid-cols-1 lg:grid-cols-1'>
                     <div className='bg-[#F2F7F2] p-4 shadow-lg rounded-lg mb-4 pb-10 grid mb-40 pb-10 px-8 mx-4'>
@@ -107,8 +106,7 @@ const ManageUsers = () => {
                     </div>
                 </div>
             </div>
-        </div>
-
+        </DashboardLayout >
     );
 };
 

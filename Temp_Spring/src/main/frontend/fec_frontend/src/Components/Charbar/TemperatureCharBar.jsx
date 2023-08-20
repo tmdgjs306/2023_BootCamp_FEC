@@ -4,12 +4,12 @@ import axios from 'axios';
 
 const HumidityChart = () => {
     // need to change useSate to []
-    const [outsideTemperature, setOutsideTemperature] = useState([]);
-    const [insideTemperature, setInsideTemperature] = useState([]);
+    const [outsideTemperature, setOutsideTemperature] = useState(34);
+    const [insideTemperature, setInsideTemperature] = useState(24);
 
     const options = {
         chart: {
-            height: 280,
+            height: 180,
             type: 'radialBar',
         },
         series: [insideTemperature, outsideTemperature],
@@ -31,7 +31,7 @@ const HumidityChart = () => {
     };
 
     useEffect(() => {
-        // Fetch outside temperature data
+        // Fetch OUTSIDE temperature data
         axios.get('/api/latestEnvironmentData')
             .then(response => {
                 let String = JSON.stringify(response.data);
@@ -41,7 +41,7 @@ const HumidityChart = () => {
                 console.error('Error fetching outside temperature:', error);
             });
 
-        // Fetch inside temperature data
+        // Fetch INSIDE temperature data
         axios.get('/api/latestEnvironmentData')
             .then(response => {
                 let String = JSON.stringify(response.data);
@@ -53,8 +53,8 @@ const HumidityChart = () => {
     }, []);
 
     return (
-        <div>
-            <ApexCharts options={options} series={options.series} type="radialBar" height={280} />
+        <div >
+            <ApexCharts options={options} series={options.series} type="radialBar" height={180} />
         </div>
     );
 };
