@@ -17,15 +17,14 @@ const SideBar = () => {
         navigate('/');
     };
     return (
-
-        <div className="bg-[#F2F7F2] left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden ease-linear">
+        <div className="bg-[#dff3e4] left-0 top-0 z-9999 flex h-screen flex-col overflow-y-hidden ease-linear">
             {/* header */}
             <div className='flex items-center justify-between gap-2 px-4 py-1.5 lg:py-5.5'>
                 <img className='flex justify-center h-16 w-16 transition-transform transform hover:scale-110' src={logo} alt='Fec Logo' />
             </div>
             {/* menu parts */}
             <div className="flex-1">
-                <div className="px-6">
+                <div className="px-8">
                     <ul className="space-y-auto pt-4">
                         <li>
                             <a
@@ -130,7 +129,7 @@ const SideBar = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="sticky inset-x-0 bottom-0 border-t border-gray-100 p-8">
+                <div className="sticky inset-x-0 bottom-0 border-t border-gray-300 p-9">
                     <form action="/log-out">
                         <button
                             type="submit"

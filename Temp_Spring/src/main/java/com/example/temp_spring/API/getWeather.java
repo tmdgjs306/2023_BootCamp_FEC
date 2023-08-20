@@ -39,14 +39,16 @@ public class getWeather
             String Hour = timeFormat.HourFormat(t);
             if(t.equals("0"))Hour = "24";
             else Hour = Integer.toString(Integer.parseInt(Hour)-1);
+            System.out.println(Hour);
+            System.out.println(Date);
             URL url = new URL(
-                    "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
-                            + "?ServiceKey=n2NMYt0rWusbUZp9FjIEqrnTPs5zY22beubl2pGnkilwf5SHv84PmYVeLeFwtSpsHxlEsYem1kj%2BnYftRClKAQ%3D%3D" // 서비스키
+                    "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"
+                            + "serviceKey=n2NMYt0rWusbUZp9FjIEqrnTPs5zY22beubl2pGnkilwf5SHv84PmYVeLeFwtSpsHxlEsYem1kj%2BnYftRClKAQ%3D%3D" // 서비스키
                             //	+ "&pageNo=1" // 페이지번호 Default: 1
-                            + "&numOfRows=60" // 한 페이지 결과 수 (10개 카테고리값 * 6시간)
+                            + "&numOfRows=1000" // 한 페이지 결과 수 (10개 카테고리값 * 6시간)
                             //	+ "&dataType=XML" // 요청자료형식(XML/JSON) Default: XML
-                            + "&base_date=" + t.format(DateTimeFormatter.ofPattern(Date))  // 발표 날짜
-                            + "&base_time=" + t.format(DateTimeFormatter.ofPattern(Hour+"0"+"0")) // 발표 시각
+                            + "&base_date=" + Date // 발표 날짜
+                            + "&base_time=" + Hour+"0"+"0" // 발표 시각
                             + "&nx=" + x // 예보지점의 X 좌표값
                             + "&ny=" + y // 예보지점의 Y 좌표값
             );
@@ -123,14 +125,17 @@ public class getWeather
             con.disconnect();
 
         StringBuilder sb = new StringBuilder();
+        JSONObject jsonObject = new JSONObject();
         if (s == null)
         { // ok!
+            jsonObject.put("temperature",v[3]);
+            jsonObject.put("humidity",v[4]);
             sb.append("날씨 : " + v[2]+" ").append("기온 : " + v[3] + "℃ ").append("습도 : " + v[4]+"%");
         }
         else
         { // error
             sb.append("Error : " + s);
         }
-        return sb.toString();
+        return jsonObject.toJSONString();
     }
 }

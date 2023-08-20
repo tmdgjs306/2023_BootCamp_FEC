@@ -1,8 +1,13 @@
 import React from 'react';
+import DashboardLayout from '../../../Components/Layout/DashboardLayout';
+import PlantStatusMain from '../../../Components/PlantStatusMain.jsx/PlantStatusMain';
 
 const Status = () => {
     return (
-        <div>Plant status page</div>
+        <DashboardLayout pageTitle="PLANT STATUS">
+            <PlantStatusMain />
+        </DashboardLayout>
+
     )
 }
 

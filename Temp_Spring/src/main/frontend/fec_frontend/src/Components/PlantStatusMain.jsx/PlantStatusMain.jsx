@@ -2,7 +2,7 @@ import React from 'react'
 
 const PlantStatusMain = () => {
     return (
-        <div>PlantStatusMain</div>
+        <div className='text-2xl text-white'>Plant status</div>
     )
 }
 

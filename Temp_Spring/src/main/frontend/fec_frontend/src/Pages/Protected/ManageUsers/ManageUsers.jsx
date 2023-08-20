@@ -53,11 +53,11 @@ const ManageUsers = () => {
     });
     console.log(users.farmId);
     return (
-        <DashboardLayout>
+        <DashboardLayout pageTitle="MANAGE USERS">
             <div className="col-span-12 mt-5">
                 <div className='grid gap-2 grid-cols-1 lg:grid-cols-1'>
                     <div className='bg-[#F2F7F2] p-4 shadow-lg rounded-lg mb-4 pb-10 grid mb-40 pb-10 px-8 mx-4'>
-                        <h1 class="font-bold text-base">User table</h1>
+                        <h1 class="font-bold text-base">Users</h1>
                         <div class="mt-4">
                             <div class="flex flex-col">
                                 <div class="-my-2 overflow-x-auto">

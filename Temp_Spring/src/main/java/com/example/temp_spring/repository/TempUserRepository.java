@@ -9,10 +9,11 @@ import java.util.Optional;
 
 public interface TempUserRepository extends JpaRepository<TempUser,Long> {
     Optional<TempUser> findById(Long aLong);
+
     void deleteTempUserByLoginId(String aString);
     @Query("select t from TempUser t")
     List<TempUser> findAllTempUser();
 
-    Optional<TempUser> findByLoginId(String loginId);
+    TempUser findByLoginId(String loginId);
 
 }

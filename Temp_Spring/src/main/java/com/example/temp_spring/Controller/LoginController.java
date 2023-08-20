@@ -7,6 +7,7 @@ import com.example.temp_spring.Service.UserService;
 import com.example.temp_spring.domain.dto.TempUserJoinRequest;
 import com.example.temp_spring.domain.user.TempUser;
 import com.example.temp_spring.domain.user.User;
+import com.example.temp_spring.domain.user.UserRole;
 import com.example.temp_spring.jwt.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
@@ -67,7 +68,6 @@ public class LoginController {
         //응답 메시지 설정
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
-        System.out.println(loginRequest.getLoginId()+" "+loginRequest.getPassword());
         // loginId로 유저 정보 조회
         User user = userService.login(loginRequest);
 
@@ -82,19 +82,19 @@ public class LoginController {
         //토큰 생성
         String jwtToken = JwtTokenUtil.createToken(user.getLoginId(),secretKey,expireTimeMs);
         Cookie cookie = new Cookie("jwtToken", jwtToken);
-        cookie.setSecure(true); // 보안 설정
-        cookie.setHttpOnly(true); // 보안 설정
-        cookie.setPath("/");
         cookie.setMaxAge(30*60); // 쿠키 시간 설정
         res.addCookie(cookie); // 쿠키에 값 추가
     }
 
-    @GetMapping("log-out") // 로그 아웃 기능 -> 쿠키에서 Token 값 삭제
-    public void l(HttpServletResponse res){
+    @GetMapping("/log-out") // 로그 아웃 기능 -> 쿠키에서 Token 값 삭제
+    public void l(HttpServletResponse res) throws IOException {
         Cookie c = new Cookie("jwtToken",null);
         c.setMaxAge(0);
         res.addCookie(c);
+        System.out.println("Logout!");
+        res.sendRedirect("http://localhost:5173");
     }
+
     @PostMapping("/acceptUser") // 유저 승인 기능
     public void acceptUser(@RequestBody JoinRequest joinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
         //응답 메시지 설정
@@ -102,19 +102,20 @@ public class LoginController {
         res.setCharacterEncoding("UTF-8");
 
         //UserDB에 저장, tempUser DB 에서 정보 삭제
-        userService.join(joinRequest);
+        userService.join(joinRequest.getLoginId());
         tempUserService.delete(joinRequest.getLoginId());
 
+        //클라이언트에게 응답 전송
         res.setStatus(HttpServletResponse.SC_OK);
         res.getWriter().write(joinRequest.getLoginId()+" 유저가 정상적으로 승인 되었습니다.");
     }
-    @PostMapping("rejectUser")
+    @PostMapping("/rejectUser")
     public void rejectUser(@RequestBody JoinRequest joinRequest, HttpServletResponse res) throws NoSuchAlgorithmException, IOException {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 
+        //TempUserDB 에서 정보 삭제
         tempUserService.delete(joinRequest.getLoginId());
-        res.sendRedirect("/getTempUser");
     }
 }
 

@@ -4,52 +4,60 @@ import axios from 'axios';
 
 const HumidityChart = () => {
     // need to change useSate to []
-    const [outsideTemperature, setOutsideTemperature] = useState(39);
-    const [insideTemperature, setInsideTemperature] = useState(29);
+    const [outsideHumidity, setOutsideHumidity] = useState(39);
+    const [insideHumidity, setInsideHumidity] = useState(29);
 
     const options = {
         chart: {
-            height: 280,
+            height: 180,
             type: 'radialBar',
         },
-        series: [insideTemperature, outsideTemperature],
+        series: [outsideHumidity, insideHumidity],
         plotOptions: {
             radialBar: {
                 dataLabels: {
                     value: {
                         formatter: function (val) {
-                            return val + " °C"; // "°C"
+                            return val + "%";
                         },
                     },
                 },
             },
         },
         fill: {
-            colors: ['#52b69a', '#b5e48c'], // colors inside, outside
+            colors: ['#14213d', '#4c7de7'], // colors inside, outside
         },
-        labels: ['Inside', 'Outside']
+        labels: ['Outside', 'Inside']
     };
 
-    useEffect(() => {
-        // Fetch OUTISDE temperature data
+    const fetchData = () => {
+        // Fetch OUTISDE humidity data
         axios.get('/api/getWeather')
             .then(response => {
                 const data = response.data;
-                setOutsideTemperature(data.temperatureValue); // change for getWeather type name
+                setOutsideHumidity(data.temperatureValue); // change for getWeather type name
             })
             .catch(error => {
-                console.error('Error fetching outside temperature:', error);
+                console.error('Error fetching outside humidity:', error);
             });
 
-        // Fetch INSIDE temperature data
+        // Fetch INSIDE humidity data
         axios.get('/api/latestEnvironmentData')
             .then(response => {
                 const data = response.data;
-                setInsideTemperature(data.temperatureValue);
+                setInsideHumidity(data.temperatureValue);
             })
             .catch(error => {
-                console.error('Error fetching inside temperature:', error);
+                console.error('Error fetching inside humidity:', error);
             });
+    };
+    useEffect(() => {
+        fetchData();
+        // Fetch new data every 10 seconds
+        const interval = setInterval(fetchData, 10000);
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
     }, []);
 
     return (

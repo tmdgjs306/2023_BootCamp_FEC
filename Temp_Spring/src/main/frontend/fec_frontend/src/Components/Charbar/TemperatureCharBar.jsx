@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import ApexCharts from 'react-apexcharts';
 import axios from 'axios';
 
-const HumidityChart = () => {
+const TemperatureCharBar = () => {
     // need to change useSate to []
     const [outsideTemperature, setOutsideTemperature] = useState(34);
     const [insideTemperature, setInsideTemperature] = useState(24);
@@ -12,30 +12,30 @@ const HumidityChart = () => {
             height: 180,
             type: 'radialBar',
         },
-        series: [insideTemperature, outsideTemperature],
+        series: [outsideTemperature, insideTemperature],
         plotOptions: {
             radialBar: {
                 dataLabels: {
                     value: {
                         formatter: function (val) {
-                            return val + " °C"; // Display the value with the degree symbol and "°C"
+                            return val + "°C"; // Display the value with the degree symbol and "°C"
                         },
                     },
                 },
             },
         },
         fill: {
-            colors: ['#52b69a', '#b5e48c'], // Set colors inside, outside
+            colors: ['#14213d', '#4c7de7'], // Set colors inside, outside
         },
-        labels: ['Inside', 'Outside']
+        labels: ['Outside', 'Inside']
     };
 
-    useEffect(() => {
+    const fetchData = () => {
         // Fetch OUTSIDE temperature data
-        axios.get('/api/latestEnvironmentData')
+        axios.get('/api/getWeather')
             .then(response => {
-                let String = JSON.stringify(response.data);
-                setOutsideTemperature(JSON.parse(String).temperatureValue);
+                const temperatureValue = JSON.parse(response.data).temperatureValue;
+                setOutsideTemperature(temperatureValue);
             })
             .catch(error => {
                 console.error('Error fetching outside temperature:', error);
@@ -44,12 +44,21 @@ const HumidityChart = () => {
         // Fetch INSIDE temperature data
         axios.get('/api/latestEnvironmentData')
             .then(response => {
-                let String = JSON.stringify(response.data);
-                setOutsideTemperature(JSON.parse(String).temperatureValue);
+                const temperatureValue = JSON.parse(response.data).temperatureValue;
+                setInsideTemperature(temperatureValue);
             })
             .catch(error => {
                 console.error('Error fetching inside temperature:', error);
             });
+    };
+
+    useEffect(() => {
+        fetchData();
+        // Fetch new data every 10 seconds
+        const interval = setInterval(fetchData, 10000);
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
     }, []);
 
     return (
@@ -59,4 +68,4 @@ const HumidityChart = () => {
     );
 };
 
-export default HumidityChart;
+export default TemperatureCharBar;

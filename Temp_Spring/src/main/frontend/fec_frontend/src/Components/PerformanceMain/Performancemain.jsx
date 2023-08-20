@@ -2,7 +2,7 @@ import React from 'react'
 
 const Performancemain = () => {
     return (
-        <div>Performancemain</div>
+        <div className='text-2xl text-white'>Performance</div>
     )
 }
 

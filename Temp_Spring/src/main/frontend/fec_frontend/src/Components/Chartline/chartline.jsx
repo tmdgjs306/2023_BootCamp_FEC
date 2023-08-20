@@ -68,19 +68,19 @@ const ChartComponent = () => {
       </div>
       <div className="flex space-x-2">
         <button
-          className="bg-[#1982c4] hover:bg-blue-800 text-white px-4 py-2 rounded"
+          className="bg-[#14213d] hover:bg-blue-800 text-white px-4 py-2 rounded"
           onClick={() => fetchData("temperatureValue")}
         >
           Temperature
         </button>
         <button
-          className="bg-[#8ac926] hover:bg-green-600 text-white px-4 py-2 rounded"
+          className="bg-[#14213d] hover:bg-green-600 text-white px-4 py-2 rounded"
           onClick={() => fetchData("humidityValue")}
         >
           Humidity
         </button>
         <button
-          className="bg-[#ff595e] hover:bg-red-600 text-white px-4 py-2 rounded"
+          className="bg-[#14213d] hover:bg-red-600 text-white px-4 py-2 rounded"
           onClick={() => fetchData("carbonDioxideValue")}
         >
           CO2

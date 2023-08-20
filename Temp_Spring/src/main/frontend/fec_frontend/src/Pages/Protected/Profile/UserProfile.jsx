@@ -4,7 +4,7 @@ import DashboardLayout from '../../../Components/Layout/DashboardLayout';
 
 const UserProfile = () => {
     return (
-        <DashboardLayout>
+        <DashboardLayout pageTitle="PROFILE">
             <UserProfileGrid />
         </DashboardLayout >
     )

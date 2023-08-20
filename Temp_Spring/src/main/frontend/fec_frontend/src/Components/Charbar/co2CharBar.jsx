@@ -39,8 +39,7 @@ const CO2Chart = () => {
         },
         labels: ['CO2 Level']
     };
-
-    useEffect(() => {
+    const fetchData = () => {
         // Fetch live CO2 data
         axios.get('/api/latestEnvironmentData')
             .then(response => {
@@ -50,6 +49,15 @@ const CO2Chart = () => {
             .catch(error => {
                 console.error('Error fetching CO2 data:', error);
             });
+    };
+
+    useEffect(() => {
+        fetchData();
+        // Fetch new data every 10 seconds
+        const interval = setInterval(fetchData, 10000);
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
     }, []);
 
     return (
