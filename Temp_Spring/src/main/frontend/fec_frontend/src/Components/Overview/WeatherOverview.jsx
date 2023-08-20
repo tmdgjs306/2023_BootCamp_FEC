@@ -1,34 +1,45 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Sunny from '../../Assets/sunny.png';
+import Cloudy from '../../Assets/cloudy.png';
+import Rainy from '../../Assets/rainy.png';
+import Snowy from '../../Assets/snowy.png';
 
 const WeatherOverview = () => {
-    const [weatherData, setWeatherData] = useState({
-        temperature: 0,
-        humidity: 0,
-        weatherCondition: 'sunny', // Initialize with a default condition
-    });
+    const weatherIllustrations = {
+        sunny: Sunny,
+        cloudy: Cloudy,
+        rainy: Rainy,
+        snowy: Snowy,
+    };
+    const [humidity, setHumidity] = useState('89');
+    const [temperature, setTemperature] = useState('30');
+    const [weatherStatus, setWeatherStatus] = useState('sunny');
 
-    const fetchWeatherData = async () => {
+    const fetchData = async () => {
         try {
             const response = await axios.get('/api/getWeather');
-            const { temperature, humidity, condition } = response.data;
 
-            // Update the state with fetched weather data
-            setWeatherData({
-                temperature,
-                humidity,
-                weatherCondition: condition,
-            });
+            const { temperatureValue, humidityValue, weatherStatus } = response.data;
+
+            setTemperature(temperatureValue);
+            setHumidity(humidityValue);
+            setWeatherStatus(weatherStatus);
         } catch (error) {
             console.error('Error fetching weather data:', error);
         }
     };
 
     useEffect(() => {
-        fetchWeatherData();
+        fetchData();
+        // Fetch new data every 10 seconds
+        const interval = setInterval(fetchData, 10000);
+
+        // Clean up the interval when the component unmounts
+        return () => clearInterval(interval);
     }, []);
 
-    const weatherIllustration = `${weatherData.weatherCondition}.png`;
+    const weatherIllustration = weatherIllustrations[weatherStatus];
 
     return (
         <div className="bg-white p-4 rounded shadow">
@@ -36,14 +47,14 @@ const WeatherOverview = () => {
             <div className="flex items-center">
                 <div className="mr-4">
                     <img
-                        src={`/${weatherIllustration}`} // Assuming your images are located in the public folder
+                        src={weatherIllustration}
                         alt="Weather Illustration"
-                        className="h-16 w-16"
+                        className="h-16 w-16 transition-transform transform hover:scale-110"
                     />
                 </div>
                 <div>
-                    <p>Temperature: {weatherData.temperature}°C</p>
-                    <p>Humidity: {weatherData.humidity}%</p>
+                    <p>Temperature: {temperature}°C</p>
+                    <p>Humidity: {humidity}%</p>
                 </div>
             </div>
         </div>

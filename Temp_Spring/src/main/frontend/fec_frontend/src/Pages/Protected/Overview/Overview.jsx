@@ -18,13 +18,14 @@ const Overview = () => {
                 icon={<WiSunrise className="w-10 h-10 text-[#14213d]" />}
             >
                 <WeatherOverview />
+
             </DashboardItem>
         </DashboardLayout >
 
     )
 }
-const DashboardItem = ({ title, icon, children, fullWidth }) => (
-    <div className='bg-[#f5fcf5] p-4 rounded-lg shadow-xl'>
+const DashboardItem = ({ icon, children }) => (
+    <div className='bg-[#f5fcf5] p-4 rounded-lg shadow-xl' >
         <div className="flex items-center justify-between">
             {icon}
         </div>

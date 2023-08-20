@@ -34,8 +34,8 @@ const HumidityChart = () => {
         // Fetch OUTISDE humidity data
         axios.get('/api/getWeather')
             .then(response => {
-                const data = response.data;
-                setOutsideHumidity(data.temperatureValue); // change for getWeather type name
+                const { humidityValue } = response.data;
+                setOutsideHumidity(humidityValue); // change for getWeather type name
             })
             .catch(error => {
                 console.error('Error fetching outside humidity:', error);
@@ -45,7 +45,7 @@ const HumidityChart = () => {
         axios.get('/api/latestEnvironmentData')
             .then(response => {
                 const data = response.data;
-                setInsideHumidity(data.temperatureValue);
+                setInsideHumidity(data.humidityValue);
             })
             .catch(error => {
                 console.error('Error fetching inside humidity:', error);
