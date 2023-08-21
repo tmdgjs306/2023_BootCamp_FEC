@@ -2,7 +2,7 @@
 import greenhouse from '../../Assets/greenhouse.png';
 const AboutProject = () => {
     return (
-        <section className="bg-white dark:bg-gray-900">
+        <section className="bg-gray-900">
             <div className="mx-auto max-w-screen-xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
                 <div className="mx-auto max-w-3xl text-center">
                     <h2 className="text-3xl font-bold text-gray-900 dark:text-white sm:text-4xl font-Gruppo">
@@ -44,7 +44,7 @@ const AboutProject = () => {
 
                             <dd className="text-4xl font-extrabold text-green-600 md:text-5xl">5</dd>
                         </div>
-                        
+
                         <div
                             className="flex flex-col rounded-lg px-4 py-8 text-center dark:border-gray-800 shadow-xl transition hover:border-pink-500/10 hover:shadow-green-500/10"
                         >

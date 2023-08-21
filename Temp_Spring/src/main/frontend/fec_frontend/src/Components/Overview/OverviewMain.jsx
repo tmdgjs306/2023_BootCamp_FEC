@@ -4,26 +4,24 @@ import ReactApexChart from 'react-apexcharts';
 
 const OverviewMain = () => {
     const [sensorData, setSensorData] = useState({
-        temperature: ('34'), // fake data gotta change to ''
-        humidity: '77',
-        carbonDioxide: '456',
+        Temperature: 123, // fake data gotta change to ''
+        Humidity: 456,
+        CarbonDioxide: 789,
     });
-    const [postHour, setPostHour] = useState(1); // default 1 hour
+    const [hour, setPostHour] = useState("100"); // default 1 hour
 
     const fetchData = async () => {
         try {
-            const response = await axios.post('api/getAvgData', {
-                postHour: postHour,
+            const response = await axios.post('/api/getAvgData', { hour }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
-
-            const { temperature, humidity, carbonDioxide } = response.data;
-
+            let jsonString = JSON.stringify(response.data);
+            const avgData = JSON.parse(jsonString);
+            setSensorData(avgData);
+            console.log(sensorData.Temperature, " ", sensorData.Humidity, " ", sensorData.CarbonDioxide);
             // Update the state with fetched sensor data
-            setSensorData({
-                temperature,
-                humidity,
-                carbonDioxide,
-            });
         } catch (error) {
             console.error('Error fetching sensor data:', error);
         }
@@ -31,7 +29,7 @@ const OverviewMain = () => {
 
     useEffect(() => {
         fetchData();
-    }, [postHour]);
+    }, [hour]);
 
     const options = {
         chart: {
@@ -71,7 +69,7 @@ const OverviewMain = () => {
         },
     };
 
-    const series = [sensorData.temperature, sensorData.humidity, sensorData.carbonDioxide];
+    const series = [sensorData.Temperature, sensorData.Humidity, sensorData.CarbonDioxide];
 
     return (
         <div className="bg-[#f5fcf5] p-4 rounded shadow-xl">
@@ -83,7 +81,7 @@ const OverviewMain = () => {
                 <select
                     id="postHour"
                     name="postHour"
-                    value={postHour}
+                    value={hour}
                     onChange={(e) => setPostHour(e.target.value)}
                     className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 >
@@ -101,5 +99,3 @@ const OverviewMain = () => {
 };
 
 export default OverviewMain;
-
-
