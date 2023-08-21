@@ -5,11 +5,10 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/Temp_Spring" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/FEC_Server" />
         <option name="modules">
           <set>
-            <option value="$PROJECT_DIR$/Temp_Spring" />
+            <option value="$PROJECT_DIR$/FEC_Server" />
           </set>
         </option>
       </GradleProjectSettings>
