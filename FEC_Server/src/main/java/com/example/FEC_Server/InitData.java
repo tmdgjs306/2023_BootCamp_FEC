@@ -55,9 +55,9 @@ public class InitData {
     }
     @PostConstruct
     public void makePlantEnvironmentData () throws NoSuchAlgorithmException{
-        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("로즈마리")){
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("Rosemary")){
             PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
-                    .name("로즈마리")
+                    .name("Rosemary")
                     .minTemperature(10.0)
                     .maxTemperature(25.0)
                     .illuminance(2500L)
@@ -67,9 +67,9 @@ public class InitData {
                     .build();
             plantEnvironmentDataRepository.save(plantEnvironmentData);
         }
-        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("완두콩")){
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("Orchid")){
             PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
-                    .name("완두콩")
+                    .name("Orchid")
                     .minTemperature(18.0)
                     .maxTemperature(25.0)
                     .illuminance(2500L)
@@ -79,21 +79,9 @@ public class InitData {
                     .build();
             plantEnvironmentDataRepository.save(plantEnvironmentData);
         }
-        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("난")){
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("Lettuce")){
             PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
-                    .name("난")
-                    .minTemperature(18.0)
-                    .maxTemperature(25.0)
-                    .illuminance(2500L)
-                    .minHumidity(40.0)
-                    .maxHumidity(70.0)
-                    .carbonDioxide(700L)
-                    .build();
-            plantEnvironmentDataRepository.save(plantEnvironmentData);
-        }
-        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("상추")){
-            PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
-                    .name("상추")
+                    .name("Lettuce")
                     .minTemperature(15.0)
                     .maxTemperature(20.0)
                     .illuminance(1500L)
@@ -103,9 +91,9 @@ public class InitData {
                     .build();
             plantEnvironmentDataRepository.save(plantEnvironmentData);
         }
-        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("케일")){
+        if(!plantEnvironmentDataRepository.existsPlantEnvironmentDataByName("Tomato")){
             PlantEnvironmentData plantEnvironmentData = PlantEnvironmentData.builder()
-                    .name("케일")
+                    .name("Tomato")
                     .minTemperature(10.0)
                     .maxTemperature(20.0)
                     .illuminance(2500L)

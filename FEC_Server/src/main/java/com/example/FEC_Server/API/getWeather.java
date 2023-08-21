@@ -129,8 +129,8 @@ public class getWeather
         JSONObject jsonObject = new JSONObject();
         if (s == null)
         { // ok!
-            jsonObject.put("temperature",v[3]);
-            jsonObject.put("humidity",v[4]);
+            jsonObject.put("temperatureValue",v[3]);
+            jsonObject.put("humidityValue",v[4]);
             jsonObject.put("weatherStatus",v[2]);
             sb.append("날씨 : " + v[2]+" ").append("기온 : " + v[3] + "℃ ").append("습도 : " + v[4]+"%");
         }

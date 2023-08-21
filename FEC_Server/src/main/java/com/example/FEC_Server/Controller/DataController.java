@@ -156,6 +156,13 @@ public class DataController {
         String allPlantEnvironmentData = plantEnvironmentDataService.getAllPlantEnvironmentData();
         res.getWriter().write(allPlantEnvironmentData);
     }
+    @GetMapping("/getPlantEnvironmentDataByName")
+    public void getPlantEnvironmentDataByName(HttpServletRequest req, HttpServletResponse res, @RequestBody String data) throws IOException{
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        String plantEnvironmentData = plantEnvironmentDataService.getPlantEnvironmentDataByName(data);
+        res.getWriter().write(plantEnvironmentData);
+    }
 
     // Todo-List 반환
     @GetMapping("/getTodoData")
@@ -183,6 +190,7 @@ public class DataController {
         String loginId = cookieParser.parseCookie(request);
         todoListService.add(data,loginId);
     }
+
     @GetMapping("/getAvgData")
     public void getAvgHourData(HttpServletRequest req, HttpServletResponse res, @RequestBody String data) throws ParseException, IOException {
         // 헤더 설정정보

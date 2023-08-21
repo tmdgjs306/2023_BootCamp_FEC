@@ -35,4 +35,17 @@ public class PlantEnvironmentDataService {
         }
         return jsonArray.toJSONString();
     }
+
+    public String getPlantEnvironmentDataByName(String name){
+        JSONObject jsonObject = new JSONObject();
+        PlantEnvironmentData plantEnvironmentData = plantEnvironmentDataRepository.getPlantEnvironmentDataByName(name);
+        jsonObject.put("name",plantEnvironmentData.getName());
+        jsonObject.put("minTemperature",plantEnvironmentData.getMinTemperature());
+        jsonObject.put("maxTemperature",plantEnvironmentData.getMaxTemperature());
+        jsonObject.put("minHumidity",plantEnvironmentData.getMinHumidity());
+        jsonObject.put("maxHumidity",plantEnvironmentData.getMaxHumidity());
+        jsonObject.put("illuminance",plantEnvironmentData.getIlluminance());
+        jsonObject.put("carbonDioxide",plantEnvironmentData.getCarbonDioxide());
+        return jsonObject.toJSONString();
+    }
 }
