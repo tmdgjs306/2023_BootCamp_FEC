@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import useAuth from '../../../hook/useAuth';
+import { Navigate } from 'react-router-dom';
 // layout
 import DashboardLayout from '../../../Components/Layout/DashboardLayout';
 
 const ManageUsers = () => {
+    const { token } = useAuth();
+
+    // If user is not authenticated
+    if (!token) {
+        return <Navigate to="/403" />;
+    }
+
     const [users, setUsers] = useState({
         loginId: "",
         email: "",
-        farmId: 11
+        farmId: ""
     });
     const [newUserRequests, setNewUserRequests] = useState([]);
 

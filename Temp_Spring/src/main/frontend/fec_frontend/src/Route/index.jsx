@@ -5,6 +5,7 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import Login from "../Pages/Login/Login";
 import Register from "../Pages/Register/Register";
 import Homepage from "../Pages/Homepage/Homepage";
+import { ErrorPage, ForbiddenPage } from '../Pages/OtherPages'
 import { Dashboard, ManageUsers, Overview, Performance, Status, UserProfile } from "../Pages/Protected";
 
 
@@ -57,13 +58,21 @@ const CostumRoute = () => {
                 },
             ],
         },
+        {
+            path: '/api/403', // Path for the forbidden page
+            element: <ForbiddenPage />, // Show the 403 forbidden page
+        },
+        {
+            path: '/api/404', // Catch-all route for unknown paths
+            element: <ErrorPage />, // Show the 404 error page
+        },
     ];
 
     // Define routes accessible only to non-authenticated users
     const routesForNotAuthenticatedOnly = [
         {
             path: "/",
-            element: <div>Home Page</div>,
+            element: <Homepage />,
         },
         {
             path: "api/login",

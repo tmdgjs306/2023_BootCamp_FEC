@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const TemperatureCharBar = () => {
     // need to change useSate to []
-    const [outsideTemperature, setOutsideTemperature] = useState(34);
-    const [insideTemperature, setInsideTemperature] = useState(24);
+    const [outsideTemperature, setOutsideTemperature] = useState([]);
+    const [insideTemperature, setInsideTemperature] = useState([]);
 
     const options = {
         chart: {
@@ -34,7 +34,8 @@ const TemperatureCharBar = () => {
         // Fetch OUTSIDE temperature data
         axios.get('/api/getWeather')
             .then(response => {
-                const temperatureValue = JSON.parse(response.data).temperatureValue;
+                let jsonString = JSON.stringify(response.data);
+                const temperatureValue = JSON.parse(jsonString).temperatureValue;
                 setOutsideTemperature(temperatureValue);
             })
             .catch(error => {
@@ -44,7 +45,8 @@ const TemperatureCharBar = () => {
         // Fetch INSIDE temperature data
         axios.get('/api/latestEnvironmentData')
             .then(response => {
-                const temperatureValue = JSON.parse(response.data).temperatureValue;
+                let jsonString = JSON.stringify(response.data);
+                const temperatureValue = JSON.parse(jsonString).temperatureValue;
                 setInsideTemperature(temperatureValue);
             })
             .catch(error => {

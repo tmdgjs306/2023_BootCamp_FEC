@@ -1,5 +1,5 @@
 import logo from '../../LoginAssets/logo.png';
-
+import { Navigate } from 'react-router-dom';
 // icons
 import { TbLayoutDashboard } from 'react-icons/tb'
 import { IoLogOutOutline } from 'react-icons/io5'
@@ -132,17 +132,18 @@ const SideBar = () => {
                 <div className="sticky inset-x-0 bottom-0 border-t border-gray-300 p-9">
                     <form action="/log-out">
                         <button
-                            type="submit"
+                            type="button"
                             className="group relative flex w-full justify-center rounded-lg px-2 py-0.5 text-sm text-gray-500 hover:text-orange-700 text-grey-700"
+                            onClick={handleLogout} // Call handleLogout function on button click
                         >
                             <div className='mt-1 text-xs font-medium text-green-600 group-hover:text-orange-700 text-green-700'>
-                                <IoLogOutOutline className='icon w-10 h-10' />
-
-                                <span
-                                    className="mt-1 text-xs font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700"
-                                    onClick={handleLogout}>
-                                    Logout
-                                </span>
+                                {/* Use Link component to handle navigation */}
+                                <Navigate to="/">
+                                    <IoLogOutOutline className='icon w-10 h-10' />
+                                    <span className="mt-1 text-xs font-medium text-green-600 opacity-80 group-hover:text-orange-700 text-green-700">
+                                        Logout
+                                    </span>
+                                </Navigate>
                             </div>
                         </button>
                     </form>

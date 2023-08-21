@@ -4,7 +4,7 @@ import axios from 'axios';
 
 const CO2Chart = () => {
     // need to change useSate to []
-    const [co2Data, setCO2Data] = useState(23);
+    const [co2Data, setCO2Data] = useState([]);
 
     const getColor = value => {
         if (value >= 0 && value <= 100) {

@@ -4,8 +4,8 @@ import axios from 'axios';
 
 const HumidityChart = () => {
     // need to change useSate to []
-    const [outsideHumidity, setOutsideHumidity] = useState(39);
-    const [insideHumidity, setInsideHumidity] = useState(29);
+    const [outsideHumidity, setOutsideHumidity] = useState([]);
+    const [insideHumidity, setInsideHumidity] = useState([]);
 
     const options = {
         chart: {

@@ -1,3 +1,6 @@
+// react
+import React from 'react';
+import { Navigate } from 'react-router-dom';
 // layout
 import DashboardLayout from '../../../Components/Layout/DashboardLayout';
 // charts
@@ -10,8 +13,17 @@ import { LiaTemperatureLowSolid } from 'react-icons/lia'
 import { WiHumidity } from 'react-icons/wi'
 import { MdCo2 } from 'react-icons/md'
 import { AiOutlineAreaChart } from 'react-icons/ai'
+// Auth
+import useAuth from '../../../hook/useAuth';
 
 const Dashboard = () => {
+    const { token } = useAuth();
+
+    // If user is not authenticated, redirect to login page
+    if (!token) {
+        return <Navigate to="/login" />;
+    }
+
     return (
         <DashboardLayout pageTitle="DASHBOARD">
             <DashboardItem
