@@ -54,6 +54,10 @@ public class LoginController {
             res.sendError(HttpServletResponse.SC_CONFLICT,"이미 사용중인 로그인 아이디 입니다.");
             return;
         }
+        if(tempUserService.checkLoginIdDuplicate(tempUserJoinRequest.getLoginId())) {
+            res.sendError(HttpServletResponse.SC_CONFLICT,"이미 사용중인 로그인 아이디 입니다.");
+            return;
+        }
 
         // 임시 유저 DB에 저장 -> 추후 Admin 유저가 승인시 UserDB에 회원 정보 저장
         tempUserService.join(tempUserJoinRequest);
@@ -100,6 +104,7 @@ public class LoginController {
         //응답 메시지 설정
         res.setContentType("text/plain");
         res.setCharacterEncoding("UTF-8");
+        System.out.println("loginId: "+joinRequest.getLoginId());
 
         //UserDB에 저장, tempUser DB 에서 정보 삭제
         userService.join(joinRequest.getLoginId());

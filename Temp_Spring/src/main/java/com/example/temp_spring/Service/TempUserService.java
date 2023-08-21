@@ -23,6 +23,7 @@ public class TempUserService {
 
     private final TempUserRepository tempUserRepository;
 
+    public boolean checkLoginIdDuplicate(String loginId){return tempUserRepository.existsByLoginId(loginId);}
     public void join(TempUserJoinRequest req) throws NoSuchAlgorithmException {
         tempUserRepository.save(req.toEntity());
     }
@@ -41,6 +42,7 @@ public class TempUserService {
             jsonObject.put("loginId",tempUser.getLoginId());
             jsonObject.put("email",tempUser.getEmail());
             jsonObject.put("password",tempUser.getPassword());
+            jsonObject.put("farmId",tempUser.getFarmId());
             jsonArray.add(jsonObject);
         }
         return jsonArray.toJSONString();

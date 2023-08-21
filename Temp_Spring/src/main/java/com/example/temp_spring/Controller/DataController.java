@@ -87,6 +87,17 @@ public class DataController {
 
         // DB 테이블을 조회하여 해당 농장에서 가장 최근에 측정된 온도 데이터 값 불러옴
         FarmInformationData farmInformationData = farmInformationDataService.findLatestFarmInformationData(farmId);
+        // 측정 값이 없을 경우 empty값을 생성하여 전송함
+        if(farmInformationData ==null){
+            FarmInformationData emptyFarmInformationData = FarmInformationData.builder()
+                    .farmId(0)
+                    .carbonDioxideValue(0.0)
+                    .illuminanceValue(0L)
+                    .humidityValue(0.0)
+                    .TemperatureValue(0.0)
+                    .build();
+            return emptyFarmInformationData;
+        }
         return farmInformationData;
     }
 
@@ -95,6 +106,7 @@ public class DataController {
     public String getWeatherData() throws IOException {
         getWeather a1 = new getWeather();
         String result = a1.get();
+        System.out.println(result);
         return result;
     }
 

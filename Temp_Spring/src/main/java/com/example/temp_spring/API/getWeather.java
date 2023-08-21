@@ -29,7 +29,7 @@ public class getWeather
         HttpURLConnection con = null;
         String s = null; // 에러 메시지
         int x = 55;
-        int y = 124;
+        int y = 127;
         String [] v = new String[10];
         try
         {
@@ -39,6 +39,9 @@ public class getWeather
             String Hour = timeFormat.HourFormat(t);
             if(t.equals("0"))Hour = "24";
             else Hour = Integer.toString(Integer.parseInt(Hour)-1);
+            if(Integer.parseInt(Hour)<=9){
+                Hour  ="0"+Hour;
+            }
             System.out.println(Hour);
             System.out.println(Date);
             URL url = new URL(
@@ -104,16 +107,16 @@ public class getWeather
 
                 if ("0".equals(pty))
                 { // 강수형태 없으면, 하늘상태로 판단
-                    if ("1".equals(sky)) v[2] = "맑음";
-                    else if ("3".equals(sky)) v[2] = "구름많음";
-                    else if ("4".equals(sky)) v[2] = "흐림";
+                    if ("1".equals(sky)) v[2] = "sunny";
+                    else if ("3".equals(sky)) v[2] = "cloudy";
+                    else if ("4".equals(sky)) v[2] = "cloudy";
                 }
-                else if ("1".equals(pty)) v[2] = "비";
-                else if ("2".equals(pty)) v[2] = "비/눈";
-                else if ("3".equals(pty)) v[2] = "눈";
-                else if ("5".equals(pty)) v[2] = "빗방울";
-                else if ("6".equals(pty)) v[2] = "빗방울눈날림";
-                else if ("7".equals(pty)) v[2] = "눈날림";
+                else if ("1".equals(pty)) v[2] = "rainy";
+                else if ("2".equals(pty)) v[2] = "rainy";
+                else if ("3".equals(pty)) v[2] = "snowy";
+                else if ("5".equals(pty)) v[2] = "rainy";
+                else if ("6".equals(pty)) v[2] = "snowy";
+                else if ("7".equals(pty)) v[2] = "snowy";
             }
         }
         catch (Exception e)
@@ -130,12 +133,14 @@ public class getWeather
         { // ok!
             jsonObject.put("temperature",v[3]);
             jsonObject.put("humidity",v[4]);
+            jsonObject.put("weatherStatus",v[2]);
             sb.append("날씨 : " + v[2]+" ").append("기온 : " + v[3] + "℃ ").append("습도 : " + v[4]+"%");
         }
         else
         { // error
             sb.append("Error : " + s);
         }
+        System.out.println(s);
         return jsonObject.toJSONString();
     }
 }

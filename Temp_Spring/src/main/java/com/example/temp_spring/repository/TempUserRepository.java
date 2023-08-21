@@ -16,4 +16,5 @@ public interface TempUserRepository extends JpaRepository<TempUser,Long> {
 
     TempUser findByLoginId(String loginId);
 
+    boolean existsByLoginId(String loginId);
 }
