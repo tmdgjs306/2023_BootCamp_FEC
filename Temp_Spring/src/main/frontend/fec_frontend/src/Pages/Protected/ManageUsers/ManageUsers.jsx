@@ -57,13 +57,13 @@ const ManageUsers = () => {
             <div className="col-span-12 mt-5">
                 <div className='grid gap-2 grid-cols-1 lg:grid-cols-1'>
                     <div className='bg-[#F2F7F2] p-4 shadow-lg rounded-lg mb-4 pb-10 grid mb-40 pb-10 px-8 mx-4'>
-                        <h1 class="font-bold text-base">Users</h1>
-                        <div class="mt-4">
-                            <div class="flex flex-col">
-                                <div class="-my-2 overflow-x-auto">
-                                    <div class="py-2 align-middle inline-block min-w-full">
+                        <h1 className="font-bold text-base">Users</h1>
+                        <div className="mt-4">
+                            <div className="flex flex-col">
+                                <div className="-my-2 overflow-x-auto">
+                                    <div className="py-2 align-middle inline-block min-w-full">
                                         <div
-                                            class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white">
+                                            className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg bg-white">
                                             <table className=" min-w-full divide-y divide-gray-200 ">
                                                 <thead className="block md:table-header-group">
                                                     <tr className="border border-grey-500 md:border-none block md:table-row absolute -top-full md:top-auto -left-full md:left-auto md:relative">

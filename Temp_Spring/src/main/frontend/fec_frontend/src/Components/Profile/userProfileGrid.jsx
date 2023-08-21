@@ -26,7 +26,7 @@ const UserProfileGrid = () => {
     }, []);
 
     return (
-        <div className="flex-grow ">
+        <div className="col-span-12 mt-5 ">
             <div className='bg-[#F2F7F2] p-4 rounded-3xl'>
                 <h2 className="text-2xl text-blue-900 font-bold mb-4">{loginId}'s profile</h2>
                 <div className="flex justify-center items-center p-10">

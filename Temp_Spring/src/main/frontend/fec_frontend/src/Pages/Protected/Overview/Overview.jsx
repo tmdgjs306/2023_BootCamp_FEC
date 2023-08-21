@@ -25,11 +25,13 @@ const Overview = () => {
     )
 }
 const DashboardItem = ({ icon, children }) => (
-    <div className='bg-[#f5fcf5] p-4 rounded-lg shadow-xl' >
-        <div className="flex items-center justify-between">
-            {icon}
+    <div className=''>
+        <div className='bg-[#f5fcf5] p-4 rounded-lg shadow-xl' >
+            <div className="flex items-center justify-between">
+                {icon}
+            </div>
+            {children}
         </div>
-        {children}
     </div>
 );
 

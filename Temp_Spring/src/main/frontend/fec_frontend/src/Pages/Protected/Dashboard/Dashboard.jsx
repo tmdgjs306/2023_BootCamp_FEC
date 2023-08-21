@@ -28,7 +28,7 @@ const Dashboard = () => {
             </DashboardItem>
             <DashboardItem
                 title="Carbon dioxide data"
-                icon={<MdCo2 className="w-10 h-10 text-blue-500 text-[#14213d]" />}
+                icon={<MdCo2 className="w-10 h-10 text-[#14213d]" />}
             >
                 <Co2CharBar />
             </DashboardItem>
