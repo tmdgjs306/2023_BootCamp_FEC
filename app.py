@@ -27,8 +27,8 @@ def predict():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(filepath)
 
-        prediction_result = model.predict(filepath, confidence=60, overlap=30).json()
-        filtered_predictions = [item for item in prediction_result['predictions'] if item['confidence'] >= 60]
+        prediction_result = model.predict(filepath, confidence=50, overlap=50).json()
+        filtered_predictions = [item for item in prediction_result['predictions']]
         if filtered_predictions:
             predicted_class = filtered_predictions[0]['class']
             return jsonify({"class": predicted_class})
