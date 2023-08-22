@@ -37,6 +37,7 @@ Device
 
 AI
 - Flask
+- roboflow
 
 ## 👪 팀원
 - 한승헌 (팀장, BakcEnd, Sensor)
