@@ -149,9 +149,18 @@ class getweather{
     class UserRepository{
         <<Interface>>
     }
+    class TodoListData{
 
+    }
+    class TodoListDataRepository{
+        <<Interface>>
+    }
+    class TodoListService{
+        + add(): void
+        + getTodoListByLoginId : String
+    }
 
-
+    TodoListService --> TodoListDataRepository : Dependency
     User *-- userRole : Composition
     getTimeFormatString <.. getweather: Dependency
     getTimeFormatString <.. DataController: Dependency
@@ -181,3 +190,4 @@ class getweather{
     FarmIdService --|> FarmIdDataRepository: Realization
     FarmIdService <.. DataController: Dependency
 ```
+
