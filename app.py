@@ -15,6 +15,7 @@ UPLOAD_FOLDER = 'uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
+
 @app.route('/predict', methods=['POST'])
 def predict():
     if 'image' in request.files:
@@ -26,11 +27,14 @@ def predict():
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         image.save(filepath)
 
-        prediction_result = model.predict(filepath, confidence=40, overlap=30).json()
-        predicted_classes = [item['class'] for item in prediction_result['predictions']]
-        confidence = prediction_result['predictions'][0]['confidence']  # Get confidence for the first prediction
+        prediction_result = model.predict(filepath, confidence=60, overlap=30).json()
+        filtered_predictions = [item for item in prediction_result['predictions'] if item['confidence'] >= 60]
+        if filtered_predictions:
+            predicted_class = filtered_predictions[0]['class']
+            return jsonify({"class": predicted_class})
+        else:
+            return jsonify({"class": "Unknown"})  # No prediction above the threshold
 
-        return jsonify({"class": predicted_classes[0], "confidence": confidence})
 
 
 if __name__ == '__main__':
