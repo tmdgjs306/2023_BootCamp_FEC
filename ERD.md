@@ -2,10 +2,10 @@
 ---
 title: F.E.C
 ---
-
 erDiagram
     User ||--|{ FarmInformation : contains
     User ||--|{ FarmPlant : contains
+    User ||--|{ TodoListData : contains
     User{
         Long id PK "AUTO INCREASE"
         Int farmId "NOT NULL, UNIQUE"
@@ -53,5 +53,12 @@ erDiagram
         Double maxHumidity
         Long illuminance
         Long carbonDioxide
+    }
+    TodoListData{
+        Loing id PK "AUTO INCREASE"
+        String loginId FK
+        String plantName
+        String todo
+        String time
     }
 ```
