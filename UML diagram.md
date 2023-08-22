@@ -160,7 +160,7 @@ class getweather{
         + getTodoListByLoginId : String
     }
 
-    TodoListService --> TodoListDataRepository : Dependency
+    TodoListService <-- TodoListDataRepository : Dependency
     User *-- userRole : Composition
     getTimeFormatString <.. getweather: Dependency
     getTimeFormatString <.. DataController: Dependency
