@@ -39,7 +39,7 @@ public class PlantEnvironmentDataService {
     public String getPlantEnvironmentDataByName(String name){
         JSONObject jsonObject = new JSONObject();
         PlantEnvironmentData plantEnvironmentData = plantEnvironmentDataRepository.getPlantEnvironmentDataByName(name);
-        jsonObject.put("name",plantEnvironmentData.getName());
+        jsonObject.put("name", plantEnvironmentData.getName());
         jsonObject.put("minTemperature",plantEnvironmentData.getMinTemperature());
         jsonObject.put("maxTemperature",plantEnvironmentData.getMaxTemperature());
         jsonObject.put("minHumidity",plantEnvironmentData.getMinHumidity());

@@ -156,7 +156,7 @@ public class DataController {
         String allPlantEnvironmentData = plantEnvironmentDataService.getAllPlantEnvironmentData();
         res.getWriter().write(allPlantEnvironmentData);
     }
-    @GetMapping("/getPlantEnvironmentDataByName")
+    @PostMapping("/getPlantEnvironmentDataByName")
     public void getPlantEnvironmentDataByName(HttpServletRequest req, HttpServletResponse res, @RequestBody String data) throws IOException{
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
@@ -191,7 +191,7 @@ public class DataController {
         todoListService.add(data,loginId);
     }
 
-    @GetMapping("/getAvgData")
+    @PostMapping("/getAvgData")
     public void getAvgHourData(HttpServletRequest req, HttpServletResponse res, @RequestBody String data) throws ParseException, IOException {
         // 헤더 설정정보
         res.setContentType("application/json");
@@ -205,6 +205,7 @@ public class DataController {
         JSONObject jsonObject = (JSONObject) parser.parse(data);
         String hour = (String) jsonObject.get("hour");
         String formattedStartTime = timeFormatString.avgTimeFormat(Integer.parseInt(hour));
+
 
         // 입력받은 시간 기준으로 평균값 계산
         Double avgTemperature = farmAvgService.getAvgTemperatureValue(farmId,formattedStartTime);

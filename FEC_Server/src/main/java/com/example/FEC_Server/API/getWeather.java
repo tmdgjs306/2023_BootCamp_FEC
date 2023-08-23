@@ -40,8 +40,6 @@ public class getWeather
             if(Integer.parseInt(Hour)<=9){
                 Hour  ="0"+Hour;
             }
-            System.out.println(Hour);
-            System.out.println(Date);
             URL url = new URL(
                     "https://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst?"
                             + "serviceKey=n2NMYt0rWusbUZp9FjIEqrnTPs5zY22beubl2pGnkilwf5SHv84PmYVeLeFwtSpsHxlEsYem1kj%2BnYftRClKAQ%3D%3D" // 서비스키
