@@ -3,6 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/2023_BootCamp_TeamProject.iml" filepath="$PROJECT_DIR$/.idea/2023_BootCamp_TeamProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FEC_Server.iml" filepath="$PROJECT_DIR$/.idea/modules/FEC_Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FEC_Server.main.iml" filepath="$PROJECT_DIR$/.idea/modules/FEC_Server.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FEC_Server.test.iml" filepath="$PROJECT_DIR$/.idea/modules/FEC_Server.test.iml" />
     </modules>
   </component>
 </project>
