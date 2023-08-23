@@ -1,8 +1,10 @@
 ## 🌱**2023_BootCamp_FEC**
 스마트 팜 제어 웹페이지 제작 프로젝트
+<br>
 ![homepage](./images/homepage.png)
+<br>
 ![Dashboardpage](./images/Dashboard.png)
-
+<br>
 #### ▶️ 본 연구는 과학기술정보통신부 및 정보통신기획평가원의 SW전문인재양성사업의 연구결과로 수행되었음
    
 ##  ✅ 프로젝트 진행 기간   
